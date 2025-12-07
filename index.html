@@ -2,19 +2,19 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8" />
-  <title>Sua evolução começa aqui - Dark Premium</title>
+  <title>Sua evolução começa aqui</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <style>
     :root {
-      --bg: #0b0c10;
-      --card: #12151f;
+      --bg: #05050a;
+      --card: #101322;
       --accent: #4cc9f0;
       --accent2: #f72585;
       --text: #f5f5f5;
       --muted: #8a8fa3;
       --border: #222533;
       --danger: #ff6b6b;
-      --success: #51cf66;
+      --ok: #51cf66;
     }
 
     * {
@@ -24,7 +24,7 @@
 
     body {
       margin: 0;
-      background: radial-gradient(circle at top, #141b2d, #05060a);
+      background: radial-gradient(circle at top, #15192f, #02030a);
       color: var(--text);
       min-height: 100vh;
     }
@@ -78,8 +78,9 @@
       color: var(--accent);
     }
 
-    .badge-ghost {
-      border-style: dashed;
+    .badge-premium {
+      border-color: var(--accent2);
+      color: var(--accent2);
     }
 
     .meta-row {
@@ -98,78 +99,17 @@
       color: #6b7086;
     }
 
-    .tagline {
-      margin-top: 8px;
-      font-size: 0.95rem;
-      color: var(--muted);
-      max-width: 620px;
-    }
-
-    .topbar {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 8px;
-      margin-bottom: 10px;
-    }
-
-    .topbar-right {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      font-size: 0.8rem;
-      color: var(--muted);
-    }
-
-    .pill-small {
-      border-radius: 999px;
-      border: 1px solid var(--border);
-      padding: 4px 10px;
-      font-size: 0.75rem;
-    }
-
-    .btn-small {
-      border-radius: 999px;
-      border: none;
-      cursor: pointer;
-      padding: 7px 12px;
-      font-size: 0.75rem;
-      background: transparent;
-      border: 1px solid var(--border);
-      color: var(--muted);
-    }
-
-    .btn-small:hover {
-      border-color: var(--accent);
-      color: var(--accent);
-    }
-
-    /* Grids */
     .grid {
       display: grid;
       grid-template-columns: minmax(0, 1.3fr) minmax(0, 1.1fr);
       gap: 16px;
     }
-
     @media (max-width: 880px) {
       .grid {
         grid-template-columns: minmax(0, 1fr);
       }
     }
 
-    .grid-2 {
-      display: grid;
-      grid-template-columns: repeat(2, minmax(0,1fr));
-      gap: 12px;
-    }
-
-    @media (max-width: 720px) {
-      .grid-2 {
-        grid-template-columns: minmax(0,1fr);
-      }
-    }
-
-    /* Form */
     label {
       display: block;
       font-size: 0.8rem;
@@ -177,7 +117,7 @@
       color: var(--muted);
     }
 
-    input, select {
+    input, select, textarea {
       width: 100%;
       padding: 10px 11px;
       border-radius: 10px;
@@ -186,9 +126,10 @@
       color: var(--text);
       font-size: 0.9rem;
       outline: none;
+      resize: vertical;
     }
 
-    input:focus, select:focus {
+    input:focus, select:focus, textarea:focus {
       border-color: var(--accent);
       box-shadow: 0 0 0 1px rgba(76,201,240,0.3);
     }
@@ -198,13 +139,11 @@
       grid-template-columns: repeat(3, minmax(0,1fr));
       gap: 10px;
     }
-
     @media (max-width: 720px) {
       .form-grid {
         grid-template-columns: repeat(2, minmax(0,1fr));
       }
     }
-
     @media (max-width: 480px) {
       .form-grid {
         grid-template-columns: minmax(0,1fr);
@@ -217,7 +156,6 @@
       gap: 10px;
       margin-top: 12px;
     }
-
     button {
       border-radius: 999px;
       border: none;
@@ -232,27 +170,24 @@
       letter-spacing: 0.04em;
       text-transform: uppercase;
     }
-
     .btn-primary {
       background: linear-gradient(135deg, var(--accent), #4895ef);
       color: #020308;
       box-shadow: 0 12px 30px rgba(72,149,239,0.45);
       flex: 1;
     }
-
     .btn-ghost {
       background: transparent;
       border: 1px solid var(--border);
       color: var(--muted);
-      min-width: 140px;
+      min-width: 160px;
     }
-
     .btn-danger {
       background: transparent;
-      border: 1px solid rgba(255,107,107,0.6);
+      border: 1px solid var(--danger);
       color: var(--danger);
+      min-width: 160px;
     }
-
     @media (max-width: 600px) {
       .btn-row {
         flex-direction: column;
@@ -262,7 +197,6 @@
       }
     }
 
-    /* Table */
     .table-wrap {
       overflow-x: auto;
       border-radius: 14px;
@@ -270,35 +204,29 @@
       background: #05060b;
       -webkit-overflow-scrolling: touch;
     }
-
     table {
       width: 100%;
       border-collapse: collapse;
       font-size: 0.8rem;
       min-width: 620px;
     }
-
     thead {
       background: linear-gradient(90deg, #101320, #15192a);
     }
-
     th, td {
       padding: 8px 10px;
       text-align: left;
       white-space: nowrap;
     }
-
     th {
       font-weight: 600;
       font-size: 0.75rem;
       color: #c4c7de;
       border-bottom: 1px solid var(--border);
     }
-
     tbody tr:nth-child(even) {
       background: rgba(255,255,255,0.015);
     }
-
     tbody tr:hover {
       background: rgba(76,201,240,0.06);
     }
@@ -322,93 +250,60 @@
       margin-top: 6px;
     }
 
-    .tagline-quote {
-      font-style: italic;
-      opacity: 0.9;
+    .tagline {
+      margin-top: 8px;
+      font-size: 0.95rem;
+      color: var(--muted);
     }
 
-    /* Motivacional */
     .motivation {
-      border-radius: 16px;
-      padding: 14px 14px;
-      background: radial-gradient(circle at top left, rgba(76,201,240,0.18), transparent 55%),
-                  radial-gradient(circle at bottom right, rgba(247,37,133,0.15), transparent 55%);
-      border: 1px solid rgba(76,201,240,0.45);
-      margin-top: 10px;
-    }
-
-    .motivation-title {
-      font-size: 0.8rem;
-      text-transform: uppercase;
-      letter-spacing: 0.12em;
-      color: var(--accent);
-      margin-bottom: 4px;
-    }
-
-    .motivation-text {
+      margin-top: 8px;
       font-size: 0.9rem;
+      color: var(--ok);
     }
 
-    .motivation-highlight {
-      color: var(--accent2);
-      font-weight: 600;
-    }
-
-    /* Pills extras */
-    .pill-row {
+    /* Tela de login */
+    #auth-screen {
+      min-height: 100vh;
       display: flex;
-      flex-wrap: wrap;
-      gap: 6px;
-      margin-top: 6px;
+      align-items: center;
+      justify-content: center;
     }
-
-    .pill-tag {
-      font-size: 0.7rem;
-      padding: 3px 8px;
+    .auth-card {
+      max-width: 420px;
+      width: 100%;
+    }
+    .tabs {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 12px;
+    }
+    .tab {
+      flex: 1;
+      text-align: center;
+      padding: 8px;
       border-radius: 999px;
       border: 1px solid var(--border);
-      color: var(--muted);
-      background: rgba(255,255,255,0.01);
-    }
-
-    /* Links de vídeo */
-    .video-link {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
       font-size: 0.8rem;
-      text-decoration: none;
-      color: var(--accent);
-      border-radius: 999px;
-      padding: 4px 8px;
-      border: 1px solid rgba(76,201,240,0.35);
-      margin: 2px 2px 2px 0;
-    }
-
-    .video-link span {
-      font-size: 0.9rem;
-    }
-
-    .auth-note {
-      font-size: 0.8rem;
-      color: var(--muted);
-      margin-top: 8px;
-    }
-
-    .toggle-auth {
-      background: none;
-      border: none;
-      color: var(--accent);
       cursor: pointer;
-      font-size: 0.8rem;
-      padding: 0;
-      text-decoration: underline;
+      color: var(--muted);
+    }
+    .tab.active {
+      border-color: var(--accent);
+      color: var(--accent);
+      background: rgba(76,201,240,0.08);
     }
 
-    .error-text {
-      color: var(--danger);
-      font-size: 0.78rem;
+    .error-msg {
       margin-top: 6px;
+      font-size: 0.75rem;
+      color: var(--danger);
+    }
+
+    .success-msg {
+      margin-top: 6px;
+      font-size: 0.75rem;
+      color: var(--ok);
     }
 
     @media (max-width: 480px) {
@@ -426,212 +321,219 @@
   </style>
 </head>
 <body>
-  <div class="shell">
 
-    <!-- HEADER / TOP -->
-    <div class="card">
-      <div class="topbar">
-        <div>
-          <h1>Sua evolução começa aqui</h1>
-          <p class="tagline">
-            Painel Dark Premium para acompanhar peso, medidas, energia e humor.
-            Cada usuário com seu login, cada corpo no seu ritmo.
-          </p>
-          <div class="badge-row">
-            <span class="badge badge-accent">Dark Premium</span>
-            <span class="badge">Domínio: esoares.net.br</span>
-            <span class="badge badge-ghost">Multiusuário com Firebase</span>
-          </div>
-        </div>
-        <div class="topbar-right" id="topbarUser" style="display:none;">
-          <span class="pill-small" id="loggedEmail"></span>
-          <button class="btn-small" id="logoutBtn">Sair</button>
-        </div>
-      </div>
-
-      <div class="meta-row">
-        <div>
-          <div class="meta-label">Modo</div>
-          <div>Dashboard de evolução corporal</div>
-        </div>
-        <div>
-          <div class="meta-label">Dados</div>
-          <div>Salvos em nuvem (Firebase)</div>
-        </div>
-        <div>
-          <div class="meta-label">Acesso</div>
-          <div>Login por e-mail e senha</div>
-        </div>
-      </div>
-    </div>
-
-    <!-- CARD: LOGIN / CADASTRO -->
-    <div class="card" id="authCard">
-      <h2 id="authTitle">Entrar na sua conta</h2>
+  <!-- TELA DE AUTENTICAÇÃO -->
+  <div id="auth-screen">
+    <div class="card auth-card">
+      <h2 style="margin-bottom:4px;">Sua evolução começa aqui</h2>
       <p class="small">
-        Crie uma conta ou faça login para salvar seu progresso e acessar de qualquer dispositivo.
+        Crie sua conta ou faça login. Cada pessoa tem seus dados separados por login.
       </p>
 
-      <div class="grid-2">
-        <div>
-          <label for="authEmail">E-mail</label>
-          <input type="email" id="authEmail" placeholder="voce@exemplo.com" />
-        </div>
-        <div>
-          <label for="authPassword">Senha</label>
-          <input type="password" id="authPassword" placeholder="Mínimo 6 caracteres" />
-        </div>
+      <div class="tabs">
+        <div class="tab active" id="tab-login">Entrar</div>
+        <div class="tab" id="tab-register">Criar conta</div>
       </div>
 
-      <div class="btn-row">
-        <button class="btn-primary" id="authMainBtn">Entrar</button>
-        <button class="btn-ghost" id="authSecondaryBtn">Quero criar uma conta</button>
+      <div id="auth-form-login">
+        <label for="login-email">E-mail</label>
+        <input id="login-email" type="email" placeholder="voce@exemplo.com" />
+        <label for="login-password" style="margin-top:8px;">Senha</label>
+        <input id="login-password" type="password" placeholder="••••••••" />
+        <button class="btn-primary" style="margin-top:12px;" id="login-btn">Entrar</button>
       </div>
-      <div id="authError" class="error-text" style="display:none;"></div>
 
-      <p class="auth-note">
-        <span id="authModeText">
-          Ainda não tem conta?
-          <button class="toggle-auth" id="toggleAuthMode">Criar conta</button>
-        </span>
-      </p>
+      <div id="auth-form-register" style="display:none;">
+        <label for="reg-name">Nome</label>
+        <input id="reg-name" type="text" placeholder="Seu nome" />
+        <label for="reg-email" style="margin-top:8px;">E-mail</label>
+        <input id="reg-email" type="email" placeholder="voce@exemplo.com" />
+        <label for="reg-password" style="margin-top:8px;">Senha</label>
+        <input id="reg-password" type="password" placeholder="mín. 6 caracteres" />
+        <button class="btn-primary" style="margin-top:12px;" id="register-btn">Criar conta</button>
+      </div>
+
+      <div id="auth-message" class="error-msg"></div>
     </div>
+  </div>
 
-    <!-- CONTEÚDO PRINCIPAL (APÓS LOGIN) -->
-    <div id="app" style="display:none;">
+  <!-- APLICATIVO PRINCIPAL -->
+  <div id="app-screen" style="display:none;">
+    <div class="shell">
 
-      <!-- CARD: DADOS INICIAIS / METAS + MENSAGEM -->
+      <!-- HEADER -->
       <div class="card">
-        <h2>Configurar dados iniciais e metas</h2>
-        <p class="small">
-          Preencha seu ponto de partida e aonde você quer chegar.
-          O sistema usa isso para gerar mensagens motivacionais e acompanhar sua rota.
-        </p>
-
-        <div class="form-grid" style="margin-top:10px;">
+        <div style="display:flex;justify-content:space-between;gap:12px;align-items:flex-start;">
           <div>
-            <label for="startWeight">Peso inicial (kg)</label>
-            <input type="number" step="0.1" id="startWeight" placeholder="Ex: 92.5" />
+            <h1>Sua evolução começa aqui</h1>
+            <p class="tagline">
+              Painel Dark Premium para acompanhar peso, medidas, sensação diária
+              e rotina saudável — sem neura, só constância.
+            </p>
+            <div class="badge-row">
+              <span class="badge badge-accent">Objetivo: definido por você</span>
+              <span class="badge badge-premium">Dark Premium</span>
+              <span class="badge">Domínio: esoares.net.br</span>
+            </div>
           </div>
-          <div>
-            <label for="startWaist">Cintura inicial (cm)</label>
-            <input type="number" step="0.1" id="startWaist" placeholder="Ex: 100" />
-          </div>
-          <div>
-            <label for="goalWeight">Peso meta (kg)</label>
-            <input type="number" step="0.1" id="goalWeight" placeholder="Ex: 75.0" />
-          </div>
-          <div>
-            <label for="goalWaist">Cintura meta (cm)</label>
-            <input type="number" step="0.1" id="goalWaist" placeholder="Opcional" />
-          </div>
-          <div>
-            <label for="goalDate">Prazo meta (data)</label>
-            <input type="date" id="goalDate" />
+          <div style="text-align:right;font-size:0.8rem;color:var(--muted);">
+            <div id="user-name-display" style="font-weight:600;"></div>
+            <button id="logout-btn" class="btn-ghost" style="margin-top:6px;">Sair</button>
           </div>
         </div>
-
-        <div class="btn-row">
-          <button class="btn-primary" id="saveMetaBtn">Salvar metas</button>
-        </div>
-
-        <div class="motivation" id="motivationBox">
-          <div class="motivation-title">Modo turbo mental</div>
-          <div class="motivation-text" id="motivationText">
-            Preencha suas metas ali em cima e comece a registrar as semanas.
-            A partir daí eu viro seu narrador motivacional oficial. 😈
+        <div class="meta-row">
+          <div>
+            <div class="meta-label">Conta</div>
+            <div id="user-email-display"></div>
+          </div>
+          <div>
+            <div class="meta-label">Modo</div>
+            <div>1 login = 1 espaço pessoal</div>
+          </div>
+          <div>
+            <div class="meta-label">Aviso</div>
+            <div>Este painel não substitui médico ou nutricionista 🙏</div>
           </div>
         </div>
+        <div id="motivation-banner" class="motivation"></div>
       </div>
 
-      <!-- GRID: FORM + GRÁFICO -->
+      <!-- GRID: PERFIL / GRÁFICO -->
       <div class="grid">
-        <!-- FORM SEMANAL -->
+        <!-- PERFIL / METAS -->
         <div class="card">
-          <h2>Registrar semana</h2>
+          <h2>Configurações iniciais & metas</h2>
           <p class="small">
-            Preencha os dados da semana e clique em <strong>Adicionar</strong>.
-            O gráfico e a tabela são atualizados automaticamente para o seu usuário.
+            Preencha seu peso inicial, meta e medidas. Esses dados ficam só na sua conta.
           </p>
-          <div style="margin-top:10px;">
-            <label for="week">Semana</label>
-            <select id="week">
-              <option value="">Selecione...</option>
-              <option value="1">Semana 1</option>
-              <option value="2">Semana 2</option>
-              <option value="3">Semana 3</option>
-              <option value="4">Semana 4</option>
-              <option value="5">Semana 5</option>
-              <option value="6">Semana 6</option>
-              <option value="7">Semana 7</option>
-              <option value="8">Semana 8</option>
-              <option value="9">Semana 9</option>
-              <option value="10">Semana 10</option>
-              <option value="11">Semana 11</option>
-              <option value="12">Semana 12</option>
-            </select>
-          </div>
 
           <div class="form-grid" style="margin-top:10px;">
             <div>
-              <label for="peso">Peso (kg)</label>
-              <input type="number" step="0.1" id="peso" placeholder="Ex: 87.0" />
+              <label for="initial-weight">Peso inicial (kg)</label>
+              <input type="number" step="0.1" id="initial-weight" />
             </div>
             <div>
-              <label for="cintura">Cintura (cm)</label>
-              <input type="number" step="0.1" id="cintura" placeholder="Ex: 90" />
+              <label for="goal-weight">Peso meta (kg)</label>
+              <input type="number" step="0.1" id="goal-weight" />
             </div>
             <div>
-              <label for="energia">Energia (1–10)</label>
-              <input type="number" min="1" max="10" id="energia" placeholder="Ex: 8" />
+              <label for="sex">Sexo</label>
+              <select id="sex">
+                <option value="">Selecione...</option>
+                <option value="masculino">Masculino</option>
+                <option value="feminino">Feminino</option>
+                <option value="outro">Outro / Prefiro não dizer</option>
+              </select>
             </div>
             <div>
-              <label for="humor">Humor (1–10)</label>
-              <input type="number" min="1" max="10" id="humor" placeholder="Ex: 9" />
+              <label for="initial-waist">Cintura inicial (cm)</label>
+              <input type="number" step="0.1" id="initial-waist" />
             </div>
             <div>
-              <label for="sono">Sono (1–10)</label>
-              <input type="number" min="1" max="10" id="sono" placeholder="Ex: 7" />
+              <label for="initial-hip">Quadril inicial (cm)</label>
+              <input type="number" step="0.1" id="initial-hip" />
             </div>
-          </div>
-
-          <div style="margin-top:10px;">
-            <label for="obs">Observações</label>
-            <input type="text" id="obs" placeholder="Ex: mais cardio, menos fome, viagem, etc." />
+            <div>
+              <label for="main-goal">Objetivo principal</label>
+              <select id="main-goal">
+                <option value="">Selecione...</option>
+                <option value="perda">Perder gordura</option>
+                <option value="ganho">Ganhar massa magra</option>
+                <option value="manutencao">Manutenção saudável</option>
+              </select>
+            </div>
           </div>
 
           <div class="btn-row">
-            <button class="btn-primary" id="addWeekBtn">＋ Adicionar semana</button>
-            <button class="btn-danger" id="resetWeeksBtn">Apagar semanas (usuário)</button>
+            <button class="btn-primary" id="save-profile-btn">Salvar perfil</button>
           </div>
-
-          <p class="small">
-            Os dados são salvos na nuvem para o seu usuário. 
-            Se trocar de celular ou computador, é só logar com o mesmo e-mail.
-          </p>
+          <div id="profile-msg" class="success-msg"></div>
         </div>
 
         <!-- GRÁFICO -->
-        <div class="card" style="min-height: 320px;">
-          <h2>Gráfico de progresso</h2>
+        <div class="card" style="min-height:300px;">
+          <h2>Gráfico de progresso (peso & cintura)</h2>
           <p class="small">
             Linha azul = Peso (kg) • Linha rosa = Cintura (cm). 
-            O que importa é a <strong>tendência</strong>, não a neurose com a balança.
+            Tendência importa mais que perfeição.
           </p>
-          <div style="position:relative; height:260px; margin-top:8px;">
+          <div style="height:260px;margin-top:6px;">
             <canvas id="progressChart"></canvas>
           </div>
-          <p class="small tagline-quote">
-            “Se a linha tá descendo, o shape tá vindo.” – Algum filósofo da academia, provavelmente.
-          </p>
         </div>
+      </div>
+
+      <!-- REGISTRO SEMANAL -->
+      <div class="card">
+        <h2>Registrar semana</h2>
+        <p class="small">
+          Cada linha fica salva no seu banco de dados (Firestore). 
+          Depois de salvar, o gráfico e a tabela atualizam.
+        </p>
+
+        <div style="margin-top:10px;">
+          <label for="week">Semana</label>
+          <select id="week">
+            <option value="">Selecione...</option>
+            <option value="1">Semana 1</option>
+            <option value="2">Semana 2</option>
+            <option value="3">Semana 3</option>
+            <option value="4">Semana 4</option>
+            <option value="5">Semana 5</option>
+            <option value="6">Semana 6</option>
+            <option value="7">Semana 7</option>
+            <option value="8">Semana 8</option>
+            <option value="9">Semana 9</option>
+            <option value="10">Semana 10</option>
+            <option value="11">Semana 11</option>
+            <option value="12">Semana 12</option>
+          </select>
+        </div>
+
+        <div class="form-grid" style="margin-top:10px;">
+          <div>
+            <label for="peso">Peso da semana (kg)</label>
+            <input type="number" step="0.1" id="peso" placeholder="Ex: 87.0" />
+          </div>
+          <div>
+            <label for="cintura">Cintura (cm)</label>
+            <input type="number" step="0.1" id="cintura" placeholder="Ex: 90" />
+          </div>
+          <div>
+            <label for="energia">Energia (1–10)</label>
+            <input type="number" min="1" max="10" id="energia" placeholder="Ex: 8" />
+          </div>
+          <div>
+            <label for="humor">Humor (1–10)</label>
+            <input type="number" min="1" max="10" id="humor" placeholder="Ex: 9" />
+          </div>
+          <div>
+            <label for="sono">Sono (1–10)</label>
+            <input type="number" min="1" max="10" id="sono" placeholder="Ex: 7" />
+          </div>
+        </div>
+
+        <div style="margin-top:10px;">
+          <label for="obs">Observações</label>
+          <input type="text" id="obs" placeholder="Ex: semana com mais cardio, menos fome, etc." />
+        </div>
+
+        <div class="btn-row">
+          <button class="btn-primary" id="addWeekBtn">＋ Salvar semana</button>
+          <button class="btn-danger" id="clearLocalBtn">Limpar cache local (opcional)</button>
+        </div>
+
+        <p class="small">
+          Obs: os dados ficam no Firestore, mas também fazemos um cache local rápido
+          para carregar mais rápido neste dispositivo.
+        </p>
       </div>
 
       <!-- TABELA -->
       <div class="card">
         <h2>Histórico completo</h2>
         <p class="small">
-          Diário de progresso do seu corpo. Se estiver no celular, pode rolar pro lado.
+          Diário de progresso. Role para o lado se estiver no celular.
         </p>
         <div class="table-wrap">
           <table id="historyTable">
@@ -653,104 +555,54 @@
         </div>
       </div>
 
-      <!-- TREINOS POR SEXO -->
+      <!-- NUTRIÇÃO & SUPLEMENTOS -->
       <div class="card">
-        <h2>Treinos recomendados (masc / fem)</h2>
+        <h2>Nutrição & Suplementos (por usuário)</h2>
         <p class="small">
-          Sugestões gerais para acompanhar o protocolo hormonal + dieta high protein. 
-          Sempre respeite orientações do seu médico/profissional.
+          Espaço para registrar o que você está usando e receber sugestões gerais.
+          Não substitui orientação profissional.
         </p>
 
-        <div class="grid-2" style="margin-top:8px;">
+        <div class="form-grid" style="margin-top:10px;">
           <div>
-            <h3>Foco Masculino</h3>
-            <p class="small">
-              Ideia geral: manter força, preservar massa magra e não virar zumbi de cardio.
-            </p>
-            <ul class="small">
-              <li><strong>4 treinos de musculação/semana</strong> 
-                (peito+tríceps / costas+bíceps / pernas / ombro+abdômen)</li>
-              <li><strong>Cardio leve</strong> 20–30 min, 3x/semana (caminhada, bike, elíptico)</li>
-              <li>Priorizar básicos: supino, remada, agachamento guiado, levantamento terra romeno leve</li>
-            </ul>
-            <p class="small">Vídeos de execução sugeridos:</p>
-            <a class="video-link" target="_blank" href="https://www.youtube.com/results?search_query=supino+reto+execu%C3%A7%C3%A3o+correta">
-              <span>▶</span><span>Supino reto – execução</span>
-            </a>
-            <a class="video-link" target="_blank" href="https://www.youtube.com/results?search_query=agachamento+guiado+execu%C3%A7%C3%A3o+correta">
-              <span>▶</span><span>Agachamento guiado</span>
-            </a>
-            <a class="video-link" target="_blank" href="https://www.youtube.com/results?search_query=remada+curvada+execu%C3%A7%C3%A3o+correta">
-              <span>▶</span><span>Remada</span>
-            </a>
+            <label for="diet-type">Estilo de dieta</label>
+            <select id="diet-type">
+              <option value="">Selecione...</option>
+              <option value="lowcarb">Low carb</option>
+              <option value="equilibrada">Equilibrada</option>
+              <option value="hiperproteica">Hiperproteica</option>
+            </select>
           </div>
           <div>
-            <h3>Foco Feminino</h3>
-            <p class="small">
-              Mais ênfase em inferiores e glúteos, sem esquecer membros superiores (ombro, costas).
-            </p>
-            <ul class="small">
-              <li><strong>4–5 treinos de musculação/semana</strong> 
-                (inferiores A / superiores / inferiores B / glúteos+core / opcional full-body)</li>
-              <li>Cardio leve 20–30 min, 3–5x/semana, como complemento</li>
-              <li>Exercícios chave: agachamento, avanço, elevação pélvica, stiff, puxada e desenvolvimento</li>
-            </ul>
-            <p class="small">Vídeos de execução sugeridos:</p>
-            <a class="video-link" target="_blank" href="https://www.youtube.com/results?search_query=eleva%C3%A7%C3%A3o+p%C3%A9lvica+execu%C3%A7%C3%A3o+correta">
-              <span>▶</span><span>Elevação pélvica</span>
-            </a>
-            <a class="video-link" target="_blank" href="https://www.youtube.com/results?search_query=avan%C3%A7o+passada+execu%C3%A7%C3%A3o+correta">
-              <span>▶</span><span>Avanço / passada</span>
-            </a>
-            <a class="video-link" target="_blank" href="https://www.youtube.com/results?search_query=puxada+alta+execu%C3%A7%C3%A3o+correta">
-              <span>▶</span><span>Puxada alta</span>
-            </a>
+            <label for="goal-nutrition">Objetivo da dieta</label>
+            <select id="goal-nutrition">
+              <option value="">Selecione...</option>
+              <option value="perda">Perder gordura</option>
+              <option value="ganho">Ganhar massa</option>
+              <option value="energia">Mais energia / disposição</option>
+            </select>
           </div>
         </div>
 
-        <p class="small">
-          Dica ninja: escolha 1–2 vídeos de cada exercício que você gosta e salve nos favoritos do navegador. 
-          Aí seu “Netflix de treino” fica pronto em 2 cliques.
-        </p>
-      </div>
-
-      <!-- SUPLEMENTOS / VITAMINAS -->
-      <div class="card">
-        <h2>Vitamina & Suplementos – Organização</h2>
-        <p class="small">
-          Sempre siga orientação do seu médico. Aqui é só uma forma organizada de visualizar a rotina.
-        </p>
-
-        <h3>Manhã</h3>
-        <ul class="small">
-          <li><strong>Whey zero</strong> – ao acordar ou pós-treino</li>
-          <li><strong>Creatina (3 g)</strong> – com qualquer refeição</li>
-          <li><strong>Vitamina C</strong></li>
-          <li><strong>Manipulado diário</strong> (protocolo hormonal)</li>
-          <li><strong>Cálcio + Magnésio + Potássio</strong></li>
-        </ul>
-
-        <div class="pill-row">
-          <span class="pill-tag">Músculo: whey + creatina</span>
-          <span class="pill-tag">Hormonal: manipulado</span>
-          <span class="pill-tag">Equilíbrio: eletrólitos</span>
+        <div style="margin-top:10px;">
+          <label for="user-supplements">O que você está usando? (vitaminas, suplementos, etc.)</label>
+          <textarea id="user-supplements" rows="3"
+            placeholder="Ex: multivitamínico diário, whey, creatina..."></textarea>
         </div>
 
-        <h3 style="margin-top:12px;">Noite</h3>
-        <ul class="small">
-          <li><strong>Vitamina D</strong> – com refeição que tenha alguma gordura</li>
-          <li>Hidratação boa até o fim do dia</li>
-        </ul>
+        <div class="btn-row">
+          <button class="btn-primary" id="save-nutrition-btn">Salvar anotações</button>
+          <button class="btn-ghost" id="ai-suggest-btn">Sugestões gerais da IA</button>
+        </div>
 
-        <h3 style="margin-top:12px;">Semanal</h3>
-        <ul class="small">
-          <li><strong>Monjaro</strong> – aplicação 1x/semana, conforme orientação médica</li>
-        </ul>
+        <div id="nutrition-msg" class="success-msg"></div>
 
-        <p class="small">
-          Sentiu algo estranho (tontura, fadiga fora da curva, etc.)? 
-          Anota na aba de <strong>observações da semana</strong> e leva isso pra consulta. 
-          Seu médico ama dados organizados.
+        <div id="ai-suggestions" class="small" style="margin-top:10px;"></div>
+
+        <p class="small" style="margin-top:8px;">
+          Lembrete amigo: qualquer ajuste de vitamina, suplemento ou remédio
+          deve ser combinado com seu médico ou nutricionista. Aqui é só organização
+          + dicas genéricas, nada de prescrição 😉
         </p>
       </div>
 
@@ -760,17 +612,17 @@
   <!-- Chart.js -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
-  <!-- Firebase (CDN, modo módulo) + Lógica do app -->
+  <!-- Firebase + App (modular, via CDN) -->
   <script type="module">
-    // Import Firebase (versão modular, via CDN)
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+    import { initializeApp } from 'https://www.gstatic.com/firebasejs/12.6.0/firebase-app.js';
     import {
       getAuth,
       onAuthStateChanged,
-      signInWithEmailAndPassword,
       createUserWithEmailAndPassword,
-      signOut
-    } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+      signInWithEmailAndPassword,
+      signOut,
+      updateProfile
+    } from 'https://www.gstatic.com/firebasejs/12.6.0/firebase-auth.js';
     import {
       getFirestore,
       doc,
@@ -779,11 +631,10 @@
       collection,
       getDocs,
       query,
-      orderBy,
-      deleteDoc
-    } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+      orderBy
+    } from 'https://www.gstatic.com/firebasejs/12.6.0/firebase-firestore.js';
 
-    // === CONFIGURAÇÃO DO SEU PROJETO FIREBASE ===
+    // === CONFIGURAÇÃO DO FIREBASE (a que você copiou do console) ===
     const firebaseConfig = {
       apiKey: "AIzaSyBbz-DjxSv2S2g1qkWca8YpNn3g7C4Oic0",
       authDomain: "evolucao-dark-premium.firebaseapp.com",
@@ -793,357 +644,285 @@
       appId: "1:1041789751060:web:eb2afd0d1a4af526e0fc01"
     };
 
-    // Inicializa Firebase
     const app = initializeApp(firebaseConfig);
     const auth = getAuth(app);
     const db = getFirestore(app);
 
-    // Referências de DOM
-    const authCard = document.getElementById("authCard");
-    const appDiv = document.getElementById("app");
-    const authEmail = document.getElementById("authEmail");
-    const authPassword = document.getElementById("authPassword");
-    const authTitle = document.getElementById("authTitle");
-    const authMainBtn = document.getElementById("authMainBtn");
-    const authSecondaryBtn = document.getElementById("authSecondaryBtn");
-    const toggleAuthMode = document.getElementById("toggleAuthMode");
-    const authModeText = document.getElementById("authModeText");
-    const authError = document.getElementById("authError");
+    // === ELEMENTOS BÁSICOS ===
+    const authScreen   = document.getElementById('auth-screen');
+    const appScreen    = document.getElementById('app-screen');
+    const authMsg      = document.getElementById('auth-message');
+    const profileMsg   = document.getElementById('profile-msg');
+    const nutritionMsg = document.getElementById('nutrition-msg');
+    const motivationBanner = document.getElementById('motivation-banner');
 
-    const topbarUser = document.getElementById("topbarUser");
-    const loggedEmail = document.getElementById("loggedEmail");
-    const logoutBtn = document.getElementById("logoutBtn");
+    // Abas login/cadastro
+    const tabLogin    = document.getElementById('tab-login');
+    const tabRegister = document.getElementById('tab-register');
+    const formLogin   = document.getElementById('auth-form-login');
+    const formReg     = document.getElementById('auth-form-register');
 
-    const startWeightInput = document.getElementById("startWeight");
-    const startWaistInput = document.getElementById("startWaist");
-    const goalWeightInput = document.getElementById("goalWeight");
-    const goalWaistInput = document.getElementById("goalWaist");
-    const goalDateInput = document.getElementById("goalDate");
-    const saveMetaBtn = document.getElementById("saveMetaBtn");
+    tabLogin.addEventListener('click', () => {
+      tabLogin.classList.add('active');
+      tabRegister.classList.remove('active');
+      formLogin.style.display = '';
+      formReg.style.display = 'none';
+      authMsg.textContent = '';
+    });
 
-    const weekSelect = document.getElementById("week");
-    const pesoInput = document.getElementById("peso");
-    const cinturaInput = document.getElementById("cintura");
-    const energiaInput = document.getElementById("energia");
-    const humorInput = document.getElementById("humor");
-    const sonoInput = document.getElementById("sono");
-    const obsInput = document.getElementById("obs");
-    const addWeekBtn = document.getElementById("addWeekBtn");
-    const resetWeeksBtn = document.getElementById("resetWeeksBtn");
+    tabRegister.addEventListener('click', () => {
+      tabRegister.classList.add('active');
+      tabLogin.classList.remove('active');
+      formLogin.style.display = 'none';
+      formReg.style.display = '';
+      authMsg.textContent = '';
+    });
 
-    const historyTableBody = document.querySelector("#historyTable tbody");
-    const motivationText = document.getElementById("motivationText");
+    // === AUTENTICAÇÃO ===
+    document.getElementById('register-btn').addEventListener('click', async () => {
+      authMsg.textContent = '';
+      const name = document.getElementById('reg-name').value.trim();
+      const email = document.getElementById('reg-email').value.trim();
+      const pass = document.getElementById('reg-password').value;
 
-    let currentUser = null;
-    let progressData = [];
-    let metaData = null;
-    let chartInstance = null;
-    let authMode = "login"; // "login" ou "signup"
-
-    // --- Funções auxiliares ---
-
-    function setAuthMode(mode) {
-      authMode = mode;
-      authError.style.display = "none";
-      authError.textContent = "";
-      if (mode === "login") {
-        authTitle.textContent = "Entrar na sua conta";
-        authMainBtn.textContent = "Entrar";
-        authSecondaryBtn.textContent = "Quero criar uma conta";
-        authModeText.innerHTML = 'Ainda não tem conta? <button class="toggle-auth" id="toggleAuthModeInner">Criar conta</button>';
-      } else {
-        authTitle.textContent = "Criar nova conta";
-        authMainBtn.textContent = "Criar conta";
-        authSecondaryBtn.textContent = "Já tenho conta";
-        authModeText.innerHTML = 'Já tem conta? <button class="toggle-auth" id="toggleAuthModeInner">Entrar</button>';
-      }
-      // Re-anexar evento ao botão interno
-      const innerToggle = document.getElementById("toggleAuthModeInner");
-      if (innerToggle) {
-        innerToggle.addEventListener("click", () => {
-          setAuthMode(authMode === "login" ? "signup" : "login");
-        });
-      }
-    }
-
-    function showError(msg) {
-      authError.style.display = "block";
-      authError.textContent = msg;
-    }
-
-    function hideError() {
-      authError.style.display = "none";
-      authError.textContent = "";
-    }
-
-    function showLoggedUI(user) {
-      authCard.style.display = "none";
-      appDiv.style.display = "block";
-      topbarUser.style.display = "flex";
-      loggedEmail.textContent = user.email;
-    }
-
-    function showLoggedOutUI() {
-      authCard.style.display = "block";
-      appDiv.style.display = "none";
-      topbarUser.style.display = "none";
-      loggedEmail.textContent = "";
-      progressData = [];
-      metaData = null;
-      renderTable();
-      renderChart();
-      motivationText.textContent = "Preencha suas metas ali em cima e comece a registrar as semanas. A partir daí eu viro seu narrador motivacional oficial. 😈";
-      startWeightInput.value = "";
-      startWaistInput.value = "";
-      goalWeightInput.value = "";
-      goalWaistInput.value = "";
-      goalDateInput.value = "";
-    }
-
-    // --- Firebase Auth ---
-
-    authMainBtn.addEventListener("click", async () => {
-      hideError();
-      const email = authEmail.value.trim();
-      const password = authPassword.value.trim();
-      if (!email || !password) {
-        showError("Preencha e-mail e senha.");
+      if (!name || !email || !pass) {
+        authMsg.textContent = 'Preencha nome, e-mail e senha.';
         return;
       }
+
       try {
-        if (authMode === "login") {
-          await signInWithEmailAndPassword(auth, email, password);
-        } else {
-          await createUserWithEmailAndPassword(auth, email, password);
-        }
+        const cred = await createUserWithEmailAndPassword(auth, email, pass);
+        await updateProfile(cred.user, { displayName: name });
+        authMsg.textContent = '';
       } catch (err) {
         console.error(err);
-        let msg = "Erro ao autenticar.";
-        if (err.code === "auth/email-already-in-use") msg = "Este e-mail já está em uso.";
-        if (err.code === "auth/invalid-email") msg = "E-mail inválido.";
-        if (err.code === "auth/weak-password") msg = "Senha muito fraca. Tente algo com pelo menos 6 caracteres.";
-        if (err.code === "auth/user-not-found" || err.code === "auth/wrong-password") msg = "E-mail ou senha incorretos.";
-        showError(msg);
+        authMsg.textContent = 'Erro ao criar conta: ' + (err.message || '');
       }
     });
 
-    authSecondaryBtn.addEventListener("click", () => {
-      setAuthMode(authMode === "login" ? "signup" : "login");
-    });
+    document.getElementById('login-btn').addEventListener('click', async () => {
+      authMsg.textContent = '';
+      const email = document.getElementById('login-email').value.trim();
+      const pass = document.getElementById('login-password').value;
 
-    toggleAuthMode.addEventListener("click", () => {
-      setAuthMode(authMode === "login" ? "signup" : "login");
-    });
-
-    logoutBtn.addEventListener("click", async () => {
-      await signOut(auth);
-    });
-
-    onAuthStateChanged(auth, async (user) => {
-      if (user) {
-        currentUser = user;
-        showLoggedUI(user);
-        await loadMeta();
-        await loadWeeks();
-        updateMotivation();
-      } else {
-        currentUser = null;
-        showLoggedOutUI();
-      }
-    });
-
-    // --- Firestore: Metas ---
-
-    async function loadMeta() {
-      if (!currentUser) return;
-      const ref = doc(db, "users", currentUser.uid, "meta", "default");
-      const snap = await getDoc(ref);
-      if (snap.exists()) {
-        metaData = snap.data();
-        if (metaData.startWeight != null) startWeightInput.value = metaData.startWeight;
-        if (metaData.startWaist != null) startWaistInput.value = metaData.startWaist;
-        if (metaData.goalWeight != null) goalWeightInput.value = metaData.goalWeight;
-        if (metaData.goalWaist != null) goalWaistInput.value = metaData.goalWaist;
-        if (metaData.goalDate) goalDateInput.value = metaData.goalDate;
-      } else {
-        metaData = null;
-      }
-      updateMotivation();
-    }
-
-    saveMetaBtn.addEventListener("click", async () => {
-      if (!currentUser) return;
-      const startWeight = parseFloat(startWeightInput.value.replace(",", "."));
-      const startWaist = startWaistInput.value ? parseFloat(startWaistInput.value.replace(",", ".")) : null;
-      const goalWeight = goalWeightInput.value ? parseFloat(goalWeightInput.value.replace(",", ".")) : null;
-      const goalWaist = goalWaistInput.value ? parseFloat(goalWaistInput.value.replace(",", ".")) : null;
-      const goalDate = goalDateInput.value || null;
-
-      if (isNaN(startWeight)) {
-        alert("Informe pelo menos o peso inicial.");
+      if (!email || !pass) {
+        authMsg.textContent = 'Informe e-mail e senha.';
         return;
       }
 
-      const ref = doc(db, "users", currentUser.uid, "meta", "default");
-      const payload = {
-        startWeight,
-        startWaist,
-        goalWeight: goalWeight || null,
-        goalWaist: goalWaist || null,
-        goalDate,
-        updatedAt: new Date().toISOString()
-      };
-
-      await setDoc(ref, payload);
-      metaData = payload;
-      updateMotivation();
-      alert("Metas salvas com sucesso!");
+      try {
+        await signInWithEmailAndPassword(auth, email, pass);
+        authMsg.textContent = '';
+      } catch (err) {
+        console.error(err);
+        authMsg.textContent = 'Erro ao entrar: ' + (err.message || '');
+      }
     });
 
-    // --- Firestore: Semanas ---
+    document.getElementById('logout-btn').addEventListener('click', () => {
+      signOut(auth);
+    });
 
-    async function loadWeeks() {
+    // === VARIÁVEIS DE DADOS ===
+    let currentUser = null;
+    let profileData = {};
+    let weeksData   = []; // array de { weekNumber, peso, cintura, ... }
+
+    const STORAGE_KEY_CACHE = 'evolucao_dark_cache';
+
+    function cacheLocal(uid, profile, weeks, nutrition) {
+      const payload = { uid, profile, weeks, nutrition };
+      localStorage.setItem(STORAGE_KEY_CACHE, JSON.stringify(payload));
+    }
+
+    function readLocalCache(uid) {
+      const raw = localStorage.getItem(STORAGE_KEY_CACHE);
+      if (!raw) return null;
+      try {
+        const obj = JSON.parse(raw);
+        if (obj.uid === uid) return obj;
+      } catch {}
+      return null;
+    }
+
+    document.getElementById('clearLocalBtn').addEventListener('click', () => {
+      if (confirm('Limpar o cache local deste dispositivo?')) {
+        localStorage.removeItem(STORAGE_KEY_CACHE);
+        alert('Cache local apagado. Dados no Firebase continuam salvos.');
+      }
+    });
+
+    // === FIRESTORE – PERFIL ===
+    async function loadProfile(uid) {
+      const ref = doc(db, 'users', uid);
+      const snap = await getDoc(ref);
+      if (snap.exists()) {
+        profileData = snap.data();
+      } else {
+        profileData = {};
+      }
+      fillProfileForm();
+    }
+
+    async function saveProfile(uid) {
+      profileMsg.textContent = '';
+
+      const initialWeight = parseFloat(document.getElementById('initial-weight').value || '0');
+      const goalWeight    = parseFloat(document.getElementById('goal-weight').value || '0');
+      const sex           = document.getElementById('sex').value || null;
+      const initialWaist  = parseFloat(document.getElementById('initial-waist').value || '0');
+      const initialHip    = parseFloat(document.getElementById('initial-hip').value || '0');
+      const mainGoal      = document.getElementById('main-goal').value || null;
+
+      const ref = doc(db, 'users', uid);
+      const data = {
+        initialWeight: isNaN(initialWeight) ? null : initialWeight,
+        goalWeight:    isNaN(goalWeight) ? null : goalWeight,
+        sex,
+        initialWaist:  isNaN(initialWaist) ? null : initialWaist,
+        initialHip:    isNaN(initialHip) ? null : initialHip,
+        mainGoal,
+        updatedAt: new Date()
+      };
+
+      await setDoc(ref, data, { merge: true });
+      profileData = { ...(profileData || {}), ...data };
+
+      await loadWeeks(uid); // para recalcular motivação
+      updateMotivation();
+      profileMsg.textContent = 'Perfil salvo com sucesso ✅';
+
+      const nutritionObj = await loadNutrition(uid); // para cache completo
+      cacheLocal(uid, profileData, weeksData, nutritionObj);
+    }
+
+    function fillProfileForm() {
+      document.getElementById('initial-weight').value = profileData.initialWeight ?? '';
+      document.getElementById('goal-weight').value    = profileData.goalWeight ?? '';
+      document.getElementById('sex').value            = profileData.sex ?? '';
+      document.getElementById('initial-waist').value  = profileData.initialWaist ?? '';
+      document.getElementById('initial-hip').value    = profileData.initialHip ?? '';
+      document.getElementById('main-goal').value      = profileData.mainGoal ?? '';
+      updateMotivation();
+    }
+
+    document.getElementById('save-profile-btn').addEventListener('click', () => {
       if (!currentUser) return;
-      const ref = collection(db, "users", currentUser.uid, "weeks");
-      const q = query(ref, orderBy("week", "asc"));
+      saveProfile(currentUser.uid).catch(err => {
+        console.error(err);
+        profileMsg.textContent = 'Erro ao salvar perfil.';
+      });
+    });
+
+    // === FIRESTORE – SEMANAS ===
+    async function loadWeeks(uid) {
+      const colRef = collection(db, 'users', uid, 'weeks');
+      const q = query(colRef, orderBy('weekNumber', 'asc'));
       const snap = await getDocs(q);
-      progressData = [];
-      snap.forEach((docSnap) => {
-        progressData.push(docSnap.data());
+      weeksData = [];
+      snap.forEach(docSnap => {
+        weeksData.push(docSnap.data());
       });
       renderTable();
       renderChart();
       updateMotivation();
     }
 
-    addWeekBtn.addEventListener("click", async () => {
-      if (!currentUser) return;
-
-      const week = parseInt(weekSelect.value, 10);
-      const pesoVal = pesoInput.value.replace(",", ".");
-      const cinturaVal = cinturaInput.value.replace(",", ".");
-      const peso = parseFloat(pesoVal);
-      const cintura = cinturaVal ? parseFloat(cinturaVal) : null;
-      const energia = energiaInput.value ? parseInt(energiaInput.value, 10) : null;
-      const humor = humorInput.value ? parseInt(humorInput.value, 10) : null;
-      const sono = sonoInput.value ? parseInt(sonoInput.value, 10) : null;
-      const obs = obsInput.value.trim();
+    async function saveWeek(uid) {
+      const week = parseInt(document.getElementById('week').value, 10);
+      const peso = parseFloat((document.getElementById('peso').value || '').replace(',', '.'));
+      const cintura = parseFloat((document.getElementById('cintura').value || '').replace(',', '.'));
+      const energia = document.getElementById('energia').value ? parseInt(document.getElementById('energia').value, 10) : null;
+      const humor   = document.getElementById('humor').value ? parseInt(document.getElementById('humor').value, 10) : null;
+      const sono    = document.getElementById('sono').value ? parseInt(document.getElementById('sono').value, 10) : null;
+      const obs     = document.getElementById('obs').value.trim();
 
       if (!week || isNaN(week)) {
-        alert("Selecione a semana.");
+        alert('Selecione a semana.');
         return;
       }
       if (isNaN(peso)) {
-        alert("Informe o peso (kg).");
+        alert('Informe o peso (kg).');
         return;
       }
 
-      const ref = doc(db, "users", currentUser.uid, "weeks", `week-${week}`);
-      const entry = {
-        week,
+      const data = {
+        weekNumber: week,
         peso,
-        cintura: cintura ?? null,
+        cintura: isNaN(cintura) ? null : cintura,
         energia,
         humor,
         sono,
         obs,
-        updatedAt: new Date().toISOString()
+        updatedAt: new Date()
       };
 
-      await setDoc(ref, entry);
+      const ref = doc(db, 'users', uid, 'weeks', String(week));
+      await setDoc(ref, data, { merge: true });
 
-      // Atualiza no array em memória
-      const existingIndex = progressData.findIndex(d => d.week === week);
-      if (existingIndex >= 0) {
-        progressData[existingIndex] = entry;
-      } else {
-        progressData.push(entry);
-      }
+      await loadWeeks(uid);
 
-      renderTable();
-      renderChart();
-      updateMotivation();
-      alert("Semana salva com sucesso!");
-    });
+      const nutritionObj = await loadNutrition(uid);
+      cacheLocal(uid, profileData, weeksData, nutritionObj);
+    }
 
-    resetWeeksBtn.addEventListener("click", async () => {
+    document.getElementById('addWeekBtn').addEventListener('click', () => {
       if (!currentUser) return;
-      const confirmar = confirm("Tem certeza que deseja apagar TODOS os registros de semanas deste usuário?");
-      if (!confirmar) return;
-
-      const ref = collection(db, "users", currentUser.uid, "weeks");
-      const snap = await getDocs(ref);
-      const deletions = [];
-      snap.forEach((docSnap) => {
-        deletions.push(deleteDoc(docSnap.ref));
+      saveWeek(currentUser.uid).catch(err => {
+        console.error(err);
+        alert('Erro ao salvar semana (veja o console).');
       });
-      await Promise.all(deletions);
-
-      progressData = [];
-      renderTable();
-      renderChart();
-      updateMotivation();
-      alert("Registros de semanas apagados para este usuário.");
     });
 
-    // --- Renderização Tabela & Gráfico ---
+    const tableBody = document.querySelector('#historyTable tbody');
+    let chartInstance = null;
 
     function renderTable() {
-      historyTableBody.innerHTML = "";
-      const sorted = [...progressData].sort((a, b) => a.week - b.week);
+      tableBody.innerHTML = '';
+      const sorted = [...weeksData].sort((a, b) => (a.weekNumber || 0) - (b.weekNumber || 0));
       for (const row of sorted) {
-        const tr = document.createElement("tr");
+        const tr = document.createElement('tr');
         tr.innerHTML = `
-          <td><span class="pill">Semana ${row.week}</span></td>
-          <td>${row.peso ?? ""}</td>
-          <td>${row.cintura ?? ""}</td>
-          <td>${row.energia ?? ""}</td>
-          <td>${row.humor ?? ""}</td>
-          <td>${row.sono ?? ""}</td>
-          <td>${row.obs ?? ""}</td>
+          <td><span class="pill">Semana ${row.weekNumber}</span></td>
+          <td>${row.peso ?? ''}</td>
+          <td>${row.cintura ?? ''}</td>
+          <td>${row.energia ?? ''}</td>
+          <td>${row.humor ?? ''}</td>
+          <td>${row.sono ?? ''}</td>
+          <td>${row.obs ?? ''}</td>
         `;
-        historyTableBody.appendChild(tr);
+        tableBody.appendChild(tr);
       }
     }
 
     function renderChart() {
-      const ctx = document.getElementById("progressChart").getContext("2d");
-      const sorted = [...progressData].sort((a, b) => a.week - b.week);
-      const labels = sorted.map(d => "S" + d.week);
-      const pesos = sorted.map(d => d.peso ?? null);
-      const cinturas = sorted.map(d => d.cintura ?? null);
+      const ctx = document.getElementById('progressChart').getContext('2d');
+      const sorted = [...weeksData].sort((a, b) => (a.weekNumber || 0) - (b.weekNumber || 0));
+      const labels = sorted.map(d => 'S' + d.weekNumber);
+      const pesos  = sorted.map(d => d.peso ?? null);
+      const cint   = sorted.map(d => d.cintura ?? null);
 
-      if (!labels.length) {
-        if (chartInstance) {
-          chartInstance.destroy();
-          chartInstance = null;
-        }
-        return;
-      }
-
-      if (chartInstance) {
-        chartInstance.destroy();
-      }
+      if (chartInstance) chartInstance.destroy();
 
       chartInstance = new Chart(ctx, {
-        type: "line",
+        type: 'line',
         data: {
           labels,
           datasets: [
             {
-              label: "Peso (kg)",
+              label: 'Peso (kg)',
               data: pesos,
-              borderColor: "#4cc9f0",
-              backgroundColor: "rgba(76,201,240,0.1)",
+              borderColor: '#4cc9f0',
+              backgroundColor: 'rgba(76,201,240,0.1)',
               borderWidth: 2,
               tension: 0.35,
               pointRadius: 3
             },
             {
-              label: "Cintura (cm)",
-              data: cinturas,
-              borderColor: "#f72585",
-              backgroundColor: "rgba(247,37,133,0.1)",
+              label: 'Cintura (cm)',
+              data: cint,
+              borderColor: '#f72585',
+              backgroundColor: 'rgba(247,37,133,0.1)',
               borderWidth: 2,
               tension: 0.35,
               pointRadius: 3
@@ -1155,80 +934,179 @@
           maintainAspectRatio: false,
           plugins: {
             legend: {
-              labels: { color: "#d0d3ea", usePointStyle: true }
+              labels: { color: '#d0d3ea', usePointStyle: true }
             }
           },
           scales: {
             x: {
-              ticks: { color: "#9ba0c2" },
-              grid: { color: "rgba(255,255,255,0.03)" }
+              ticks: { color: '#9ba0c2' },
+              grid: { color: 'rgba(255,255,255,0.03)' }
             },
             y: {
-              ticks: { color: "#9ba0c2" },
-              grid: { color: "rgba(255,255,255,0.03)" }
+              ticks: { color: '#9ba0c2' },
+              grid: { color: 'rgba(255,255,255,0.03)' }
             }
           }
         }
       });
     }
 
-    // --- Mensagens motivacionais engraçadas ---
-
-    function updateMotivation() {
-      // Se não estiver logado, texto padrão já foi setado
-      if (!currentUser) return;
-
-      const totalSemanas = progressData.length;
-      if (!metaData && totalSemanas === 0) {
-        motivationText.textContent =
-          "Conta criada, shape ainda não. Salve suas metas ali em cima e registre a Semana 1 pra começar o modo Dark Premium. 😈";
-        return;
-      }
-
-      const start = metaData?.startWeight ?? null;
-      const goal = metaData?.goalWeight ?? null;
-
-      let last = null;
-      if (progressData.length) {
-        const sorted = [...progressData].sort((a, b) => a.week - b.week);
-        last = sorted[sorted.length - 1];
-      }
-
-      if (!last) {
-        motivationText.textContent =
-          "Metas salvas. Agora falta o principal: preencher pelo menos uma semana. A planilha não engorda nem emagrece, mas ajuda a mente.";
-        return;
-      }
-
-      const lastPeso = last.peso;
-      let texto = "";
-
-      if (goal && lastPeso <= goal) {
-        texto =
-          "🎯 Meta batida! Balança já confirmou. Agora a missão é manter o resultado sem ligar o modo ‘celebração infinita de pizza’. Parabéns, lenda!";
-      } else if (start && lastPeso < start) {
-        const diff = (start - lastPeso).toFixed(1);
-        texto =
-          `🔥 Você já mandou embora cerca de ${diff} kg desde o início. ` +
-          "Isso é basicamente um pacote grande de arroz indo embora do seu corpo. Continue assim que o espelho vai ter que atualizar o firmware.";
-      } else if (start && lastPeso > start) {
-        const diff = (lastPeso - start).toFixed(1);
-        texto =
-          `📈 O peso subiu uns ${diff} kg desde o começo. Relaxa, não é fim de temporada, é só um episódio de filler. ` +
-          "Revisa sono, comida e treino desta semana e volta pro modo história principal.";
-      } else if (totalSemanas >= 4) {
-        texto =
-          "Você já registrou várias semanas seguidas. Isso se chama consistência, e consistência é o hack secreto que as pessoas querem encontrar em cápsula.";
+    // === NUTRIÇÃO & SUPLEMENTOS ===
+    async function loadNutrition(uid) {
+      const ref = doc(db, 'users', uid, 'meta', 'nutrition');
+      const snap = await getDoc(ref);
+      if (snap.exists()) {
+        const data = snap.data();
+        document.getElementById('diet-type').value = data.dietType ?? '';
+        document.getElementById('goal-nutrition').value = data.goalNutrition ?? '';
+        document.getElementById('user-supplements').value = data.userSupplements ?? '';
+        return data;
       } else {
-        texto =
-          "Ótimo começo! Cada semana registrada é um ‘não’ que você deu para a preguiça. Mantém o ritmo que o resultado vem, queira a balança ou não.";
+        document.getElementById('diet-type').value = '';
+        document.getElementById('goal-nutrition').value = '';
+        document.getElementById('user-supplements').value = '';
+        return {};
       }
-
-      motivationText.textContent = texto;
     }
 
-    // Inicia modo de autenticação padrão
-    setAuthMode("login");
+    async function saveNutrition(uid) {
+      nutritionMsg.textContent = '';
+      const dietType  = document.getElementById('diet-type').value || null;
+      const goalNut   = document.getElementById('goal-nutrition').value || null;
+      const userSupps = document.getElementById('user-supplements').value.trim();
+
+      const ref = doc(db, 'users', uid, 'meta', 'nutrition');
+      const data = {
+        dietType,
+        goalNutrition: goalNut,
+        userSupplements: userSupps,
+        updatedAt: new Date()
+      };
+
+      await setDoc(ref, data, { merge: true });
+      nutritionMsg.textContent = 'Anotações salvas ✅';
+
+      cacheLocal(uid, profileData, weeksData, data);
+    }
+
+    document.getElementById('save-nutrition-btn').addEventListener('click', () => {
+      if (!currentUser) return;
+      saveNutrition(currentUser.uid).catch(err => {
+        console.error(err);
+        nutritionMsg.textContent = 'Erro ao salvar nutrição.';
+      });
+    });
+
+    // “IA” local para sugestões genéricas
+    document.getElementById('ai-suggest-btn').addEventListener('click', () => {
+      const dietType = document.getElementById('diet-type').value;
+      const goal = document.getElementById('goal-nutrition').value;
+      const sex = profileData.sex || null;
+
+      const box = document.getElementById('ai-suggestions');
+
+      let msgs = [];
+
+      if (dietType === 'lowcarb') {
+        msgs.push('• Em low carb, priorize boas fontes de proteína (ovos, carnes magras, laticínios) e vegetais variados.');
+        msgs.push('• Combine low carb com ingestão adequada de água e atenção a fibras para o intestino não travar.');
+      } else if (dietType === 'hiperproteica') {
+        msgs.push('• Em dieta hiperproteica, distribua proteína ao longo do dia (todas as refeições).');
+      } else if (dietType === 'equilibrada') {
+        msgs.push('• Dieta equilibrada: prato colorido, metade vegetais, 1/4 proteína, 1/4 carbo de boa qualidade.');
+      }
+
+      if (goal === 'perda') {
+        msgs.push('• Para perda de gordura, o mais importante é constância no déficit calórico leve + sono decente.');
+      } else if (goal === 'ganho') {
+        msgs.push('• Para ganho de massa, combine treino de força progressivo com leve superávit calórico e proteína suficiente.');
+      } else if (goal === 'energia') {
+        msgs.push('• Energia ao longo do dia depende muito de sono, hidratação e regularidade das refeições.');
+      }
+
+      if (sex === 'feminino') {
+        msgs.push('• Para mulheres, atenção especial a ferro, cálcio e vitamina D — sempre alinhado com exames e profissional.');
+      } else if (sex === 'masculino') {
+        msgs.push('• Para homens, cuidado com “combo de suplementos” sem necessidade — menos é mais, foque no básico bem feito.');
+      }
+
+      msgs.push('• Vitamina / suplemento não substitui comida de verdade nem acompanhamento médico.');
+      msgs.push('• Melhor horário para suplementos costuma ser junto das refeições, mas ajuste sempre com seu médico/nutri.');
+
+      box.textContent = msgs.join(' ');
+
+    });
+
+    // === MOTIVAÇÃO ENGRAÇADINHA ===
+    function updateMotivation() {
+      const last = [...weeksData].sort((a, b) => (a.weekNumber || 0) - (b.weekNumber || 0)).slice(-1)[0];
+      const initial = profileData.initialWeight;
+      const goal    = profileData.goalWeight;
+
+      if (!last || !last.peso || !initial || !goal) {
+        motivationBanner.textContent = 'Preencha peso inicial, meta e pelo menos uma semana para ver as mensagens motivacionais 😎';
+        return;
+      }
+
+      const deltaFromInitial = last.peso - initial;
+      const remainingToGoal = last.peso - goal;
+
+      let msg = '';
+
+      if (remainingToGoal <= 0) {
+        msg = 'Meta batida! 🎉 Agora é modo “manutenção de adulto responsável”. Nada de comemorar com 3 pizzas, hein?';
+      } else if (deltaFromInitial < -2) {
+        msg = `Você já saiu de ${initial.toFixed(1)} kg para ${last.peso.toFixed(1)} kg. O projeto está andando! 🚀`;
+      } else if (deltaFromInitial > 2) {
+        msg = 'Oscilou pra cima? Acontece. Só não desista: volte pro plano hoje, não na segunda-feira infinita. 😉';
+      } else {
+        msg = 'Peso está estável. A constância é silenciosa, mas é ela que muda tudo. Continue!';
+      }
+
+      motivationBanner.textContent = msg;
+    }
+
+    // === ON AUTH STATE CHANGED ===
+    onAuthStateChanged(auth, async (user) => {
+      currentUser = user;
+
+      if (!user) {
+        authScreen.style.display = 'flex';
+        appScreen.style.display  = 'none';
+        return;
+      }
+
+      document.getElementById('user-name-display').textContent  = user.displayName || 'Sem nome cadastrado';
+      document.getElementById('user-email-display').textContent = user.email || '';
+
+      authScreen.style.display = 'none';
+      appScreen.style.display  = 'block';
+
+      // Tenta carregar cache local primeiro (pra deixar rápido)
+      const cached = readLocalCache(user.uid);
+      if (cached) {
+        profileData = cached.profile || {};
+        weeksData   = cached.weeks   || [];
+        fillProfileForm();
+        renderTable();
+        renderChart();
+        updateMotivation();
+        document.getElementById('diet-type').value = cached.nutrition?.dietType ?? '';
+        document.getElementById('goal-nutrition').value = cached.nutrition?.goalNutrition ?? '';
+        document.getElementById('user-supplements').value = cached.nutrition?.userSupplements ?? '';
+      }
+
+      // Depois sincroniza com Firestore “por cima”
+      try {
+        await loadProfile(user.uid);
+        await loadWeeks(user.uid);
+        const nutritionObj = await loadNutrition(user.uid);
+        cacheLocal(user.uid, profileData, weeksData, nutritionObj);
+      } catch (err) {
+        console.error('Erro ao carregar dados do Firestore', err);
+      }
+    });
+
   </script>
 </body>
 </html>

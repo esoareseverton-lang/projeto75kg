@@ -27,12 +27,12 @@
     .shell {
       max-width: 1100px;
       margin: 0 auto;
-      padding: 24px 16px 40px;
+      padding: 20px 12px 40px;
     }
     .card {
       background: linear-gradient(145deg, #111521, #090b12);
       border-radius: 18px;
-      padding: 20px 18px;
+      padding: 18px 16px;
       border: 1px solid var(--border);
       box-shadow: 0 18px 55px rgba(0,0,0,0.6);
       margin-bottom: 18px;
@@ -44,6 +44,9 @@
       font-size: 1.8rem;
       letter-spacing: 0.05em;
       text-transform: uppercase;
+    }
+    h2 {
+      font-size: 1.1rem;
     }
     .badge-row {
       display: flex;
@@ -81,11 +84,12 @@
       grid-template-columns: minmax(0, 1.3fr) minmax(0, 1.1fr);
       gap: 16px;
     }
-    @media (max-width: 800px) {
+    @media (max-width: 880px) {
       .grid {
         grid-template-columns: minmax(0, 1fr);
       }
     }
+
     label {
       display: block;
       font-size: 0.8rem;
@@ -94,7 +98,7 @@
     }
     input, select {
       width: 100%;
-      padding: 8px 10px;
+      padding: 10px 11px;
       border-radius: 10px;
       border: 1px solid var(--border);
       background: #070910;
@@ -106,30 +110,38 @@
       border-color: var(--accent);
       box-shadow: 0 0 0 1px rgba(76,201,240,0.3);
     }
+
     .form-grid {
       display: grid;
       grid-template-columns: repeat(3, minmax(0,1fr));
       gap: 10px;
     }
-    @media (max-width: 640px) {
+    @media (max-width: 720px) {
       .form-grid {
         grid-template-columns: repeat(2, minmax(0,1fr));
       }
     }
+    @media (max-width: 480px) {
+      .form-grid {
+        grid-template-columns: minmax(0,1fr);
+      }
+    }
+
     .btn-row {
       display: flex;
       flex-wrap: wrap;
       gap: 10px;
-      margin-top: 10px;
+      margin-top: 12px;
     }
     button {
       border-radius: 999px;
       border: none;
       cursor: pointer;
       font-size: 0.85rem;
-      padding: 9px 16px;
+      padding: 11px 18px;
       display: inline-flex;
       align-items: center;
+      justify-content: center;
       gap: 6px;
       font-weight: 500;
       letter-spacing: 0.04em;
@@ -139,22 +151,35 @@
       background: linear-gradient(135deg, var(--accent), #4895ef);
       color: #020308;
       box-shadow: 0 12px 30px rgba(72,149,239,0.45);
+      flex: 1;
     }
     .btn-ghost {
       background: transparent;
       border: 1px solid var(--border);
       color: var(--muted);
+      min-width: 140px;
     }
+    @media (max-width: 600px) {
+      .btn-row {
+        flex-direction: column;
+      }
+      .btn-primary, .btn-ghost {
+        width: 100%;
+      }
+    }
+
     .table-wrap {
       overflow-x: auto;
       border-radius: 14px;
       border: 1px solid var(--border);
       background: #05060b;
+      -webkit-overflow-scrolling: touch;
     }
     table {
       width: 100%;
       border-collapse: collapse;
       font-size: 0.8rem;
+      min-width: 620px;
     }
     thead {
       background: linear-gradient(90deg, #101320, #15192a);
@@ -197,6 +222,35 @@
       font-size: 0.95rem;
       color: var(--muted);
     }
+
+    /* Cards extras (treinos e suplementos) */
+    .pill-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-top: 6px;
+    }
+    .pill-tag {
+      font-size: 0.7rem;
+      padding: 3px 8px;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      color: var(--muted);
+      background: rgba(255,255,255,0.01);
+    }
+
+    @media (max-width: 480px) {
+      h1 {
+        font-size: 1.5rem;
+      }
+      .shell {
+        padding: 16px 10px 32px;
+      }
+      .card {
+        padding: 16px 12px;
+        border-radius: 14px;
+      }
+    }
   </style>
 </head>
 <body>
@@ -207,7 +261,7 @@
       <h1>Projeto 75kg</h1>
       <p class="tagline">
         Painel de acompanhamento de peso, medidas e sensação diária.
-        Tudo focado em <strong>saúde + performance + resultado real</strong>.
+        Foco em <strong>saúde + performance + resultado real</strong>.
       </p>
       <div class="badge-row">
         <span class="badge badge-accent">Objetivo: 75 kg</span>
@@ -225,7 +279,7 @@
         </div>
         <div>
           <div class="meta-label">Atualização</div>
-          <div>Preencha 1x por semana (ex: domingo)</div>
+          <div>1x por semana (domingo)</div>
         </div>
       </div>
     </div>
@@ -234,10 +288,10 @@
     <div class="grid">
       <!-- FORM -->
       <div class="card">
-        <h2 style="font-size:1.1rem;margin-bottom:4px;">Registrar semana</h2>
+        <h2>Registrar semana</h2>
         <p class="small">
           Preencha os dados da semana e clique em <strong>Adicionar</strong>.
-          O gráfico e a tabela serão atualizados automaticamente neste navegador.
+          O gráfico e a tabela são atualizados automaticamente neste navegador.
         </p>
         <div style="margin-top:10px;">
           <label for="week">Semana</label>
@@ -283,7 +337,7 @@
 
         <div style="margin-top:10px;">
           <label for="obs">Observações</label>
-          <input type="text" id="obs" placeholder="Ex: Semana com mais cardio, menos fome, etc." />
+          <input type="text" id="obs" placeholder="Ex: mais cardio, menos fome, etc." />
         </div>
 
         <div class="btn-row">
@@ -293,16 +347,15 @@
 
         <p class="small">
           Os dados ficam salvos apenas neste dispositivo (localStorage do navegador).
-          Se quiser algo em nuvem depois, dá pra evoluir.
         </p>
       </div>
 
       <!-- GRÁFICO -->
       <div class="card">
-        <h2 style="font-size:1.1rem;margin-bottom:4px;">Gráfico de Progresso (C)</h2>
+        <h2>Gráfico de Progresso (C)</h2>
         <p class="small">
-          Linha azul = Peso (kg) • Linha rosa = Cintura (cm)<br/>
-          Foco totalmente visual em <strong>tendência</strong>, não em perfeição.
+          Linha azul = Peso (kg) • Linha rosa = Cintura (cm). 
+          O que importa é a <strong>tendência</strong>.
         </p>
         <canvas id="progressChart"></canvas>
       </div>
@@ -310,9 +363,9 @@
 
     <!-- TABELA -->
     <div class="card">
-      <h2 style="font-size:1.1rem;margin-bottom:4px;">Histórico completo</h2>
+      <h2>Histórico completo</h2>
       <p class="small">
-        Use esta tabela como “diário de progresso” do Projeto 75kg.
+        Diário de progresso do Projeto 75kg. Role pro lado se estiver no celular.
       </p>
       <div class="table-wrap">
         <table id="historyTable">
@@ -332,6 +385,87 @@
           </tbody>
         </table>
       </div>
+    </div>
+
+    <!-- TREINOS POR FASE -->
+    <div class="card">
+      <h2>Treinos recomendados por fase</h2>
+      <p class="small">
+        Estrutura pensada para acompanhar o protocolo hormonal + dieta high protein,
+        preservando massa magra enquanto o peso desce.
+      </p>
+
+      <h3>Fase 1 – Semanas 1–4 (Adaptação)</h3>
+      <p class="small">
+        Foco: técnica, costume de treino e não morrer no cardio 😅
+      </p>
+      <ul class="small">
+        <li><strong>3–4 treinos de musculação/semana</strong></li>
+        <li>Full-body leve ou divisão simples (peito/costas/pernas)</li>
+        <li><strong>Cardio leve</strong>: caminhadas de 15–20 min</li>
+      </ul>
+
+      <h3>Fase 2 – Semanas 5–8 (Consolidação)</h3>
+      <p class="small">
+        Foco: progressão de carga e firmeza na rotina.
+      </p>
+      <ul class="small">
+        <li><strong>4 treinos de musculação/semana</strong> (peito+tríceps / costas+bíceps / pernas / ombro+abdômen)</li>
+        <li>Cardio leve 20–30 min, 3x/semana</li>
+      </ul>
+
+      <h3>Fase 3 – Semanas 9–12 (Performance)</h3>
+      <p class="small">
+        Foco: performance e definição, sem loucura.
+      </p>
+      <ul class="small">
+        <li><strong>4–5 treinos de musculação/semana</strong></li>
+        <li>Cardio leve quase diário (20–30 min)</li>
+      </ul>
+
+      <p class="small">
+        Para cada exercício, você pode buscar por “<strong>nome do exercício + execução correta</strong>” no YouTube
+        (ex: “supino reto execução correta”), e salvar seus vídeos favoritos.
+      </p>
+    </div>
+
+    <!-- SUPLEMENTOS / VITAMINAS -->
+    <div class="card">
+      <h2>Vitamina & Suplementos – Horários sugeridos</h2>
+      <p class="small">
+        Sempre seguir a orientação do seu médico. Abaixo, uma organização prática do seu protocolo.
+      </p>
+
+      <h3>Manhã</h3>
+      <ul class="small">
+        <li><strong>Whey zero</strong> – ao acordar ou pós-treino da manhã</li>
+        <li><strong>Creatina (3 g)</strong> – junto com o whey ou alguma refeição</li>
+        <li><strong>Vitamina C</strong></li>
+        <li><strong>Manipulado diário</strong> (conforme orientação médica)</li>
+        <li><strong>Cálcio + Magnésio + Potássio</strong></li>
+      </ul>
+
+      <div class="pill-row">
+        <span class="pill-tag">Músculo: whey + creatina</span>
+        <span class="pill-tag">Hormonal: manipulado</span>
+        <span class="pill-tag">Equilíbrio: eletrólitos</span>
+      </div>
+
+      <h3>Noite</h3>
+      <ul class="small">
+        <li><strong>Vitamina D</strong> – junto de refeição com alguma gordura (ex: jantar)</li>
+        <li>Manter boa hidratação até o fim do dia</li>
+      </ul>
+
+      <h3>Semanal</h3>
+      <ul class="small">
+        <li><strong>Monjaro</strong> – aplicação todo domingo à noite, no local indicado pelo médico</li>
+      </ul>
+
+      <p class="small">
+        Se notar tontura, fadiga exagerada ou sintomas estranhos, anota na parte de observações da semana
+        e leva para a próxima consulta.
+      </p>
     </div>
 
   </div>
@@ -367,15 +501,15 @@
       const sorted = [...progressData].sort((a, b) => a.week - b.week);
       for (const row of sorted) {
         const tr = document.createElement("tr");
-        tr.innerHTML = \`
-          <td><span class="pill">Semana \${row.week}</span></td>
-          <td>\${row.peso ?? ""}</td>
-          <td>\${row.cintura ?? ""}</td>
-          <td>\${row.energia ?? ""}</td>
-          <td>\${row.humor ?? ""}</td>
-          <td>\${row.sono ?? ""}</td>
-          <td>\${row.obs ?? ""}</td>
-        \`;
+        tr.innerHTML = `
+          <td><span class="pill">Semana ${row.week}</span></td>
+          <td>${row.peso ?? ""}</td>
+          <td>${row.cintura ?? ""}</td>
+          <td>${row.energia ?? ""}</td>
+          <td>${row.humor ?? ""}</td>
+          <td>${row.sono ?? ""}</td>
+          <td>${row.obs ?? ""}</td>
+        `;
         tableBody.appendChild(tr);
       }
     }
@@ -418,6 +552,7 @@
         },
         options: {
           responsive: true,
+          maintainAspectRatio: false,
           plugins: {
             legend: {
               labels: { color: "#d0d3ea", usePointStyle: true }
@@ -440,11 +575,13 @@
     // --- Eventos ---
     document.getElementById("addBtn").addEventListener("click", () => {
       const week = parseInt(document.getElementById("week").value, 10);
-      const peso = parseFloat(document.getElementById("peso").value.replace(",", "."));
-      const cintura = parseFloat(document.getElementById("cintura").value.replace(",", "."));
-      const energia = parseInt(document.getElementById("energia").value, 10);
-      const humor = parseInt(document.getElementById("humor").value, 10);
-      const sono = parseInt(document.getElementById("sono").value, 10);
+      const pesoVal = document.getElementById("peso").value.replace(",", ".");
+      const cinturaVal = document.getElementById("cintura").value.replace(",", ".");
+      const peso = parseFloat(pesoVal);
+      const cintura = cinturaVal ? parseFloat(cinturaVal) : null;
+      const energia = document.getElementById("energia").value ? parseInt(document.getElementById("energia").value, 10) : null;
+      const humor = document.getElementById("humor").value ? parseInt(document.getElementById("humor").value, 10) : null;
+      const sono = document.getElementById("sono").value ? parseInt(document.getElementById("sono").value, 10) : null;
       const obs = document.getElementById("obs").value.trim();
 
       if (!week || isNaN(week)) {
@@ -456,7 +593,6 @@
         return;
       }
 
-      // Ver se já existe registro da semana
       const existingIndex = progressData.findIndex(d => d.week === week);
       const entry = { week, peso, cintura, energia, humor, sono, obs };
 

@@ -2,23 +2,20 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8" />
-  <title>Sua evolução começa aqui – Dark Premium</title>
+  <title>Evolução Dark Premium</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <!-- Fonte básica do sistema para ficar leve -->
   <style>
     :root {
       --bg: #05060a;
-      --card: #111525;
-      --card-soft: #14192b;
+      --card: #101320;
       --accent: #4cc9f0;
-      --accent-soft: rgba(76,201,240,0.16);
       --accent2: #f72585;
-      --accent2-soft: rgba(247,37,133,0.16);
+      --accent3: #43d9a3;
       --text: #f5f5f5;
-      --muted: #9ba0c2;
-      --border: #262a3d;
-      --danger: #ff6b6b;
-      --success: #51cf66;
+      --muted: #8a8fa3;
+      --border: #222533;
+      --danger: #ff4b81;
+      --warning: #ffb347;
     }
     * {
       box-sizing: border-box;
@@ -26,99 +23,75 @@
     }
     body {
       margin: 0;
-      background: radial-gradient(circle at top, #151a30, #02030a);
+      background: radial-gradient(circle at top, #141b2d, #05060a);
       color: var(--text);
       min-height: 100vh;
     }
-    a {
-      color: var(--accent);
-      text-decoration: none;
-    }
-    a:hover {
-      text-decoration: underline;
-    }
-    .app-shell {
-      max-width: 1200px;
+    .shell {
+      max-width: 1100px;
       margin: 0 auto;
       padding: 20px 12px 40px;
     }
-    .brand-row {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 12px;
+    .card {
+      background: linear-gradient(145deg, #111521, #090b12);
+      border-radius: 18px;
+      padding: 18px 16px;
+      border: 1px solid var(--border);
+      box-shadow: 0 18px 55px rgba(0,0,0,0.6);
       margin-bottom: 18px;
     }
-    .brand-title {
-      font-size: 1.6rem;
-      text-transform: uppercase;
-      letter-spacing: 0.12em;
+    h1, h2, h3 {
+      margin: 0 0 8px;
     }
-    .brand-sub {
-      font-size: 0.8rem;
+    h1 {
+      font-size: 1.8rem;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+    h2 {
+      font-size: 1.15rem;
+    }
+    .subtitle {
+      font-size: 0.9rem;
       color: var(--muted);
-      text-transform: uppercase;
-      letter-spacing: 0.2em;
+      margin-top: 4px;
     }
-    .chip {
+    .badge-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 6px;
+    }
+    .badge {
       font-size: 0.75rem;
       padding: 4px 8px;
       border-radius: 999px;
       border: 1px solid var(--border);
       color: var(--muted);
-      background: rgba(0,0,0,0.3);
-      white-space: nowrap;
     }
-    .chip-accent {
+    .badge-accent {
       border-color: var(--accent);
       color: var(--accent);
     }
-
-    .card {
-      background: linear-gradient(140deg, #101426, #070814);
-      border-radius: 18px;
-      padding: 18px 16px;
-      border: 1px solid var(--border);
-      box-shadow: 0 18px 45px rgba(0,0,0,0.75);
-      margin-bottom: 18px;
-    }
-    .card-soft {
-      background: linear-gradient(145deg, #151a31, #090b16);
-    }
-    .card-header {
+    .meta-row {
       display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 8px;
-      margin-bottom: 8px;
-    }
-    h1,h2,h3 {
-      margin: 0 0 6px;
-    }
-    h2 {
-      font-size: 1.05rem;
-    }
-    h3 {
-      font-size: 0.95rem;
-    }
-    .muted {
-      color: var(--muted);
-      font-size: 0.8rem;
-    }
-
-    /* Layout principal */
-    .layout-main {
-      display: grid;
-      grid-template-columns: minmax(0, 1.35fr) minmax(0, 1.1fr);
+      flex-wrap: wrap;
       gap: 16px;
+      margin-top: 10px;
+      font-size: 0.85rem;
+      color: var(--muted);
     }
-    @media (max-width: 960px) {
-      .layout-main {
-        grid-template-columns: minmax(0, 1fr);
-      }
+    .meta-label {
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      font-size: 0.7rem;
+      color: #6b7086;
     }
-
-    /* Inputs e botões */
+    .small {
+      font-size: 0.75rem;
+      color: var(--muted);
+      margin-top: 6px;
+    }
     label {
       display: block;
       font-size: 0.78rem;
@@ -127,12 +100,12 @@
     }
     input, select, textarea {
       width: 100%;
-      padding: 9px 10px;
-      border-radius: 11px;
+      padding: 8px 9px;
+      border-radius: 10px;
       border: 1px solid var(--border);
       background: #070910;
       color: var(--text);
-      font-size: 0.88rem;
+      font-size: 0.85rem;
       outline: none;
       resize: vertical;
     }
@@ -140,40 +113,70 @@
       border-color: var(--accent);
       box-shadow: 0 0 0 1px rgba(76,201,240,0.3);
     }
-    .field-row {
+    .grid-2 {
       display: grid;
-      grid-template-columns: repeat(2,minmax(0,1fr));
-      gap: 10px;
+      grid-template-columns: minmax(0,1.3fr) minmax(0,1.1fr);
+      gap: 16px;
     }
-    .field-row-3 {
-      display: grid;
-      grid-template-columns: repeat(3,minmax(0,1fr));
-      gap: 10px;
-    }
-    @media (max-width: 720px) {
-      .field-row, .field-row-3 {
+    @media (max-width: 880px) {
+      .grid-2 {
         grid-template-columns: minmax(0,1fr);
       }
     }
-
+    .form-grid-compact {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0,1fr));
+      gap: 8px;
+    }
+    @media (max-width: 880px) {
+      .form-grid-compact {
+        grid-template-columns: repeat(2, minmax(0,1fr));
+      }
+    }
+    @media (max-width: 520px) {
+      .form-grid-compact {
+        grid-template-columns: minmax(0,1fr);
+      }
+    }
+    .form-grid-3 {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0,1fr));
+      gap: 8px;
+    }
+    @media (max-width: 720px) {
+      .form-grid-3 {
+        grid-template-columns: repeat(2, minmax(0,1fr));
+      }
+    }
+    @media (max-width: 480px) {
+      .form-grid-3 {
+        grid-template-columns: minmax(0,1fr);
+      }
+    }
+    .btn-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 10px;
+    }
     button {
       border-radius: 999px;
       border: none;
       cursor: pointer;
       font-size: 0.82rem;
-      padding: 9px 16px;
+      padding: 9px 14px;
       display: inline-flex;
       align-items: center;
       justify-content: center;
       gap: 6px;
       font-weight: 500;
-      letter-spacing: 0.06em;
+      letter-spacing: 0.04em;
       text-transform: uppercase;
     }
     .btn-primary {
       background: linear-gradient(135deg, var(--accent), #4895ef);
       color: #020308;
-      box-shadow: 0 10px 26px rgba(72,149,239,0.5);
+      box-shadow: 0 12px 30px rgba(72,149,239,0.45);
     }
     .btn-ghost {
       background: transparent;
@@ -181,46 +184,18 @@
       color: var(--muted);
     }
     .btn-danger {
-      background: var(--danger);
-      color: #fff;
+      background: transparent;
+      border: 1px solid var(--danger);
+      color: var(--danger);
     }
-    .btn-row {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-      margin-top: 10px;
+    @media (max-width: 600px) {
+      .btn-row {
+        flex-direction: column;
+      }
+      .btn-primary, .btn-ghost, .btn-danger {
+        width: 100%;
+      }
     }
-
-    /* Barra de progresso */
-    .progress-wrap {
-      margin-top: 6px;
-    }
-    .progress-label-row {
-      display: flex;
-      justify-content: space-between;
-      font-size: 0.78rem;
-      color: var(--muted);
-      margin-bottom: 4px;
-    }
-    .progress-bar {
-      position: relative;
-      width: 100%;
-      height: 12px;
-      border-radius: 999px;
-      background: #050612;
-      border: 1px solid var(--border);
-      overflow: hidden;
-    }
-    .progress-fill {
-      position: absolute;
-      inset: 0;
-      width: 0%;
-      background: linear-gradient(90deg, var(--accent2), var(--accent));
-      box-shadow: 0 0 20px rgba(247,37,133,0.4);
-      transition: width 0.4s ease-out;
-    }
-
-    /* Tabelas e gráficos */
     .table-wrap {
       overflow-x: auto;
       border-radius: 14px;
@@ -231,11 +206,11 @@
     table {
       width: 100%;
       border-collapse: collapse;
-      font-size: 0.8rem;
-      min-width: 640px;
+      font-size: 0.78rem;
+      min-width: 620px;
     }
     thead {
-      background: linear-gradient(90deg, #111625, #171d33);
+      background: linear-gradient(90deg, #101320, #15192a);
     }
     th, td {
       padding: 7px 9px;
@@ -244,12 +219,12 @@
     }
     th {
       font-weight: 600;
-      font-size: 0.76rem;
+      font-size: 0.75rem;
       color: #c4c7de;
       border-bottom: 1px solid var(--border);
     }
     tbody tr:nth-child(even) {
-      background: rgba(255,255,255,0.02);
+      background: rgba(255,255,255,0.015);
     }
     tbody tr:hover {
       background: rgba(76,201,240,0.06);
@@ -257,509 +232,502 @@
     .pill {
       padding: 2px 7px;
       border-radius: 999px;
-      border: 1px solid rgba(255,255,255,0.18);
+      border: 1px solid rgba(255,255,255,0.12);
       font-size: 0.7rem;
       color: var(--muted);
     }
-
+    .progress-bar-wrap {
+      width: 100%;
+      background: #05060b;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      overflow: hidden;
+      height: 16px;
+      margin-top: 6px;
+    }
+    .progress-bar-inner {
+      height: 100%;
+      background: linear-gradient(90deg, var(--accent3), var(--accent2));
+      width: 0%;
+      transition: width 0.4s ease;
+    }
+    .progress-label {
+      font-size: 0.75rem;
+      margin-top: 4px;
+      color: var(--muted);
+    }
+    .status-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 3px 8px;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      font-size: 0.72rem;
+      margin-top: 4px;
+    }
+    .status-good {
+      border-color: var(--accent3);
+      color: var(--accent3);
+    }
+    .status-warn {
+      border-color: var(--warning);
+      color: var(--warning);
+    }
+    .status-bad {
+      border-color: var(--danger);
+      color: var(--danger);
+    }
     canvas {
       width: 100% !important;
-      max-height: 280px !important;
+      max-height: 260px;
     }
-
-    /* Login */
-    .auth-layout {
+    .charts-grid {
       display: grid;
-      grid-template-columns: minmax(0,1.1fr) minmax(0,1.1fr);
-      gap: 18px;
+      grid-template-columns: minmax(0,1fr) minmax(0,1fr);
+      gap: 12px;
     }
-    @media (max-width: 880px) {
-      .auth-layout {
+    @media (max-width: 720px) {
+      .charts-grid {
         grid-template-columns: minmax(0,1fr);
       }
     }
-
-    /* Mensagens / alertas */
-    .alert {
-      font-size: 0.8rem;
-      border-radius: 12px;
-      padding: 8px 10px;
-      margin-top: 6px;
-    }
-    .alert-info {
-      background: rgba(76,201,240,0.08);
-      border: 1px solid var(--accent-soft);
-      color: var(--accent);
-    }
-    .alert-error {
-      background: rgba(255,107,107,0.12);
-      border: 1px solid rgba(255,107,107,0.4);
-      color: var(--danger);
-    }
-
-    .tag-row {
+    .pill-row {
       display: flex;
       flex-wrap: wrap;
       gap: 6px;
-      margin-top: 4px;
+      margin-top: 6px;
     }
-    .tag-pill {
-      padding: 3px 7px;
+    .pill-tag {
+      font-size: 0.7rem;
+      padding: 3px 8px;
       border-radius: 999px;
       border: 1px solid var(--border);
-      font-size: 0.7rem;
       color: var(--muted);
       background: rgba(255,255,255,0.02);
     }
-
-    .section-divider {
-      margin: 10px 0;
-      border-top: 1px dashed rgba(255,255,255,0.08);
+    .flex-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      align-items: center;
+      justify-content: space-between;
     }
-
-    .two-col {
+    .muted-strong {
+      font-size: 0.8rem;
+      color: var(--muted);
+    }
+    .exercise-group {
+      margin-top: 8px;
+      border-top: 1px dashed var(--border);
+      padding-top: 6px;
+    }
+    .exercise-title {
+      font-size: 0.82rem;
+      font-weight: 600;
+      margin-bottom: 4px;
+    }
+    .exercise-list {
       display: grid;
-      grid-template-columns: minmax(0,1fr) minmax(0,1fr);
-      gap: 14px;
+      grid-template-columns: repeat(2, minmax(0,1fr));
+      gap: 4px;
+      font-size: 0.75rem;
     }
-    @media (max-width: 720px) {
-      .two-col {
+    @media (max-width: 520px) {
+      .exercise-list {
         grid-template-columns: minmax(0,1fr);
       }
     }
-
-    .small {
-      font-size: 0.75rem;
-      color: var(--muted);
+    .exercise-list label {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      cursor: pointer;
+      margin-bottom: 0;
     }
-
-    /* Esconder telas por estado */
-    #app-main {
-      display: none;
+    .exercise-list input[type="checkbox"] {
+      width: 14px;
+      height: 14px;
+    }
+    .auth-layout {
+      max-width: 420px;
+      margin: 40px auto 20px;
+    }
+    .hidden {
+      display: none !important;
+    }
+    @media (max-width: 480px) {
+      h1 {
+        font-size: 1.5rem;
+      }
+      .shell {
+        padding: 16px 10px 32px;
+      }
+      .card {
+        padding: 16px 12px;
+        border-radius: 14px;
+      }
     }
   </style>
 </head>
 <body>
-  <div class="app-shell">
-    <!-- Topo / Branding -->
-    <div class="brand-row">
-      <div>
-        <div class="brand-title">Sua evolução começa aqui</div>
-        <div class="brand-sub">DARK PREMIUM • FITNESS • SAÚDE</div>
-      </div>
-      <div class="tag-row">
-        <span class="chip chip-accent">Firebase + GitHub</span>
-        <span class="chip">Domínio: esoares.net.br</span>
-      </div>
-    </div>
+  <div class="shell">
 
-    <!-- =================== TELA DE LOGIN / CADASTRO =================== -->
-    <div id="auth-screen" class="card card-soft">
-      <div class="card-header">
+    <!-- HEADER / HERO -->
+    <div class="card">
+      <h1>Evolução Dark Premium</h1>
+      <p class="subtitle">
+        Sua evolução começa aqui. Painel dark, motivacional e focado em <strong>resultado real</strong>,
+        com dados por usuário.
+      </p>
+      <div class="badge-row">
+        <span class="badge badge-accent">Login por usuário</span>
+        <span class="badge">Gráficos de peso + IMC</span>
+        <span class="badge">Frequência da academia em destaque</span>
+      </div>
+      <div class="meta-row">
         <div>
-          <h2>Entrar na sua área</h2>
-          <p class="muted">
-            Cada pessoa tem sua própria área, metas e dados. E sim, ninguém vê
-            o “peso da realidade” de ninguém. 😅
-          </p>
+          <div class="meta-label">Domínio</div>
+          <div>projeto.esoares.net.br</div>
         </div>
-      </div>
-
-      <div class="auth-layout">
-        <!-- Login -->
         <div>
-          <h3>Já tenho conta</h3>
-          <form id="login-form">
-            <label for="login-email">E-mail</label>
-            <input type="email" id="login-email" autocomplete="email" required />
-
-            <label for="login-password" style="margin-top:8px;">Senha</label>
-            <input type="password" id="login-password" autocomplete="current-password" required />
-
-            <div class="btn-row">
-              <button type="submit" class="btn-primary">Entrar</button>
-            </div>
-            <div id="login-error" class="alert alert-error" style="display:none;"></div>
-          </form>
-          <p class="small" style="margin-top:10px;">
-            Esqueceu a senha? Você pode resetar direto pelo painel do Firebase
-            mais tarde, se quiser implementar recuperação.
-          </p>
+          <div class="meta-label">Mood</div>
+          <div>Dark Premium 🖤</div>
         </div>
-
-        <!-- Cadastro -->
         <div>
-          <h3>Sou novo aqui</h3>
-          <form id="signup-form">
-            <label for="signup-email">E-mail</label>
-            <input type="email" id="signup-email" autocomplete="email" required />
-
-            <label for="signup-password" style="margin-top:8px;">Senha</label>
-            <input type="password" id="signup-password" minlength="6" autocomplete="new-password" required />
-
-            <label for="signup-name" style="margin-top:8px;">Como quer ser chamado(a)?</label>
-            <input type="text" id="signup-name" placeholder="Ex: Éverton" />
-
-            <div class="btn-row">
-              <button type="submit" class="btn-ghost">Criar conta</button>
-            </div>
-            <div id="signup-error" class="alert alert-error" style="display:none;"></div>
-          </form>
-          <p class="small" style="margin-top:10px;">
-            Depois do cadastro você configura altura, peso inicial, meta e objetivo.
-            O resto deixa com o painel. 😉
-          </p>
+          <div class="meta-label">Motivação</div>
+          <div>Constância > Motivação do dia</div>
         </div>
       </div>
     </div>
 
-    <!-- =================== APP PRINCIPAL =================== -->
-    <div id="app-main">
-      <!-- Barra superior logado -->
-      <div class="card card-soft">
-        <div class="card-header">
+    <!-- AUTH -->
+    <div id="authCard" class="card auth-layout">
+      <h2>Entrar na sua área</h2>
+      <p class="small">
+        Use seu e-mail e senha cadastrados. Cada usuário vê apenas a própria evolução.
+      </p>
+
+      <label for="authEmail">E-mail</label>
+      <input type="email" id="authEmail" placeholder="voce@exemplo.com" />
+
+      <label for="authPassword" style="margin-top:8px;">Senha</label>
+      <input type="password" id="authPassword" placeholder="••••••••" />
+
+      <div class="btn-row">
+        <button class="btn-primary" id="loginBtn">Entrar</button>
+        <button class="btn-ghost" id="registerBtn">Criar conta</button>
+      </div>
+
+      <p id="authMessage" class="small"></p>
+    </div>
+
+    <!-- APP PRINCIPAL (mostrado somente logado) -->
+    <div id="appArea" class="hidden">
+
+      <!-- PERFIL & METAS -->
+      <div class="card">
+        <div class="flex-row">
           <div>
-            <h2 id="welcome-title">Olá 👋</h2>
-            <p class="muted" id="welcome-sub">
-              Pronto(a) para mais um passo hoje?
+            <h2>Perfil & Metas</h2>
+            <p class="small">
+              Campos mais compactos, sem ocupar metade da galáxia. Aqui é só o essencial.
             </p>
           </div>
-          <div style="text-align:right;">
-            <div class="muted" id="current-email"></div>
-            <div class="btn-row" style="justify-content:flex-end;margin-top:4px;">
-              <button id="btn-open-profile" class="btn-ghost">Perfil & Metas</button>
-              <button id="btn-logout" class="btn-danger">Sair</button>
-            </div>
+          <div id="userEmailLabel" class="muted-strong"></div>
+        </div>
+
+        <div class="form-grid-compact" style="margin-top:10px;">
+          <div>
+            <label for="nome">Nome de exibição</label>
+            <input type="text" id="nome" placeholder="Ex: Éverton" />
+          </div>
+          <div>
+            <label for="sexo">Sexo</label>
+            <select id="sexo">
+              <option value="">Selecione</option>
+              <option value="masc">Masculino</option>
+              <option value="fem">Feminino</option>
+              <option value="outro">Outro / Prefiro não dizer</option>
+            </select>
+          </div>
+          <div>
+            <label for="altura">Altura (cm)</label>
+            <input type="number" id="altura" placeholder="Ex: 175" />
+          </div>
+          <div>
+            <label for="metaTreinos">Meta treinos/semana</label>
+            <input type="number" id="metaTreinos" placeholder="Ex: 4" />
           </div>
         </div>
 
-        <!-- Barra de progresso -->
-        <div class="progress-wrap">
-          <div class="progress-label-row">
-            <span>Progresso em relação à meta</span>
-            <span id="progress-label">0%</span>
+        <div class="form-grid-compact" style="margin-top:8px;">
+          <div>
+            <label for="pesoInicial">Peso inicial (kg)</label>
+            <input type="number" step="0.1" id="pesoInicial" placeholder="Ex: 90" />
           </div>
-          <div class="progress-bar">
-            <div class="progress-fill" id="progress-fill"></div>
+          <div>
+            <label for="pesoMeta">Peso meta (kg)</label>
+            <input type="number" step="0.1" id="pesoMeta" placeholder="Ex: 75" />
           </div>
-          <p class="small" id="motivation-text" style="margin-top:6px;">
-            Assim que você cadastrar peso inicial, meta e pelo menos um registro,
-            a mágica começa aqui. ✨
-          </p>
+          <div>
+            <label for="objetivo">Objetivo</label>
+            <select id="objetivo">
+              <option value="">Selecione</option>
+              <option value="emagrecer">Emagrecimento</option>
+              <option value="hipertrofia">Hipertrofia</option>
+              <option value="saude">Saúde geral</option>
+            </select>
+          </div>
+          <div>
+            <label for="dieta">Dieta principal</label>
+            <select id="dieta">
+              <option value="">Selecione</option>
+              <option value="lowcarb">Low carb</option>
+              <option value="keto">Cetogênica</option>
+              <option value="highprotein">High protein</option>
+              <option value="flexivel">Flexível</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="btn-row">
+          <button class="btn-primary" id="saveProfileBtn">Salvar perfil & metas</button>
+        </div>
+        <p id="profileMessage" class="small"></p>
+      </div>
+
+      <!-- DASHBOARD: META, PESO, IMC, FREQUÊNCIA -->
+      <div class="card">
+        <h2>Dashboard de evolução</h2>
+        <p class="small">
+          Meta de peso, IMC e frequência da academia num lugar só. Sem drama, só progresso.
+        </p>
+
+        <!-- Progresso Peso -->
+        <div style="margin-top:6px;">
+          <div class="flex-row">
+            <div class="muted-strong">Progresso da meta de peso</div>
+            <div id="pesoResumo" class="small"></div>
+          </div>
+          <div class="progress-bar-wrap">
+            <div id="pesoProgressBar" class="progress-bar-inner"></div>
+          </div>
+          <div id="pesoMessage" class="progress-label"></div>
+        </div>
+
+        <!-- Charts Peso + IMC -->
+        <div class="charts-grid" style="margin-top:14px;">
+          <div>
+            <div class="flex-row">
+              <span class="muted-strong">Peso (kg)</span>
+              <span id="pesoTendencia" class="status-chip status-good hidden"></span>
+            </div>
+            <canvas id="pesoChart"></canvas>
+          </div>
+          <div>
+            <div class="flex-row">
+              <span class="muted-strong">IMC</span>
+              <span id="imcStatus" class="status-chip hidden"></span>
+            </div>
+            <canvas id="imcChart"></canvas>
+          </div>
+        </div>
+
+        <!-- Frequência academia -->
+        <div style="margin-top:16px;">
+          <div class="flex-row">
+            <div class="muted-strong">Frequência da academia (semana atual)</div>
+            <div id="freqResumo" class="small"></div>
+          </div>
+          <div class="progress-bar-wrap">
+            <div id="freqProgressBar" class="progress-bar-inner"></div>
+          </div>
+          <div id="freqMessage" class="progress-label"></div>
         </div>
       </div>
 
-      <!-- Layout principal: esquerda (dados), direita (insights) -->
-      <div class="layout-main">
-        <!-- COLUNA ESQUERDA: perfil + registros + tabela -->
-        <div>
-          <!-- Perfil & Metas -->
-          <div class="card">
-            <div class="card-header">
-              <div>
-                <h2>Perfil & Metas</h2>
-                <p class="muted">
-                  Ajuste seus dados iniciais, objetivo e plano alimentar.
-                </p>
-              </div>
-            </div>
+      <!-- CHECK-IN SEMANAL -->
+      <div class="card">
+        <h2>Check-in semanal</h2>
+        <p class="small">
+          Preencha 1x por semana. Isso alimenta os gráficos e as mensagens motivacionais.
+        </p>
 
-            <form id="profile-form">
-              <div class="field-row">
-                <div>
-                  <label for="profile-name">Nome</label>
-                  <input id="profile-name" type="text" placeholder="Seu nome" />
-                </div>
-                <div>
-                  <label for="profile-gender">Sexo</label>
-                  <select id="profile-gender">
-                    <option value="">Selecione...</option>
-                    <option value="masculino">Masculino</option>
-                    <option value="feminino">Feminino</option>
-                    <option value="outro">Outro / Prefiro não dizer</option>
-                  </select>
-                </div>
-              </div>
-
-              <div class="field-row">
-                <div>
-                  <label for="profile-height">Altura (m)</label>
-                  <input id="profile-height" type="number" step="0.01" placeholder="Ex: 1.78" />
-                </div>
-                <div>
-                  <label for="profile-start-weight">Peso inicial (kg)</label>
-                  <input id="profile-start-weight" type="number" step="0.1" placeholder="Ex: 92.5" />
-                </div>
-              </div>
-
-              <div class="field-row">
-                <div>
-                  <label for="profile-goal-weight">Meta de peso (kg)</label>
-                  <input id="profile-goal-weight" type="number" step="0.1" placeholder="Ex: 75" />
-                </div>
-                <div>
-                  <label for="profile-goal-date">Prazo (opcional)</label>
-                  <input id="profile-goal-date" type="date" />
-                </div>
-              </div>
-
-              <div class="field-row">
-                <div>
-                  <label for="profile-objective">Objetivo principal</label>
-                  <select id="profile-objective">
-                    <option value="">Selecione...</option>
-                    <option value="emagrecimento">Emagrecimento</option>
-                    <option value="hipertrofia">Hipertrofia</option>
-                    <option value="recomposicao">Recomposição / Saúde geral</option>
-                    <option value="performance">Performance (corrida, esportes, etc.)</option>
-                  </select>
-                </div>
-                <div>
-                  <label for="profile-diet">Plano alimentar</label>
-                  <select id="profile-diet">
-                    <option value="">Selecione...</option>
-                    <option value="lowcarb">Low carb</option>
-                    <option value="hipertrofia">Alta proteína / hipertrofia</option>
-                    <option value="mediterranea">Mediterrânea</option>
-                    <option value="flexivel">Flexível / IIFYM</option>
-                  </select>
-                </div>
-              </div>
-
-              <div class="btn-row">
-                <button type="submit" class="btn-primary">Salvar perfil</button>
-              </div>
-              <div id="profile-msg" class="alert alert-info" style="display:none;"></div>
-            </form>
-
-            <div class="section-divider"></div>
-
-            <!-- Alterar senha (simples) -->
-            <h3>Segurança</h3>
-            <p class="small">
-              Quer trocar a senha? Use o campo abaixo. (Caso o Firebase peça
-              “login recente”, é só sair e entrar de novo antes de tentar).
-            </p>
-            <form id="password-form" style="margin-top:6px;">
-              <label for="new-password">Nova senha</label>
-              <input id="new-password" type="password" minlength="6" />
-              <div class="btn-row">
-                <button type="submit" class="btn-ghost">Atualizar senha</button>
-              </div>
-              <div id="password-msg" class="alert alert-info" style="display:none;"></div>
-            </form>
+        <div class="form-grid-3" style="margin-top:8px;">
+          <div>
+            <label for="dataCheckin">Data</label>
+            <input type="date" id="dataCheckin" />
           </div>
-
-          <!-- Registro semanal -->
-          <div class="card">
-            <div class="card-header">
-              <div>
-                <h2>Registro semanal</h2>
-                <p class="muted">
-                  Quanto mais honesto você for aqui, mais bonito o gráfico
-                  (e a saúde) ficam. 😎
-                </p>
-              </div>
-            </div>
-
-            <form id="entry-form">
-              <div class="field-row">
-                <div>
-                  <label for="entry-date">Data da semana</label>
-                  <input id="entry-date" type="date" required />
-                </div>
-                <div>
-                  <label for="entry-label">Nome da semana (opcional)</label>
-                  <input id="entry-label" type="text" placeholder="Ex: Semana 1, Semana 2..." />
-                </div>
-              </div>
-
-              <div class="field-row-3" style="margin-top:8px;">
-                <div>
-                  <label for="entry-weight">Peso (kg)</label>
-                  <input id="entry-weight" type="number" step="0.1" required />
-                </div>
-                <div>
-                  <label for="entry-waist">Cintura (cm)</label>
-                  <input id="entry-waist" type="number" step="0.1" />
-                </div>
-                <div>
-                  <label for="entry-energy">Energia (1–10)</label>
-                  <input id="entry-energy" type="number" min="1" max="10" />
-                </div>
-              </div>
-
-              <div class="field-row-3" style="margin-top:8px;">
-                <div>
-                  <label for="entry-mood">Humor (1–10)</label>
-                  <input id="entry-mood" type="number" min="1" max="10" />
-                </div>
-                <div>
-                  <label for="entry-sleep">Sono (1–10)</label>
-                  <input id="entry-sleep" type="number" min="1" max="10" />
-                </div>
-                <div>
-                  <label for="entry-notes">Observações</label>
-                  <input id="entry-notes" type="text" placeholder="Ex: +cardio, menos fome, viagem..." />
-                </div>
-              </div>
-
-              <div class="btn-row">
-                <button type="submit" class="btn-primary">＋ Registrar / atualizar semana</button>
-              </div>
-              <div id="entry-msg" class="alert alert-info" style="display:none;"></div>
-            </form>
+          <div>
+            <label for="pesoAtual">Peso da semana (kg)</label>
+            <input type="number" step="0.1" id="pesoAtual" placeholder="Ex: 87.0" />
           </div>
-
-          <!-- Histórico -->
-          <div class="card">
-            <div class="card-header">
-              <div>
-                <h2>Histórico & IMC</h2>
-                <p class="muted">
-                  Peso, cintura, IMC e sensação geral por semana.
-                </p>
-              </div>
-            </div>
-            <div class="table-wrap">
-              <table id="history-table">
-                <thead>
-                  <tr>
-                    <th>Semana</th>
-                    <th>Data</th>
-                    <th>Peso (kg)</th>
-                    <th>IMC</th>
-                    <th>Cintura (cm)</th>
-                    <th>Energia</th>
-                    <th>Humor</th>
-                    <th>Sono</th>
-                    <th>Obs.</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <!-- preenchido via JS -->
-                </tbody>
-              </table>
-            </div>
+          <div>
+            <label for="cintura">Cintura (cm)</label>
+            <input type="number" step="0.1" id="cintura" placeholder="Ex: 90" />
           </div>
         </div>
 
-        <!-- COLUNA DIREITA: dashboards + dicas -->
-        <div>
-          <!-- Gráfico peso + IMC -->
-          <div class="card card-soft">
-            <div class="card-header">
-              <div>
-                <h2>Dashboard Peso + IMC</h2>
-                <p class="muted">
-                  Duas linhas, uma verdade: você está indo pra onde quer?
-                </p>
-              </div>
-            </div>
-            <canvas id="chart-weight-bmi"></canvas>
-            <p class="small" style="margin-top:6px;" id="bmi-summary">
-              Assim que você registrar alguns dados, aparece um resumo do IMC aqui.
-            </p>
+        <div class="form-grid-3" style="margin-top:8px;">
+          <div>
+            <label for="energia">Energia (1–10)</label>
+            <input type="number" min="1" max="10" id="energia" placeholder="Ex: 8" />
           </div>
-
-          <!-- Dicas de treino + vídeos -->
-          <div class="card">
-            <div class="card-header">
-              <div>
-                <h2>Treinos recomendados</h2>
-                <p class="muted">
-                  Ajustados ao objetivo e sexo informados. Sempre respeite
-                  orientações do(a) profissional de saúde.
-                </p>
-              </div>
-            </div>
-
-            <div id="workout-content" class="small">
-              <!-- preenchido via JS -->
-            </div>
-
-            <div class="section-divider"></div>
-
-            <h3>Vídeos de execução (YouTube)</h3>
-            <p class="small">
-              Alguns exemplos para conferir técnica (abra em nova aba):
-            </p>
-            <ul class="small">
-              <li><a href="https://www.youtube.com/results?search_query=agachamento+livre+execu%C3%A7%C3%A3o+correta" target="_blank">Agachamento livre – execução correta</a></li>
-              <li><a href="https://www.youtube.com/results?search_query=supino+reto+execu%C3%A7%C3%A3o+correta" target="_blank">Supino reto – execução correta</a></li>
-              <li><a href="https://www.youtube.com/results?search_query=remada+curvada+execu%C3%A7%C3%A3o+correta" target="_blank">Remada curvada – execução correta</a></li>
-              <li><a href="https://www.youtube.com/results?search_query=prancha+abdominal+execu%C3%A7%C3%A3o+correta" target="_blank">Prancha abdominal – execução correta</a></li>
-            </ul>
+          <div>
+            <label for="humor">Humor (1–10)</label>
+            <input type="number" min="1" max="10" id="humor" placeholder="Ex: 9" />
           </div>
-
-          <!-- Dieta, suplementos e IA de bolso -->
-          <div class="card card-soft">
-            <div class="card-header">
-              <div>
-                <h2>Nutrição & Suplementos</h2>
-                <p class="muted">
-                  Sugestões rápidas de dieta + espaço para você registrar o que usa.
-                </p>
-              </div>
-            </div>
-
-            <div class="two-col">
-              <div>
-                <h3>Dieta selecionada</h3>
-                <div id="diet-content" class="small">
-                  <!-- preenchido via JS -->
-                </div>
-              </div>
-              <div>
-                <h3>Suplementos & horários</h3>
-                <form id="supp-form">
-                  <label for="supp-notes">O que você está tomando?</label>
-                  <textarea id="supp-notes" rows="3" placeholder="Ex: Whey, creatina, multivitamínico, vitamina D..."></textarea>
-                  <div class="btn-row" style="margin-top:8px;">
-                    <button type="submit" class="btn-ghost">Gerar sugestão de horários</button>
-                  </div>
-                </form>
-                <div id="supp-suggestion" class="small" style="margin-top:6px;">
-                  Digite seus suplementos e eu te devolvo uma sugestão geral de horários.
-                </div>
-              </div>
-            </div>
+          <div>
+            <label for="sono">Sono (1–10)</label>
+            <input type="number" min="1" max="10" id="sono" placeholder="Ex: 7" />
           </div>
-        </div> <!-- fim coluna direita -->
-      </div> <!-- fim layout-main -->
-    </div> <!-- fim app-main -->
+        </div>
+
+        <div style="margin-top:8px;">
+          <label for="obs">Observações</label>
+          <input type="text" id="obs" placeholder="Ex: mais cardio, menos fome, viagem, etc." />
+        </div>
+
+        <div class="btn-row">
+          <button class="btn-primary" id="addCheckinBtn">Salvar semana</button>
+        </div>
+        <p id="checkinMessage" class="small"></p>
+
+        <div class="table-wrap" style="margin-top:12px;">
+          <table>
+            <thead>
+              <tr>
+                <th>Data</th>
+                <th>Peso</th>
+                <th>Cintura</th>
+                <th>IMC</th>
+                <th>Energia</th>
+                <th>Humor</th>
+                <th>Sono</th>
+                <th>Observações</th>
+              </tr>
+            </thead>
+            <tbody id="historyTableBody"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- TREINOS & FREQUÊNCIA -->
+      <div class="card">
+        <h2>Treinos da semana</h2>
+        <p class="small">
+          Marque o que já fez. A barra de frequência lá em cima reage a isso e te avisa quando
+          a semana está “meio Nutella” de treino.
+        </p>
+
+        <div class="exercise-group">
+          <div class="exercise-title">Treino A – Peito / Tríceps</div>
+          <div class="exercise-list" data-session="A">
+            <label><input type="checkbox" data-ex="supino"> Supino reto – 3x10</label>
+            <label><input type="checkbox" data-ex="inclinado"> Supino inclinado – 3x10</label>
+            <label><input type="checkbox" data-ex="crucifixo"> Crucifixo – 3x12</label>
+            <label><input type="checkbox" data-ex="triceps"> Tríceps corda – 3x12</label>
+          </div>
+        </div>
+
+        <div class="exercise-group">
+          <div class="exercise-title">Treino B – Costas / Bíceps</div>
+          <div class="exercise-list" data-session="B">
+            <label><input type="checkbox" data-ex="puxada"> Puxada frente – 3x10</label>
+            <label><input type="checkbox" data-ex="remada"> Remada baixa – 3x12</label>
+            <label><input type="checkbox" data-ex="serrote"> Remada unilateral – 3x10</label>
+            <label><input type="checkbox" data-ex="rosca"> Rosca direta – 3x12</label>
+          </div>
+        </div>
+
+        <div class="exercise-group">
+          <div class="exercise-title">Treino C – Pernas / Glúteos</div>
+          <div class="exercise-list" data-session="C">
+            <label><input type="checkbox" data-ex="agachamento"> Agachamento – 4x8</label>
+            <label><input type="checkbox" data-ex="legpress"> Leg press – 3x12</label>
+            <label><input type="checkbox" data-ex="cadeiraext"> Cadeira extensora – 3x15</label>
+            <label><input type="checkbox" data-ex="cadeiraflex"> Cadeira flexora – 3x15</label>
+          </div>
+        </div>
+
+        <div class="exercise-group">
+          <div class="exercise-title">Treino D – Ombro / Core</div>
+          <div class="exercise-list" data-session="D">
+            <label><input type="checkbox" data-ex="desenvolvimento"> Desenvolvimento – 3x10</label>
+            <label><input type="checkbox" data-ex="elevacaolateral"> Elevação lateral – 3x12</label>
+            <label><input type="checkbox" data-ex="prancha"> Prancha – 3x30s</label>
+            <label><input type="checkbox" data-ex="abdominal"> Abdominal – 3x20</label>
+          </div>
+        </div>
+
+        <div class="btn-row">
+          <button class="btn-primary" id="saveTrainingBtn">Salvar treinos da semana</button>
+        </div>
+        <p id="trainingMessage" class="small"></p>
+
+        <p id="trainingAlerts" class="small" style="margin-top:10px;"></p>
+      </div>
+
+      <!-- SUPLEMENTOS & HORÁRIOS -->
+      <div class="card">
+        <h2>Suplementos & horários</h2>
+        <p class="small">
+          Digite o que você está usando (ex: whey, creatina, vitamina D, ômega 3). 
+          A IA aqui do “Dark Premium” sugere os melhores horários e usos. 😉
+        </p>
+
+        <label for="suplementosTexto">O que você está tomando?</label>
+        <textarea id="suplementosTexto" rows="3" placeholder="Ex: whey, creatina, vitamina D, ômega 3, multivitamínico"></textarea>
+
+        <div class="btn-row">
+          <button class="btn-primary" id="saveSupplementsBtn">Salvar & sugerir horários</button>
+        </div>
+
+        <div id="supplementsSuggestions" class="small" style="margin-top:10px;"></div>
+      </div>
+
+      <!-- SEGURANÇA & CONTA (LÁ NO FINAL) -->
+      <div class="card">
+        <h2>Segurança & conta</h2>
+        <p class="small">
+          Área lá embaixo, como combinado. Aqui você pode trocar a senha ou sair da sua conta.
+        </p>
+
+        <label for="newPassword">Nova senha</label>
+        <input type="password" id="newPassword" placeholder="Digite a nova senha" />
+
+        <div class="btn-row">
+          <button class="btn-ghost" id="changePasswordBtn">Trocar senha</button>
+          <button class="btn-danger" id="logoutBtn">Sair</button>
+        </div>
+        <p id="securityMessage" class="small"></p>
+      </div>
+    </div>
   </div>
 
-  <!-- Chart.js CDN -->
+  <!-- Chart.js -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
-  <!-- Firebase (versão modular) -->
+  <!-- Firebase + App -->
   <script type="module">
-    // IMPORTS FIREBASE (modular v10.x)
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js";
     import {
       getAuth,
       onAuthStateChanged,
       createUserWithEmailAndPassword,
       signInWithEmailAndPassword,
       signOut,
-      updateProfile,
       updatePassword
-    } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+    } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-auth.js";
     import {
       getFirestore,
       doc,
-      setDoc,
       getDoc,
-      collection,
-      addDoc,
-      getDocs,
-      query,
-      orderBy,
-      serverTimestamp
-    } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+      setDoc
+    } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-firestore.js";
 
-    // ======== CONFIG DO SEU PROJETO FIREBASE =========
+    // --- CONFIG DO SEU PROJETO (o que você me mandou) ---
     const firebaseConfig = {
       apiKey: "AIzaSyBbz-DjxSv2S2g1qkWca8YpNn3g7C4Oic0",
       authDomain: "evolucao-dark-premium.firebaseapp.com",
@@ -773,654 +741,569 @@
     const auth = getAuth(app);
     const db = getFirestore(app);
 
-    // ======== ELEMENTOS DE TELA =========
-    const authScreen = document.getElementById("auth-screen");
-    const appMain   = document.getElementById("app-main");
+    // --- DOM helpers ---
+    const $ = (id) => document.getElementById(id);
 
-    const loginForm     = document.getElementById("login-form");
-    const signupForm    = document.getElementById("signup-form");
-    const loginErrorEl  = document.getElementById("login-error");
-    const signupErrorEl = document.getElementById("signup-error");
+    const authCard = $("authCard");
+    const appArea = $("appArea");
+    const authMessage = $("authMessage");
+    const userEmailLabel = $("userEmailLabel");
 
-    const welcomeTitle = document.getElementById("welcome-title");
-    const welcomeSub   = document.getElementById("welcome-sub");
-    const currentEmailEl = document.getElementById("current-email");
-    const btnLogout      = document.getElementById("btn-logout");
-    const btnOpenProfile = document.getElementById("btn-open-profile");
-
-    const progressFill  = document.getElementById("progress-fill");
-    const progressLabel = document.getElementById("progress-label");
-    const motivationText = document.getElementById("motivation-text");
-
-    const profileForm = document.getElementById("profile-form");
-    const profileMsg  = document.getElementById("profile-msg");
-
-    const passwordForm = document.getElementById("password-form");
-    const passwordMsg  = document.getElementById("password-msg");
-
-    const entryForm = document.getElementById("entry-form");
-    const entryMsg  = document.getElementById("entry-msg");
-    const historyTableBody = document.querySelector("#history-table tbody");
-
-    const bmiSummaryEl = document.getElementById("bmi-summary");
-    const workoutContent = document.getElementById("workout-content");
-    const dietContent = document.getElementById("diet-content");
-    const suppForm = document.getElementById("supp-form");
-    const suppNotes = document.getElementById("supp-notes");
-    const suppSuggestion = document.getElementById("supp-suggestion");
-
-    // Campos de perfil
-    const profileNameEl = document.getElementById("profile-name");
-    const profileGenderEl = document.getElementById("profile-gender");
-    const profileHeightEl = document.getElementById("profile-height");
-    const profileStartWeightEl = document.getElementById("profile-start-weight");
-    const profileGoalWeightEl = document.getElementById("profile-goal-weight");
-    const profileGoalDateEl = document.getElementById("profile-goal-date");
-    const profileObjectiveEl = document.getElementById("profile-objective");
-    const profileDietEl = document.getElementById("profile-diet");
-
-    // Campos registro semanal
-    const entryDateEl    = document.getElementById("entry-date");
-    const entryLabelEl   = document.getElementById("entry-label");
-    const entryWeightEl  = document.getElementById("entry-weight");
-    const entryWaistEl   = document.getElementById("entry-waist");
-    const entryEnergyEl  = document.getElementById("entry-energy");
-    const entryMoodEl    = document.getElementById("entry-mood");
-    const entrySleepEl   = document.getElementById("entry-sleep");
-    const entryNotesEl   = document.getElementById("entry-notes");
-
-    const newPasswordEl  = document.getElementById("new-password");
-
-    let chartWeightBmi = null;
-    let currentProfile = null;
-    let currentEntries = [];
-
-    // ========= AUTENTICAÇÃO ==========
-    onAuthStateChanged(auth, async (user) => {
-      if (user) {
-        authScreen.style.display = "none";
-        appMain.style.display = "block";
-        currentEmailEl.textContent = user.email || "";
-
-        welcomeTitle.textContent = user.displayName
-          ? `Olá, ${user.displayName} 👋`
-          : "Olá 👋";
-
-        await loadProfileAndEntries(user.uid);
-      } else {
-        appMain.style.display = "none";
-        authScreen.style.display = "block";
+    let currentUser = null;
+    let userData = {
+      profile: {},
+      checkins: [],
+      training: {
+        weeks: {},
+        metaTreinos: 0
+      },
+      supplements: {
+        texto: ""
       }
-    });
+    };
 
-    loginForm.addEventListener("submit", async (e) => {
-      e.preventDefault();
-      loginErrorEl.style.display = "none";
+    // --- Helpers de semana ---
+    function getWeekKey(date = new Date()) {
+      const d = new Date(Date.UTC(date.getFullYear(), date.getMonth(), date.getDate()));
+      const dayNum = d.getUTCDay() || 7;
+      d.setUTCDate(d.getUTCDate() + 4 - dayNum);
+      const yearStart = new Date(Date.UTC(d.getUTCFullYear(), 0, 1));
+      const weekNo = Math.ceil((((d - yearStart) / 86400000) + 1) / 7);
+      return d.getUTCFullYear() + "-W" + weekNo;
+    }
+
+    // --- Auth: login / registro / estado ---
+    $("loginBtn").addEventListener("click", async () => {
+      const email = $("authEmail").value.trim();
+      const password = $("authPassword").value;
+      authMessage.textContent = "";
       try {
-        const email = document.getElementById("login-email").value.trim();
-        const password = document.getElementById("login-password").value;
         await signInWithEmailAndPassword(auth, email, password);
-      } catch (err) {
-        console.error(err);
-        loginErrorEl.textContent = "Erro ao entrar: " + (err.message || err.code);
-        loginErrorEl.style.display = "block";
+        authMessage.textContent = "Login realizado com sucesso.";
+      } catch (e) {
+        authMessage.textContent = "Erro ao entrar: " + e.message;
       }
     });
 
-    signupForm.addEventListener("submit", async (e) => {
-      e.preventDefault();
-      signupErrorEl.style.display = "none";
+    $("registerBtn").addEventListener("click", async () => {
+      const email = $("authEmail").value.trim();
+      const password = $("authPassword").value;
+      authMessage.textContent = "";
       try {
-        const email = document.getElementById("signup-email").value.trim();
-        const password = document.getElementById("signup-password").value;
-        const name = document.getElementById("signup-name").value.trim();
-
-        const cred = await createUserWithEmailAndPassword(auth, email, password);
-        if (name) {
-          await updateProfile(cred.user, { displayName: name });
-        }
-      } catch (err) {
-        console.error(err);
-        signupErrorEl.textContent = "Erro ao criar conta: " + (err.message || err.code);
-        signupErrorEl.style.display = "block";
+        await createUserWithEmailAndPassword(auth, email, password);
+        authMessage.textContent = "Conta criada. Você já está logado.";
+      } catch (e) {
+        authMessage.textContent = "Erro ao criar conta: " + e.message;
       }
     });
 
-    btnLogout.addEventListener("click", async () => {
+    $("logoutBtn").addEventListener("click", async () => {
       await signOut(auth);
     });
 
-    btnOpenProfile.addEventListener("click", () => {
-      // Só rola até o card de perfil/metas
-      document.querySelector("#profile-form").scrollIntoView({ behavior: "smooth", block: "start" });
+    $("changePasswordBtn").addEventListener("click", async () => {
+      const newPassword = $("newPassword").value;
+      $("securityMessage").textContent = "";
+      if (!newPassword || newPassword.length < 6) {
+        $("securityMessage").textContent = "A senha deve ter pelo menos 6 caracteres.";
+        return;
+      }
+      try {
+        await updatePassword(auth.currentUser, newPassword);
+        $("securityMessage").textContent = "Senha alterada com sucesso.";
+      } catch (e) {
+        $("securityMessage").textContent = "Erro ao trocar senha: " + e.message;
+      }
     });
 
-    // ========= CARREGAR PERFIL + REGISTROS ==========
-    async function loadProfileAndEntries(uid) {
-      try {
-        // Perfil
-        const userRef = doc(db, "users", uid);
-        const snap = await getDoc(userRef);
-        if (snap.exists()) {
-          currentProfile = snap.data();
-        } else {
-          currentProfile = {};
-        }
-        fillProfileForm(currentProfile);
+    onAuthStateChanged(auth, async (user) => {
+      currentUser = user;
+      if (!user) {
+        authCard.classList.remove("hidden");
+        appArea.classList.add("hidden");
+        return;
+      }
+      authCard.classList.add("hidden");
+      appArea.classList.remove("hidden");
+      userEmailLabel.textContent = user.email || "";
+      await loadUserData();
+      fillProfileForm();
+      fillSupplements();
+      renderAll();
+    });
 
-        // Entradas
-        const entriesRef = collection(db, "users", uid, "entries");
-        const q = query(entriesRef, orderBy("date", "asc"));
-        const qSnap = await getDocs(q);
-        currentEntries = [];
-        qSnap.forEach(docSnap => {
-          currentEntries.push({
-            id: docSnap.id,
-            ...docSnap.data()
-          });
-        });
-
-        renderHistoryTable();
-        renderChartsAndProgress();
-        renderWorkoutSuggestions();
-        renderDietSuggestions();
-      } catch (err) {
-        console.error("Erro ao carregar dados:", err);
+    // --- Firestore: carregar / salvar ---
+    async function loadUserData() {
+      if (!currentUser) return;
+      const ref = doc(db, "users", currentUser.uid);
+      const snap = await getDoc(ref);
+      if (snap.exists()) {
+        userData = {
+          profile: snap.data().profile || {},
+          checkins: snap.data().checkins || [],
+          training: snap.data().training || { weeks: {}, metaTreinos: 0 },
+          supplements: snap.data().supplements || { texto: "" }
+        };
+      } else {
+        userData = {
+          profile: {},
+          checkins: [],
+          training: { weeks: {}, metaTreinos: 0 },
+          supplements: { texto: "" }
+        };
       }
     }
 
-    function fillProfileForm(profile) {
-      profileNameEl.value = profile.name || "";
-      profileGenderEl.value = profile.gender || "";
-      profileHeightEl.value = profile.height || "";
-      profileStartWeightEl.value = profile.startWeight || "";
-      profileGoalWeightEl.value  = profile.goalWeight || "";
-      profileGoalDateEl.value    = profile.goalDate || "";
-      profileObjectiveEl.value   = profile.objective || "";
-      profileDietEl.value        = profile.diet || "";
+    async function saveUserData() {
+      if (!currentUser) return;
+      const ref = doc(db, "users", currentUser.uid);
+      await setDoc(ref, userData, { merge: true });
     }
 
-    // ========= SALVAR PERFIL ==========
-    profileForm.addEventListener("submit", async (e) => {
-      e.preventDefault();
-      const user = auth.currentUser;
-      if (!user) return;
+    // --- Perfil & metas ---
+    function fillProfileForm() {
+      const p = userData.profile || {};
+      $("nome").value = p.nome || "";
+      $("sexo").value = p.sexo || "";
+      $("altura").value = p.altura || "";
+      $("metaTreinos").value = p.metaTreinos || "";
+      $("pesoInicial").value = p.pesoInicial || "";
+      $("pesoMeta").value = p.pesoMeta || "";
+      $("objetivo").value = p.objetivo || "";
+      $("dieta").value = p.dieta || "";
+    }
 
-      const data = {
-        name: profileNameEl.value.trim() || null,
-        gender: profileGenderEl.value || null,
-        height: profileHeightEl.value ? parseFloat(profileHeightEl.value.replace(",", ".")) : null,
-        startWeight: profileStartWeightEl.value ? parseFloat(profileStartWeightEl.value.replace(",", ".")) : null,
-        goalWeight: profileGoalWeightEl.value ? parseFloat(profileGoalWeightEl.value.replace(",", ".")) : null,
-        goalDate: profileGoalDateEl.value || null,
-        objective: profileObjectiveEl.value || null,
-        diet: profileDietEl.value || null,
-        updatedAt: serverTimestamp()
+    $("saveProfileBtn").addEventListener("click", async () => {
+      const profile = {
+        nome: $("nome").value.trim(),
+        sexo: $("sexo").value,
+        altura: $("altura").value ? parseFloat($("altura").value) : null,
+        metaTreinos: $("metaTreinos").value ? parseInt($("metaTreinos").value, 10) : 0,
+        pesoInicial: $("pesoInicial").value ? parseFloat($("pesoInicial").value) : null,
+        pesoMeta: $("pesoMeta").value ? parseFloat($("pesoMeta").value) : null,
+        objetivo: $("objetivo").value,
+        dieta: $("dieta").value
+      };
+      userData.profile = profile;
+      // sincroniza metaTreinos no bloco de treino
+      userData.training.metaTreinos = profile.metaTreinos || 0;
+
+      try {
+        await saveUserData();
+        $("profileMessage").textContent = "Perfil salvo com sucesso.";
+        renderAll();
+      } catch (e) {
+        $("profileMessage").textContent = "Erro ao salvar perfil: " + e.message;
+      }
+    });
+
+    // --- Check-in semanal ---
+    $("addCheckinBtn").addEventListener("click", async () => {
+      const dataStr = $("dataCheckin").value;
+      const pesoStr = $("pesoAtual").value;
+      const cinturaStr = $("cintura").value;
+      if (!dataStr || !pesoStr) {
+        $("checkinMessage").textContent = "Informe pelo menos data e peso.";
+        return;
+      }
+      const altura = userData.profile.altura || null;
+      const peso = parseFloat(pesoStr.replace(",", "."));
+      const cintura = cinturaStr ? parseFloat(cinturaStr.replace(",", ".")) : null;
+      let imc = null;
+      if (altura && peso) {
+        const h = altura / 100;
+        imc = +(peso / (h * h)).toFixed(1);
+      }
+
+      const entry = {
+        data: dataStr,
+        peso,
+        cintura,
+        imc,
+        energia: $("energia").value ? parseInt($("energia").value, 10) : null,
+        humor: $("humor").value ? parseInt($("humor").value, 10) : null,
+        sono: $("sono").value ? parseInt($("sono").value, 10) : null,
+        obs: $("obs").value.trim()
       };
 
+      // se já existe check-in nesse dia, substitui
+      const existingIndex = userData.checkins.findIndex((c) => c.data === dataStr);
+      if (existingIndex >= 0) {
+        userData.checkins[existingIndex] = entry;
+      } else {
+        userData.checkins.push(entry);
+      }
+
       try {
-        // Atualiza displayName também
-        if (data.name) {
-          await updateProfile(user, { displayName: data.name });
+        await saveUserData();
+        $("checkinMessage").textContent = "Semana salva com sucesso.";
+        renderCheckins();
+        renderProgress();
+        renderCharts();
+      } catch (e) {
+        $("checkinMessage").textContent = "Erro ao salvar semana: " + e.message;
+      }
+    });
+
+    function renderCheckins() {
+      const tbody = $("historyTableBody");
+      tbody.innerHTML = "";
+      const altura = userData.profile.altura || null;
+      const sorted = [...userData.checkins].sort((a, b) => (a.data > b.data ? 1 : -1));
+      for (const c of sorted) {
+        let imcVal = c.imc;
+        if (!imcVal && altura && c.peso) {
+          const h = altura / 100;
+          imcVal = +(c.peso / (h * h)).toFixed(1);
         }
-        await setDoc(doc(db, "users", user.uid), data, { merge: true });
-        profileMsg.textContent = "Perfil salvo com sucesso.";
-        profileMsg.style.display = "block";
-        setTimeout(() => profileMsg.style.display = "none", 3000);
-        await loadProfileAndEntries(user.uid);
-      } catch (err) {
-        console.error(err);
-        profileMsg.textContent = "Erro ao salvar perfil: " + (err.message || err.code);
-        profileMsg.style.display = "block";
-      }
-    });
-
-    // ========= TROCAR SENHA ==========
-    passwordForm.addEventListener("submit", async (e) => {
-      e.preventDefault();
-      const user = auth.currentUser;
-      if (!user) return;
-      const newPass = newPasswordEl.value;
-      if (!newPass || newPass.length < 6) {
-        passwordMsg.textContent = "A senha precisa ter pelo menos 6 caracteres.";
-        passwordMsg.style.display = "block";
-        return;
-      }
-      try {
-        await updatePassword(user, newPass);
-        passwordMsg.textContent = "Senha atualizada com sucesso.";
-        passwordMsg.style.display = "block";
-        newPasswordEl.value = "";
-        setTimeout(() => passwordMsg.style.display = "none", 3000);
-      } catch (err) {
-        console.error(err);
-        passwordMsg.textContent = "Erro ao atualizar senha: " + (err.message || err.code);
-        passwordMsg.style.display = "block";
-      }
-    });
-
-    // ========= REGISTRO SEMANAL ==========
-    entryForm.addEventListener("submit", async (e) => {
-      e.preventDefault();
-      const user = auth.currentUser;
-      if (!user) return;
-
-      const date = entryDateEl.value;
-      const label = entryLabelEl.value.trim();
-      const weight = parseFloat((entryWeightEl.value || "").replace(",", "."));
-      const waist  = entryWaistEl.value ? parseFloat(entryWaistEl.value.replace(",", ".")) : null;
-      const energy = entryEnergyEl.value ? parseInt(entryEnergyEl.value, 10) : null;
-      const mood   = entryMoodEl.value ? parseInt(entryMoodEl.value, 10) : null;
-      const sleep  = entrySleepEl.value ? parseInt(entrySleepEl.value, 10) : null;
-      const notes  = entryNotesEl.value.trim() || null;
-
-      if (!date || isNaN(weight)) {
-        entryMsg.textContent = "Informe pelo menos data e peso.";
-        entryMsg.style.display = "block";
-        return;
-      }
-
-      let bmi = null;
-      const h = profileHeightEl.value ? parseFloat(profileHeightEl.value.replace(",", ".")) : (currentProfile?.height || null);
-      if (h && !isNaN(h) && h > 0) {
-        bmi = +(weight / (h * h)).toFixed(1);
-      }
-
-      try {
-        // se já existir entrada nessa data, sobrescreve
-        const existing = currentEntries.find(e => e.date === date);
-        const payload = {
-          date,
-          label: label || null,
-          weight,
-          waist,
-          energy,
-          mood,
-          sleep,
-          notes,
-          bmi,
-          updatedAt: serverTimestamp()
-        };
-
-        const entriesRef = collection(db, "users", user.uid, "entries");
-        if (existing) {
-          // atualiza doc existente
-          await setDoc(doc(entriesRef, existing.id), payload, { merge: true });
-        } else {
-          await addDoc(entriesRef, {
-            ...payload,
-            createdAt: serverTimestamp()
-          });
-        }
-
-        entryMsg.textContent = "Semana registrada com sucesso.";
-        entryMsg.style.display = "block";
-        setTimeout(() => entryMsg.style.display = "none", 3000);
-
-        // limpa campos mais “sensíveis”
-        entryNotesEl.value = "";
-        entryLabelEl.value = "";
-
-        await loadProfileAndEntries(user.uid);
-      } catch (err) {
-        console.error(err);
-        entryMsg.textContent = "Erro ao salvar registro: " + (err.message || err.code);
-        entryMsg.style.display = "block";
-      }
-    });
-
-    // ========= HISTÓRICO TABELA ==========
-    function renderHistoryTable() {
-      historyTableBody.innerHTML = "";
-      if (!currentEntries || currentEntries.length === 0) return;
-
-      currentEntries.forEach(entry => {
         const tr = document.createElement("tr");
-        const label = entry.label || "";
-        const weekLabel = label ? label : "–";
-        const dateStr = entry.date || "";
-        const bmiStr = entry.bmi != null ? entry.bmi.toFixed(1) : "";
-
         tr.innerHTML = `
-          <td><span class="pill">${weekLabel}</span></td>
-          <td>${dateStr}</td>
-          <td>${entry.weight ?? ""}</td>
-          <td>${bmiStr}</td>
-          <td>${entry.waist ?? ""}</td>
-          <td>${entry.energy ?? ""}</td>
-          <td>${entry.mood ?? ""}</td>
-          <td>${entry.sleep ?? ""}</td>
-          <td>${entry.notes ?? ""}</td>
+          <td>${c.data}</td>
+          <td>${c.peso ?? ""}</td>
+          <td>${c.cintura ?? ""}</td>
+          <td>${imcVal ?? ""}</td>
+          <td>${c.energia ?? ""}</td>
+          <td>${c.humor ?? ""}</td>
+          <td>${c.sono ?? ""}</td>
+          <td>${c.obs ?? ""}</td>
         `;
-        historyTableBody.appendChild(tr);
+        tbody.appendChild(tr);
+      }
+    }
+
+    // --- Barra de progresso de peso + mensagens motivacionais ---
+    function renderProgress() {
+      const p = userData.profile || {};
+      const pesoInicial = p.pesoInicial;
+      const pesoMeta = p.pesoMeta;
+      if (!pesoInicial || !pesoMeta || userData.checkins.length === 0) {
+        $("pesoResumo").textContent = "Defina peso inicial, meta e faça pelo menos 1 check-in.";
+        $("pesoProgressBar").style.width = "0%";
+        $("pesoMessage").textContent = "";
+        return;
+      }
+      const sorted = [...userData.checkins].sort((a, b) => (a.data > b.data ? 1 : -1));
+      const pesoAtual = sorted[sorted.length - 1].peso;
+      if (!pesoAtual) return;
+
+      const totalDelta = pesoInicial - pesoMeta;
+      const atualDelta = pesoInicial - pesoAtual;
+      let perc = 0;
+      if (totalDelta !== 0) {
+        perc = (atualDelta / totalDelta) * 100;
+        if (perc < 0) perc = 0;
+        if (perc > 100) perc = 100;
+      }
+      $("pesoProgressBar").style.width = perc.toFixed(1) + "%";
+      $("pesoResumo").textContent =
+        `Inicial: ${pesoInicial} kg • Atual: ${pesoAtual} kg • Meta: ${pesoMeta} kg`;
+
+      let msg = "";
+      if (perc === 0) {
+        msg = "Começo é assim mesmo: arruma a casa, acerta a rotina e o resto vem. 😉";
+      } else if (perc < 30) {
+        msg = `Você já saiu do zero! ${perc.toFixed(0)}% da meta. Nada de desistir agora.`;
+      } else if (perc < 70) {
+        msg = `${perc.toFixed(0)}% da meta! O corpo já entendeu o recado, agora é manter a constância. 🔥`;
+      } else if (perc < 100) {
+        msg = `${perc.toFixed(0)}% da meta. Tá na reta final, agora é jogo mental.`;
+      } else {
+        msg = "Meta batida! Agora a missão é manter e talvez pegar uma meta nova. 👏";
+      }
+      $("pesoMessage").textContent = msg;
+
+      // tendência de peso
+      const pesoTendenciaChip = $("pesoTendencia");
+      if (sorted.length >= 2) {
+        const pAntes = sorted[sorted.length - 2].peso;
+        if (pAntes && pesoAtual) {
+          const diff = +(pesoAtual - pAntes).toFixed(1);
+          pesoTendenciaChip.classList.remove("hidden", "status-good", "status-bad");
+          if (diff < 0) {
+            pesoTendenciaChip.classList.add("status-good");
+            pesoTendenciaChip.textContent = `Semana boa: -${Math.abs(diff)} kg`;
+          } else if (diff > 0) {
+            pesoTendenciaChip.classList.add("status-bad");
+            pesoTendenciaChip.textContent = `Subiu ${diff} kg (revê dieta/treino)`;
+          } else {
+            pesoTendenciaChip.textContent = "Peso travado: normal, segue o plano.";
+          }
+        }
+      } else {
+        pesoTendenciaChip.classList.add("hidden");
+      }
+    }
+
+    // --- Frequência da academia + alertas de treinos ---
+    function renderTrainingFrequency() {
+      const meta = userData.training.metaTreinos || userData.profile.metaTreinos || 0;
+      const weekKey = getWeekKey();
+      const weekData = (userData.training.weeks && userData.training.weeks[weekKey]) || { sessions: {} };
+
+      // conta quantos treinos (A,B,C,D) foram feitos (se todos exercícios do treino estão marcados)
+      let realizados = 0;
+      ["A", "B", "C", "D"].forEach((sess) => {
+        const sessData = weekData.sessions && weekData.sessions[sess];
+        if (sessData && Object.values(sessData.exercises || {}).every(Boolean)) {
+          realizados += 1;
+        }
+      });
+
+      $("freqResumo").textContent =
+        meta > 0 ? `Realizados: ${realizados} / Meta: ${meta}` : "Defina a meta de treinos/semana no perfil.";
+
+      let perc = 0;
+      if (meta > 0) {
+        perc = (realizados / meta) * 100;
+        if (perc > 100) perc = 100;
+      }
+      $("freqProgressBar").style.width = perc.toFixed(1) + "%";
+
+      const hoje = new Date();
+      const dia = hoje.getDay(); // 0 domingo, 6 sábado
+      let msg = "";
+      if (!meta) {
+        msg = "Sem meta definida. Sem meta, qualquer treino serve. 😅";
+      } else if (perc === 0 && dia >= 3) {
+        msg = "Metade da semana, zero treinos. O sofá tá ganhando essa disputa. 🛋️";
+      } else if (perc === 0) {
+        msg = "Começo da semana: escolhe os dias e já combina com você mesmo.";
+      } else if (perc < 50 && dia >= 4) {
+        msg = "Frequência baixa para a altura da semana. Bora colocar um treino extra?";
+      } else if (perc < 100 && dia === 0) {
+        msg = "Domingo e meta não batida. Última chamada antes de começar tudo outra vez.";
+      } else if (perc >= 100) {
+        msg = "Meta de treinos da semana batida! Agora é só não inventar desculpa nova. 🔥";
+      } else {
+        msg = "Tá indo bem. Mantém o ritmo que o shape vem.";
+      }
+      $("freqMessage").textContent = msg;
+
+      // alertas de exercícios esquecidos (sei lá, no fim da semana)
+      const alertsEl = $("trainingAlerts");
+      alertsEl.textContent = "";
+      if (dia >= 5 && meta > 0) {
+        const esquecidos = [];
+        ["A", "B", "C", "D"].forEach((sess) => {
+          const sessData = weekData.sessions && weekData.sessions[sess];
+          if (!sessData || !Object.values(sessData.exercises || {}).every(Boolean)) {
+            esquecidos.push(sess);
+          }
+        });
+        if (esquecidos.length > 0) {
+          alertsEl.textContent =
+            "Possível treino esquecido essa semana: " +
+            esquecidos.map((s) => "Treino " + s).join(", ") +
+            ". Se foi por preguiça, não conta pra estatística oficial. 😂";
+        }
+      }
+    }
+
+    // Salvar treinos da semana a partir dos checkboxes
+    $("saveTrainingBtn").addEventListener("click", async () => {
+      const weekKey = getWeekKey();
+      if (!userData.training.weeks) {
+        userData.training.weeks = {};
+      }
+      if (!userData.training.weeks[weekKey]) {
+        userData.training.weeks[weekKey] = { sessions: {} };
+      }
+
+      const sessions = userData.training.weeks[weekKey].sessions;
+      document.querySelectorAll(".exercise-list").forEach((listEl) => {
+        const sessName = listEl.getAttribute("data-session");
+        const exs = {};
+        listEl.querySelectorAll("input[type='checkbox']").forEach((cb) => {
+          const key = cb.getAttribute("data-ex");
+          exs[key] = cb.checked;
+        });
+        sessions[sessName] = { exercises: exs };
+      });
+
+      try {
+        await saveUserData();
+        $("trainingMessage").textContent = "Treinos da semana salvos.";
+        renderTrainingFrequency();
+      } catch (e) {
+        $("trainingMessage").textContent = "Erro ao salvar treinos: " + e.message;
+      }
+    });
+
+    // Preencher checkboxes a partir do banco
+    function fillTrainingCheckboxes() {
+      const weekKey = getWeekKey();
+      const weekData = (userData.training.weeks && userData.training.weeks[weekKey]) || { sessions: {} };
+      document.querySelectorAll(".exercise-list").forEach((listEl) => {
+        const sessName = listEl.getAttribute("data-session");
+        const sessData = weekData.sessions && weekData.sessions[sessName];
+        listEl.querySelectorAll("input[type='checkbox']").forEach((cb) => {
+          const key = cb.getAttribute("data-ex");
+          cb.checked = !!(sessData && sessData.exercises && sessData.exercises[key]);
+        });
       });
     }
 
-    // ========= GRÁFICOS + PROGRESSO ==========
-    function renderChartsAndProgress() {
-      // progresso / barra
-      const startWeight = currentProfile?.startWeight;
-      const goalWeight  = currentProfile?.goalWeight;
-      let latestWeight = null;
-      if (currentEntries.length > 0) {
-        latestWeight = currentEntries[currentEntries.length - 1].weight;
-      }
+    // --- Suplementos: sugestão múltipla ---
+    function fillSupplements() {
+      $("suplementosTexto").value = userData.supplements?.texto || "";
+      renderSupplementsSuggestions();
+    }
 
-      let pct = 0;
-      if (startWeight && goalWeight && latestWeight) {
-        const start = startWeight;
-        const goal = goalWeight;
-        const current = latestWeight;
-
-        if (start > goal) {
-          // emagrecimento
-          const total = start - goal;
-          const done  = start - current;
-          pct = Math.max(0, Math.min(1, done / total));
-        } else if (goal > start) {
-          // ganho de peso
-          const total = goal - start;
-          const done  = current - start;
-          pct = Math.max(0, Math.min(1, done / total));
-        }
-      }
-
-      const pctDisplay = Math.round(pct * 100);
-      progressFill.style.width = pctDisplay + "%";
-      progressLabel.textContent = pctDisplay + "%";
-
-      // mensagem motivacional
-      let msg;
-      if (!startWeight || !goalWeight || !latestWeight) {
-        msg = "Defina peso inicial, meta e registre pelo menos uma semana para liberar o modo turbo de motivação. 🚀";
-      } else if (pctDisplay <= 0) {
-        msg = "Oficialmente começando do zero. Nada mais perigoso que alguém decidido a sair do 0%. 😉";
-      } else if (pctDisplay < 25) {
-        msg = `Você já saiu da inércia (${pctDisplay}%). A parte mais difícil já foi: começar. Continua que o gráfico vai ficando bonito.`;
-      } else if (pctDisplay < 60) {
-        msg = `${pctDisplay}% completos. Você está naquela fase em que as pessoas começam a perguntar: “o que você está fazendo?” 😏`;
-      } else if (pctDisplay < 90) {
-        msg = `${pctDisplay}%! Já dá pra considerar “modo quase final boss”. Só não para agora, que a reta final é traiçoeira.`;
-      } else {
-        msg = `${pctDisplay}% da meta. É praticamente outra pessoa já. Só falta o “fechar com chave de ouro”. 🔒✨`;
-      }
-      motivationText.textContent = msg;
-
-      // gráfico peso + IMC
-      const ctx = document.getElementById("chart-weight-bmi").getContext("2d");
-      if (chartWeightBmi) {
-        chartWeightBmi.destroy();
-      }
-
-      if (!currentEntries || currentEntries.length === 0) {
-        bmiSummaryEl.textContent = "Sem dados suficientes ainda. Registre pelo menos uma semana para ver o gráfico.";
+    function renderSupplementsSuggestions() {
+      const text = $("suplementosTexto").value.toLowerCase();
+      const area = $("supplementsSuggestions");
+      if (!text.trim()) {
+        area.textContent = "";
         return;
       }
 
-      const labels = currentEntries.map(e => e.label || e.date || "");
-      const weights = currentEntries.map(e => e.weight || null);
-      const bmis    = currentEntries.map(e => e.bmi || null);
+      const map = {
+        "whey": "Whey: ótimo pós-treino ou em lanches com pouco tempo. 1 dose misturada com água ou leite, sem exagerar no resto do dia.",
+        "creatina": "Creatina: 3 a 5 g ao dia, qualquer horário, todos os dias. Constância > horário. Beba água suficiente.",
+        "vitamina d": "Vitamina D: geralmente junto de refeição com gordura (ex: almoço ou jantar). Siga a dose do médico.",
+        "omega 3": "Ômega 3: 1–2 cápsulas junto de refeições principais, ajuda na inflamação e saúde geral.",
+        "multivitaminico": "Multivitamínico: 1x ao dia, de preferência pela manhã com café da manhã.",
+        "vitamina c": "Vitamina C: 500–1000 mg, normalmente pela manhã ou ao redor de treinos intensos.",
+        "zinco": "Zinco: muitas vezes à noite, longe de laticínios para melhor absorção.",
+        "magnesio": "Magnésio: ótimo à noite, ajuda relaxar e melhorar a qualidade do sono.",
+        "monjaro": "Monjaro: seguir exatamente a orientação do médico, geralmente 1x por semana, sempre anotando efeitos colaterais."
+      };
 
-      chartWeightBmi = new Chart(ctx, {
+      const encontrados = [];
+      for (const chave in map) {
+        if (text.includes(chave)) {
+          encontrados.push({ nome: chave, dica: map[chave] });
+        }
+      }
+
+      if (encontrados.length === 0) {
+        area.textContent = "Não reconheci nenhum suplemento 'clássico' aqui, mas tudo bem. Só lembra de seguir o médico.";
+        return;
+      }
+
+      let html = "<strong>Sugestão de horários:</strong><br/>";
+      encontrados.forEach((item) => {
+        html += "• " + item.dica + "<br/>";
+      });
+      html += "<br/><em>Sempre siga a orientação do seu médico. Isso aqui é organização, não prescrição.</em>";
+      area.innerHTML = html;
+    }
+
+    $("saveSupplementsBtn").addEventListener("click", async () => {
+      userData.supplements = {
+        texto: $("suplementosTexto").value
+      };
+      try {
+        await saveUserData();
+        renderSupplementsSuggestions();
+      } catch (e) {
+        $("supplementsSuggestions").textContent = "Erro ao salvar suplementos: " + e.message;
+      }
+    });
+
+    $("suplementosTexto").addEventListener("blur", renderSupplementsSuggestions);
+
+    // --- Gráficos (peso + IMC) ---
+    let pesoChart, imcChart;
+
+    function renderCharts() {
+      const altura = userData.profile.altura || null;
+      const sorted = [...userData.checkins].sort((a, b) => (a.data > b.data ? 1 : -1));
+      const labels = sorted.map((c) => c.data);
+      const pesos = sorted.map((c) => c.peso);
+      const imcs = sorted.map((c) => {
+        if (c.imc) return c.imc;
+        if (altura && c.peso) {
+          const h = altura / 100;
+          return +(c.peso / (h * h)).toFixed(1);
+        }
+        return null;
+      });
+
+      if (pesoChart) pesoChart.destroy();
+      if (imcChart) imcChart.destroy();
+
+      const ctxPeso = document.getElementById("pesoChart").getContext("2d");
+      const ctxImc = document.getElementById("imcChart").getContext("2d");
+
+      pesoChart = new Chart(ctxPeso, {
         type: "line",
         data: {
           labels,
-          datasets: [
-            {
-              label: "Peso (kg)",
-              data: weights,
-              borderColor: "#4cc9f0",
-              backgroundColor: "rgba(76,201,240,0.14)",
-              borderWidth: 2,
-              tension: 0.35,
-              pointRadius: 3
-            },
-            {
-              label: "IMC",
-              data: bmis,
-              borderColor: "#f72585",
-              backgroundColor: "rgba(247,37,133,0.16)",
-              borderWidth: 2,
-              tension: 0.35,
-              pointRadius: 3
-            }
-          ]
+          datasets: [{
+            label: "Peso (kg)",
+            data: pesos,
+            borderColor: "#4cc9f0",
+            backgroundColor: "rgba(76,201,240,0.1)",
+            borderWidth: 2,
+            tension: 0.35,
+            pointRadius: 3
+          }]
         },
         options: {
           responsive: true,
-          maintainAspectRatio: false,
-          plugins: {
-            legend: {
-              labels: { color: "#d0d3ea", usePointStyle: true }
-            }
-          },
+          plugins: { legend: { labels: { color: "#d0d3ea", usePointStyle: true } } },
           scales: {
-            x: {
-              ticks: { color: "#9ba0c2" },
-              grid: { color: "rgba(255,255,255,0.03)" }
-            },
-            y: {
-              ticks: { color: "#9ba0c2" },
-              grid: { color: "rgba(255,255,255,0.03)" }
-            }
+            x: { ticks: { color: "#9ba0c2" }, grid: { color: "rgba(255,255,255,0.03)" } },
+            y: { ticks: { color: "#9ba0c2" }, grid: { color: "rgba(255,255,255,0.03)" } }
           }
         }
       });
 
-      // resumo de IMC mais recente
-      const last = currentEntries[currentEntries.length - 1];
-      if (last && last.bmi) {
-        const bmi = last.bmi;
-        let cat = "";
-        if (bmi < 18.5) cat = "Abaixo do peso";
-        else if (bmi < 25) cat = "Peso adequado";
-        else if (bmi < 30) cat = "Sobrepeso";
-        else cat = "Obesidade";
-        bmiSummaryEl.textContent = `IMC atual aproximado: ${bmi.toFixed(1)} (${cat}). Lembre: IMC é só um indicador, não define sua história. 😉`;
-      } else {
-        bmiSummaryEl.textContent = "Ainda não foi possível calcular o IMC. Confira se a altura e o peso estão preenchidos.";
+      imcChart = new Chart(ctxImc, {
+        type: "line",
+        data: {
+          labels,
+          datasets: [{
+            label: "IMC",
+            data: imcs,
+            borderColor: "#f72585",
+            backgroundColor: "rgba(247,37,133,0.1)",
+            borderWidth: 2,
+            tension: 0.35,
+            pointRadius: 3
+          }]
+        },
+        options: {
+          responsive: true,
+          plugins: { legend: { labels: { color: "#d0d3ea", usePointStyle: true } } },
+          scales: {
+            x: { ticks: { color: "#9ba0c2" }, grid: { color: "rgba(255,255,255,0.03)" } },
+            y: { ticks: { color: "#9ba0c2" }, grid: { color: "rgba(255,255,255,0.03)" } }
+          }
+        }
+      });
+
+      // status de IMC atual
+      const imcStatus = $("imcStatus");
+      imcStatus.classList.add("hidden");
+      if (imcs.length > 0) {
+        const atual = imcs[imcs.length - 1];
+        if (!atual) return;
+        imcStatus.classList.remove("hidden", "status-good", "status-warn", "status-bad");
+        if (atual < 18.5) {
+          imcStatus.classList.add("status-warn");
+          imcStatus.textContent = "IMC baixo (" + atual + ")";
+        } else if (atual < 25) {
+          imcStatus.classList.add("status-good");
+          imcStatus.textContent = "IMC ok (" + atual + ")";
+        } else if (atual < 30) {
+          imcStatus.classList.add("status-warn");
+          imcStatus.textContent = "Sobrepeso (" + atual + ")";
+        } else {
+          imcStatus.classList.add("status-bad");
+          imcStatus.textContent = "Obesidade (" + atual + ")";
+        }
       }
     }
 
-    // ========= TREINOS (por objetivo + sexo) ==========
-    function renderWorkoutSuggestions() {
-      const obj = currentProfile?.objective || "";
-      const gender = currentProfile?.gender || "";
-      let titleExtra = "";
-      if (gender === "feminino") {
-        titleExtra = " com foco extra em glúteos, pernas e postura, se desejar.";
-      } else if (gender === "masculino") {
-        titleExtra = " com foco clássico em força, peitoral e costas – sem esquecer perna, hein. 😉";
-      } else {
-        titleExtra = " focado em saúde, força e estética de forma geral.";
-      }
-
-      let html = `<p class="small">Planejamento sugerido considerando seu objetivo selecionado${titleExtra}</p>`;
-
-      if (obj === "emagrecimento" || obj === "") {
-        html += `
-          <h3>Fase base – Emagrecimento saudável</h3>
-          <ul>
-            <li><strong>Musculação: 3–4x/semana</strong>
-              <ul>
-                <li>Agachamento livre ou leg press – 3x10–12</li>
-                <li>Supino reto ou máquina – 3x10–12</li>
-                <li>Remada baixa ou curvada – 3x10–12</li>
-                <li>Desenvolvimento de ombro – 3x10–12</li>
-                <li>Prancha abdominal – 3x30–40s</li>
-              </ul>
-            </li>
-            <li><strong>Cardio leve: 4–6x/semana</strong> – caminhadas rápidas de 20–30 minutos.</li>
-            <li><strong>Dica:</strong> se estiver muito pesado, comece com 10–15 min de caminhada e vá subindo.</li>
-          </ul>
-        `;
-      } else if (obj === "hipertrofia") {
-        html += `
-          <h3>Fase base – Hipertrofia</h3>
-          <ul>
-            <li><strong>Musculação: 4–5x/semana</strong>
-              <ul>
-                <li>Dia 1: Peito + tríceps – 3–4 exercícios, 3x8–10</li>
-                <li>Dia 2: Costas + bíceps – 3–4 exercícios, 3x8–10</li>
-                <li>Dia 3: Pernas + glúteo – 4–5 exercícios, 3x8–12</li>
-                <li>Dia 4: Ombro + abdômen – 3–4 exercícios, 3x10–12</li>
-              </ul>
-            </li>
-            <li><strong>Cardio leve: 2–3x/semana</strong> – 15–20 min só pra saúde, não pra se matar.</li>
-          </ul>
-        `;
-      } else if (obj === "performance") {
-        html += `
-          <h3>Fase base – Performance</h3>
-          <ul>
-            <li><strong>Musculação: 2–3x/semana</strong> – foco em força geral (agachamento, terra, supino, remada).</li>
-            <li><strong>Treino específico: 3–4x/semana</strong> – corrida, bike, esporte que você pratica.</li>
-            <li><strong>Cardio intervalado</strong> 1–2x/semana, se já tiver base de condicionamento.</li>
-          </ul>
-        `;
-      } else if (obj === "recomposicao") {
-        html += `
-          <h3>Fase base – Recomposição corporal</h3>
-          <ul>
-            <li><strong>Musculação: 3–4x/semana</strong> – alternando parte superior e inferior.</li>
-            <li><strong>Cardio moderado: 3x/semana</strong> – 20–30 min.</li>
-          </ul>
-        `;
-      }
-
-      html += `
-        <p class="small">
-          Lembre: séries, repetições e exercícios podem (e devem) ser ajustados por um(a) profissional de educação física
-          de acordo com suas limitações e histórico.
-        </p>
-      `;
-
-      workoutContent.innerHTML = html;
+    function renderAll() {
+      renderCheckins();
+      renderProgress();
+      fillTrainingCheckboxes();
+      renderTrainingFrequency();
+      renderCharts();
     }
-
-    // ========= DIETA (por plano) ==========
-    function renderDietSuggestions() {
-      const diet = currentProfile?.diet || "";
-      let html = "";
-
-      if (!diet) {
-        html = `
-          <p class="small">
-            Selecione um plano alimentar em “Perfil & Metas” para ver aqui
-            uma sugestão básica de alimentos recomendados, evitar e um exemplo de dia.
-          </p>
-        `;
-        dietContent.innerHTML = html;
-        return;
-      }
-
-      if (diet === "lowcarb") {
-        html += `
-          <p><strong>Low carb – foco em controle de carboidratos</strong></p>
-          <div class="tag-row">
-            <span class="tag-pill">Proteína em todas as refeições</span>
-            <span class="tag-pill">Carbo de qualidade</span>
-            <span class="tag-pill">Muita salada</span>
-          </div>
-          <p class="small"><strong>Recomendados:</strong> ovos, carnes magras, peixe, frango, queijos magros, azeite, abacate, castanhas, saladas, legumes, frutas com menos açúcar (morango, kiwi, frutas vermelhas).</p>
-          <p class="small"><strong>Evitar:</strong> açúcar, refrigerante, pães brancos, massas, doces, ultraprocessados em geral.</p>
-          <p class="small"><strong>Exemplo de dia:</strong><br/>
-            • Café da manhã: omelete com queijo + café sem açúcar<br/>
-            • Almoço: frango grelhado + salada grande + legumes refogados<br/>
-            • Lanche: iogurte natural + castanhas<br/>
-            • Jantar: peixe assado + salada + legumes
-          </p>
-        `;
-      } else if (diet === "hipertrofia") {
-        html += `
-          <p><strong>Dieta para hipertrofia – alta proteína</strong></p>
-          <div class="tag-row">
-            <span class="tag-pill">Proteína 1,6–2,2 g/kg</span>
-            <span class="tag-pill">Carbo em torno do treino</span>
-            <span class="tag-pill">Gorduras boas</span>
-          </div>
-          <p class="small"><strong>Recomendados:</strong> arroz, batata-doce, aveia, frango, carne magra, ovos, feijão, lentilha, frutas, azeite, pasta de amendoim.</p>
-          <p class="small"><strong>Evitar excesso de:</strong> frituras, álcool, fast-food, doces em excesso.</p>
-          <p class="small"><strong>Exemplo de dia:</strong><br/>
-            • Café: ovos mexidos + pão integral + fruta<br/>
-            • Almoço: arroz + feijão + carne magra + salada<br/>
-            • Pré-treino: banana + aveia + whey (se usar)<br/>
-            • Pós-treino: refeição com boa proteína + carbo de qualidade<br/>
-            • Jantar: fonte de proteína + legumes + um pouco de carbo
-          </p>
-        `;
-      } else if (diet === "mediterranea") {
-        html += `
-          <p><strong>Dieta mediterrânea – saúde geral</strong></p>
-          <div class="tag-row">
-            <span class="tag-pill">Muito vegetal</span>
-            <span class="tag-pill">Azeite de oliva</span>
-            <span class="tag-pill">Peixes e grãos</span>
-          </div>
-          <p class="small"><strong>Recomendados:</strong> peixes, azeite, frutas, legumes, grãos integrais, nozes, castanhas.</p>
-          <p class="small"><strong>Evitar excesso de:</strong> ultraprocessados, carnes muito gordas, açúcar.</p>
-        `;
-      } else if (diet === "flexivel") {
-        html += `
-          <p><strong>Dieta flexível – IIFYM</strong></p>
-          <div class="tag-row">
-            <span class="tag-pill">Conta macros</span>
-            <span class="tag-pill">80% comida “de verdade”</span>
-            <span class="tag-pill">20% flexível</span>
-          </div>
-          <p class="small">
-            Ideia: bater proteína, carbo e gordura diários, com maioria das calorias vindas de comida boa,
-            permitindo pequenas flexibilizações (pizza, doce, etc.) de forma planejada.
-          </p>
-        `;
-      }
-
-      html += `
-        <p class="small">
-          Essas são apenas linhas gerais. Nutricionista é sempre o(a) melhor amigo(a)
-          para personalizar tudo de acordo com exames, histórico e preferências.
-        </p>
-      `;
-
-      dietContent.innerHTML = html;
-    }
-
-    // ========= “IA” de suplementos (regras simples) ==========
-    suppForm.addEventListener("submit", (e) => {
-      e.preventDefault();
-      const text = (suppNotes.value || "").toLowerCase();
-      if (!text.trim()) {
-        suppSuggestion.textContent = "Escreva pelo menos um suplemento para eu poder te sugerir horários gerais.";
-        return;
-      }
-
-      let parts = [];
-      if (text.includes("whey")) {
-        parts.push("• Whey: geralmente pós-treino ou como lanche proteico entre refeições.");
-      }
-      if (text.includes("creatina")) {
-        parts.push("• Creatina: 3–5 g por dia, horário flexível (junto de alguma refeição). Consistência é mais importante que horário.");
-      }
-      if (text.includes("vitamina d")) {
-        parts.push("• Vitamina D: normalmente 1x ao dia, com refeição que tenha alguma gordura (melhora absorção).");
-      }
-      if (text.includes("multivit") || text.includes("multivitam")) {
-        parts.push("• Multivitamínico: junto de uma refeição principal (café, almoço ou jantar).");
-      }
-      if (text.includes("cafeina") || text.includes("cafeína") || text.includes("pré-treino") || text.includes("pre-treino")) {
-        parts.push("• Cafeína / pré-treino: 30–45 min antes do treino (evitar muito tarde para não atrapalhar o sono).");
-      }
-
-      if (parts.length === 0) {
-        parts.push("Não encontrei suplementos específicos no texto, então a sugestão geral é: distribua vitaminas junto das refeições principais, creatina em qualquer horário do dia e estimulantes (cafeína) longe da hora de dormir.");
-      }
-
-      suppSuggestion.innerHTML = `
-        <p class="small"><strong>Sugestão geral de horários:</strong></p>
-        <p class="small">${parts.join("<br/>")}</p>
-        <p class="small">Sempre siga as orientações do(a) médico(a) / nutricionista. Aqui é só um guia geral.</p>
-      `;
-    });
   </script>
 </body>
 </html>

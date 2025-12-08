@@ -3,491 +3,358 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Avatar de Evolução — FitnessBuddy (versão simples)</title>
-
-  <!-- Estilos simples (responsivo e limpo) -->
+  <title>Avatar Evolução — 3 visões</title>
   <style>
-    :root{
-      --bg: #0f1724;
-      --card: #0b1220;
-      --muted: #94a3b8;
-      --accent: linear-gradient(90deg,#06b6d4,#10b981);
-      --glass: rgba(255,255,255,0.04);
-    }
-    html,body{height:100%;margin:0;font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,"Helvetica Neue",Arial;}
-    body{background:linear-gradient(180deg,#071124 0%, #07162a 60%); color:#e6eef8; -webkit-font-smoothing:antialiased;}
-    .container{max-width:1100px;margin:18px auto;padding:18px;display:grid;grid-template-columns:1fr 420px;gap:18px;}
-    .card{background:var(--card);border-radius:14px;padding:16px;box-shadow:0 6px 24px rgba(2,6,23,0.7);border:1px solid rgba(255,255,255,0.03);}
-    h1{margin:0 0 8px 0;font-size:18px}
-    p.muted{color:var(--muted);margin:0 0 12px 0;font-size:13px}
-    /* Canvas area */
-    #viewport{width:100%;height:640px;border-radius:10px;overflow:hidden;background:linear-gradient(180deg,#0b1220,#071124);}
-    .controls{display:flex;flex-direction:column;gap:10px;margin-top:12px}
-    label{font-size:12px;color:var(--muted);display:block;margin-bottom:6px}
-    input[type="number"], input[type="text"]{width:100%;padding:8px;border-radius:8px;border:1px solid rgba(255,255,255,0.04);background:transparent;color:inherit}
+    :root{--bg:#071124;--card:#0b1220;--muted:#9fb0c6}
+    html,body{height:100%;margin:0;font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial;color:#e6eef8;background:linear-gradient(180deg,#071124,#04101a)}
+    .wrap{max-width:1180px;margin:18px auto;padding:16px;display:grid;grid-template-columns:1fr 360px;gap:16px}
+    .card{background:var(--card);border-radius:12px;padding:14px;box-shadow:0 8px 30px rgba(2,6,23,0.6);border:1px solid rgba(255,255,255,0.03)}
+    h1{font-size:18px;margin:0 0 8px}
+    p.muted{color:var(--muted);margin:6px 0 12px;font-size:13px}
+    #viewport{width:100%;height:560px;border-radius:10px;overflow:hidden;background:linear-gradient(180deg,#071124,#0b1220)}
+    .controls{display:flex;flex-direction:column;gap:8px}
+    label{font-size:13px;color:var(--muted);display:block;margin-bottom:6px}
+    input[type="number"]{width:100%;padding:8px;border-radius:8px;border:1px solid rgba(255,255,255,0.04);background:transparent;color:inherit}
     .row{display:flex;gap:8px}
     .btn{padding:10px 12px;border-radius:10px;border:0;cursor:pointer;font-weight:600}
     .btn-primary{background:linear-gradient(90deg,#06b6d4,#10b981);color:#021020}
     .btn-ghost{background:transparent;border:1px solid rgba(255,255,255,0.04);color:var(--muted)}
     .small{padding:6px 8px;font-size:13px;border-radius:8px}
-    .progressWrap{margin-top:10px}
-    .progressBar{height:14px;background:rgba(255,255,255,0.06);border-radius:999px;overflow:hidden}
+    .progressBar{height:14px;background:rgba(255,255,255,0.04);border-radius:999px;overflow:hidden}
     .progressFill{height:100%;width:0%;background:linear-gradient(90deg,#06b6d4,#10b981);transition:width 600ms cubic-bezier(.2,.9,.3,1)}
-    .message{margin-top:8px;color:var(--muted);font-size:13px}
-    .history{margin-top:12px;display:grid;gap:6px;max-height:200px;overflow:auto;padding-right:6px}
-    .histItem{background:var(--glass);padding:8px;border-radius:8px;font-size:13px;color:#e9f6ff}
-    footer{margin-top:14px;color:var(--muted);font-size:13px;text-align:center}
-    @media (max-width:980px){
-      .container{grid-template-columns:1fr; padding:12px}
-      #viewport{height:520px}
-    }
+    .message{margin-top:6px;color:var(--muted);font-size:13px}
+    .history{margin-top:12px;display:grid;gap:6px;max-height:260px;overflow:auto;padding-right:6px}
+    .histItem{background:rgba(255,255,255,0.02);padding:8px;border-radius:8px;font-size:13px}
+    footer{margin-top:12px;color:var(--muted);font-size:13px;text-align:center}
+    @media (max-width:980px){.wrap{grid-template-columns:1fr;padding:10px}.card{padding:10px}#viewport{height:420px}}
   </style>
 </head>
 <body>
-  <div class="container">
-    <!-- Left: viewport 3D -->
+  <div class="wrap">
     <div class="card">
-      <h1>Avatar simpático — sua evolução</h1>
-      <p class="muted">O boneco muda visual conforme seu peso/altura e mostra progresso até a meta. Salva localmente no navegador.</p>
+      <h1>Avatar: Atual — Semana — Meta (3 visões)</h1>
+      <p class="muted">Mude medidas à esquerda, salve pesagens e selecione uma semana para comparar. Tudo salvo localmente.</p>
+
       <div id="viewport"></div>
 
-      <div class="controls">
-        <div class="row">
-          <button class="btn btn-ghost small" id="btnMinus1">-1 kg</button>
-          <button class="btn btn-ghost small" id="btnPlus05">+0.5 kg</button>
-          <button class="btn btn-ghost small" id="btnPlus1">+1 kg</button>
-          <button class="btn btn-ghost small" id="btnExport">Export CSV</button>
-        </div>
-        <div class="row" style="margin-top:6px">
+      <div style="display:flex;gap:8px;margin-top:10px;flex-wrap:wrap">
+        <button id="btnSaveWeight" class="btn btn-primary small">Salvar pesagem</button>
+        <button id="btnSaveTarget" class="btn btn-ghost small">Salvar meta</button>
+        <button id="btnExport" class="btn btn-ghost small">Export CSV</button>
+      </div>
+
+      <div style="margin-top:10px">
+        <div style="display:flex;gap:8px">
           <div style="flex:1">
-            <label>Peso atual (kg)</label>
-            <input id="inpCurrent" type="number" step="0.1" />
+            <label>Peso atual (kg)</label><input id="inpCurrent" type="number" step="0.1" />
           </div>
           <div style="width:120px">
-            <label>Altura (m)</label>
-            <input id="inpHeight" type="number" step="0.01" />
+            <label>Altura (m)</label><input id="inpHeight" type="number" step="0.01" />
           </div>
-        </div>
-        <div>
-          <label>Meta de peso (kg)</label>
-          <input id="inpTarget" type="number" step="0.1" />
-          <div style="display:flex;gap:8px;margin-top:8px">
-            <button id="btnSaveWeight" class="btn btn-primary small">Salvar pesagem</button>
-            <button id="btnSaveTarget" class="btn btn-ghost small">Salvar meta</button>
+          <div style="width:120px">
+            <label>Meta (kg)</label><input id="inpTarget" type="number" step="0.1" />
           </div>
         </div>
 
-        <div class="progressWrap">
-          <div style="display:flex;justify-content:space-between;font-size:13px">
-            <div><strong>Progresso</strong></div>
-            <div id="lblPercent" style="color:var(--muted)">0% towards 0kg</div>
-          </div>
-          <div class="progressBar" aria-hidden="true"><div id="barFill" class="progressFill"></div></div>
-          <div id="msgMotiv" class="message">Vamos começar! Registre sua primeira pesagem.</div>
+        <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:8px">
+          <div><label>Braço (cm)</label><input id="inpArm" type="number" step="0.1" /></div>
+          <div><label>Peito (cm)</label><input id="inpChest" type="number" step="0.1" /></div>
+          <div><label>Barriga (cm)</label><input id="inpWaist" type="number" step="0.1" /></div>
+          <div><label>Coxa (cm)</label><input id="inpThigh" type="number" step="0.1" /></div>
         </div>
+      </div>
 
+      <div style="margin-top:10px">
+        <div style="display:flex;justify-content:space-between;align-items:center">
+          <strong>Progresso</strong>
+          <div id="lblPercent" style="color:var(--muted)">0% towards 0kg</div>
+        </div>
+        <div class="progressBar" aria-hidden="true"><div id="barFill" class="progressFill"></div></div>
+        <div id="msgMotiv" class="message">Registre uma pesagem para começar.</div>
       </div>
     </div>
 
-    <!-- Right: informações e histórico -->
     <div class="card">
-      <h1>Dados & histórico</h1>
-      <p class="muted">Este painel mostra as últimas pesagens salvas (localmente). Se quiser sincronizar entre dispositivos, me diga e eu te mostro como conectar um backend.</p>
+      <h1>Histórico & comparação</h1>
+      <p class="muted">Escolha uma semana para visualizar o boneco daquela pesagem no centro.</p>
 
-      <div class="history" id="historyList">
-        <!-- histórico será injetado aqui -->
+      <div style="display:flex;gap:8px;margin-bottom:8px">
+        <select id="selWeeks" style="flex:1;padding:8px;border-radius:8px;background:transparent;border:1px solid rgba(255,255,255,0.04)"></select>
+        <button id="btnDel" class="btn btn-ghost small">Excluir</button>
       </div>
 
+      <div class="history" id="historyList"></div>
+
       <footer>
-        Dica: clique e arraste o boneco para girar. Use mouse wheel para dar zoom.
+        Dica: clique e arraste o boneco para girar, role para dar zoom. Salvos: <span id="savedCount">0</span>
       </footer>
     </div>
   </div>
 
-  <!-- Scripts: Three.js e controles via ES Modules (CDN) -->
   <script type="module">
-    // Importando três.js e OrbitControls via CDN (modules)
     import * as THREE from 'https://unpkg.com/three@0.152.2/build/three.module.js';
     import { OrbitControls } from 'https://unpkg.com/three@0.152.2/examples/jsm/controls/OrbitControls.js';
 
-    /**********************************************************************
-     *  SIMPLE FITNESS AVATAR (plain Three.js, procedural shapes)
-     *
-     *  Estrutura principal:
-     *   - cena, câmera, renderer
-     *   - um 'group' que contém cabeça, tronco, braços, pernas e acessório (coração)
-     *   - funções que atualizam a aparência do avatar com base em peso/altura/mood
-     *   - armazenamento local em localStorage (keys: fb_meta_local, fb_weeks_local)
-     *
-     *  Comentários inline explicam trechos não-triviais.
-     **********************************************************************/
+    // storage keys
+    const META_KEY = 'fb_meta_local';
+    const WEEKS_KEY = 'fb_weeks_local';
 
-    /* -------------------------
-       UTIL: armazenamento simples
-       ------------------------- */
-    const STORAGE_META_KEY = 'fb_meta_local';
-    const STORAGE_WEEKS_KEY = 'fb_weeks_local';
+    function loadMeta(){ try{const r=localStorage.getItem(META_KEY); return r?JSON.parse(r):{initialWeight:null,targetWeight:null,height:null,arm:null,chest:null,waist:null,thigh:null};}catch(e){return {initialWeight:null,targetWeight:null,height:null}}}
+    function saveMeta(m){ localStorage.setItem(META_KEY, JSON.stringify(m)); }
+    function loadWeeks(){ try{const r=localStorage.getItem(WEEKS_KEY); return r?JSON.parse(r):[]; }catch(e){return []} }
+    function saveWeeks(w){ localStorage.setItem(WEEKS_KEY, JSON.stringify(w)); }
 
-    function loadMeta(){
-      try{
-        const raw = localStorage.getItem(STORAGE_META_KEY);
-        return raw ? JSON.parse(raw) : { initialWeight: null, targetWeight: null, height: null };
-      }catch(e){ return { initialWeight: null, targetWeight: null, height: null }; }
-    }
-    function saveMeta(meta){
-      localStorage.setItem(STORAGE_META_KEY, JSON.stringify(meta));
-    }
-    function loadWeeks(){
-      try{
-        const raw = localStorage.getItem(STORAGE_WEEKS_KEY);
-        return raw ? JSON.parse(raw) : [];
-      }catch(e){ return []; }
-    }
-    function saveWeeks(ws){
-      localStorage.setItem(STORAGE_WEEKS_KEY, JSON.stringify(ws));
-    }
-
-    /* -------------------------
-       Cálculo de porcentagem entre initial -> target com base no current
-       (lida com meta de PERDER ou GANHAR peso)
-       ------------------------- */
-    function calcPercent(initial, current, target){
-      if(initial === null || current === null || target === null) return 0;
-      if(initial === target) return 100;
+    function calcPercent(initial,current,target){
+      if(initial===null||current===null||target===null) return 0;
+      if(initial===target) return 100;
       const isLose = target < initial;
-      if(isLose){
-        const total = initial - target;
-        if(total <= 0) return 0;
-        const done = initial - current;
-        return Math.round(Math.max(0, Math.min(100, (done/total)*100)));
-      } else {
-        const total = target - initial;
-        if(total <= 0) return 0;
-        const done = current - initial;
-        return Math.round(Math.max(0, Math.min(100, (done/total)*100)));
-      }
+      if(isLose){ const total = initial-target; if(total<=0) return 0; const done = initial-current; return Math.round(Math.max(0,Math.min(100,(done/total)*100))); }
+      else { const total = target-initial; if(total<=0) return 0; const done = current-initial; return Math.round(Math.max(0,Math.min(100,(done/total)*100))); }
     }
 
-    /* Mensagens motivacionais (simples) */
     const messages = [
-      { t:0, txt:"Começando com garra! Um passo por vez." },
-      { t:10, txt:"Ótimo! Tá mais perto do que ontem." },
-      { t:30, txt:"Bora! A barra subiu — continue a playlist." },
-      { t:50, txt:"Metade do caminho! O boneco sorriu." },
-      { t:75, txt:"Quase lá — só falta aquele último esforço." },
-      { t:95, txt:"Uau! Pode comemorar com moderação." },
-      { t:100, txt:"Meta atingida! Moonwalk liberado." },
+      {t:0,txt:"Começando com garra!"},
+      {t:10,txt:"Ótimo! Já perto do ontem."},
+      {t:30,txt:"Bora! A barra subiu."},
+      {t:50,txt:"Metade do caminho!"},
+      {t:75,txt:"Quase lá!"},
+      {t:95,txt:"Uau! Quase meta."},
+      {t:100,txt:"Meta atingida! 🎉"}
     ];
-    function pickMessage(p){
-      let chosen = messages[0];
-      for(const m of messages) if(p>=m.t) chosen = m;
-      return chosen.txt;
-    }
+    function pickMessage(p){ let c=messages[0]; for(const m of messages) if(p>=m.t) c=m; return c.txt; }
 
-    /* -------------------------
-       3D setup
-       ------------------------- */
+    // UI elements
     const container = document.getElementById('viewport');
+    const inpCurrent = document.getElementById('inpCurrent');
+    const inpHeight = document.getElementById('inpHeight');
+    const inpTarget = document.getElementById('inpTarget');
+    const inpArm = document.getElementById('inpArm');
+    const inpChest = document.getElementById('inpChest');
+    const inpWaist = document.getElementById('inpWaist');
+    const inpThigh = document.getElementById('inpThigh');
+
+    const btnSave = document.getElementById('btnSaveWeight');
+    const btnSaveTarget = document.getElementById('btnSaveTarget');
+    const btnExport = document.getElementById('btnExport');
+    const selWeeks = document.getElementById('selWeeks');
+    const historyList = document.getElementById('historyList');
+    const lblPercent = document.getElementById('lblPercent');
+    const barFill = document.getElementById('barFill');
+    const msgMotiv = document.getElementById('msgMotiv');
+    const savedCount = document.getElementById('savedCount');
+    const btnDel = document.getElementById('btnDel');
+
+    // three.js setup
     const scene = new THREE.Scene();
     scene.background = new THREE.Color(0x061022);
-
-    // camera e renderer
-    const camera = new THREE.PerspectiveCamera(35, container.clientWidth / container.clientHeight, 0.1, 100);
-    camera.position.set(0, 1.2, 3.2);
-
-    const renderer = new THREE.WebGLRenderer({ antialias:true, alpha:true });
+    const camera = new THREE.PerspectiveCamera(35, container.clientWidth/container.clientHeight, 0.1, 100);
+    camera.position.set(0,1.25,6);
+    const renderer = new THREE.WebGLRenderer({antialias:true,alpha:true});
     renderer.setSize(container.clientWidth, container.clientHeight);
-    renderer.setPixelRatio(window.devicePixelRatio ? window.devicePixelRatio : 1);
+    renderer.setPixelRatio(window.devicePixelRatio||1);
     container.appendChild(renderer.domElement);
 
-    // luz ambiente + direction
-    const ambient = new THREE.AmbientLight(0xffffff, 0.6);
-    const dir = new THREE.DirectionalLight(0xffffff, 0.7);
-    dir.position.set(5,8,5);
-    scene.add(ambient, dir);
+    const ambient = new THREE.AmbientLight(0xffffff,0.6);
+    const dir = new THREE.DirectionalLight(0xffffff,0.7);
+    dir.position.set(5,8,5); scene.add(ambient,dir);
 
-    // controls
     const controls = new OrbitControls(camera, renderer.domElement);
     controls.enablePan = false;
     controls.maxPolarAngle = Math.PI/2.1;
 
-    // ground (subtle)
-    const ground = new THREE.Mesh(new THREE.PlaneGeometry(6,6), new THREE.MeshStandardMaterial({ color:0x06101b, roughness:1 }));
-    ground.rotation.x = -Math.PI/2;
-    ground.position.y = -0.55;
-    scene.add(ground);
+    // ground
+    const ground = new THREE.Mesh(new THREE.PlaneGeometry(22,6), new THREE.MeshStandardMaterial({color:0x06101b,roughness:1}));
+    ground.rotation.x = -Math.PI/2; ground.position.y = -0.9; scene.add(ground);
 
-    /* -------------------------
-       Avatar procedural: grupo com partes básicas
-       - Mantemos referências às geometrias/materials para atualizar dinamicamente
-       - Para expressões mudamos rota/escala/posição de olhos/boca e cor do coração
-       ------------------------- */
-    const avatarGroup = new THREE.Group();
-    scene.add(avatarGroup);
+    // create three avatar groups: left=current, center=week, right=target
+    const leftGroup = new THREE.Group(); leftGroup.position.x = -2.1; scene.add(leftGroup);
+    const centerGroup = new THREE.Group(); centerGroup.position.x = 0; scene.add(centerGroup);
+    const rightGroup = new THREE.Group(); rightGroup.position.x = 2.1; scene.add(rightGroup);
 
-    // HEAD
-    const headGeo = new THREE.SphereGeometry(0.28, 32, 32);
-    const headMat = new THREE.MeshStandardMaterial({ color: 0xF2C9A6, roughness:0.6, metalness:0.03 });
-    const head = new THREE.Mesh(headGeo, headMat);
-    head.position.set(0,1.45,0);
-    avatarGroup.add(head);
-
-    // EYES (left & right) - pequenas esferas pretas
-    const eyeGeo = new THREE.SphereGeometry(0.13, 16, 16);
-    const eyeMat = new THREE.MeshStandardMaterial({ color:0x111111 });
-    const eyeL = new THREE.Mesh(eyeGeo, eyeMat);
-    const eyeR = new THREE.Mesh(eyeGeo, eyeMat);
-    eyeL.position.set(-0.09,1.5,0.26);
-    eyeR.position.set(0.09,1.5,0.26);
-    avatarGroup.add(eyeL, eyeR);
-
-    // MOUTH - usaremos um box fino rotacionado para simular sorriso/carranca
-    const mouthGeo = new THREE.BoxGeometry(0.22, 0.04, 0.02);
-    const mouthMat = new THREE.MeshStandardMaterial({ color:0x7B2E2E });
-    const mouth = new THREE.Mesh(mouthGeo, mouthMat);
-    mouth.position.set(0,1.38,0.26);
-    avatarGroup.add(mouth);
-
-    // TORSO (box) - largura vai variar com peso
-    const torsoGeo = new THREE.BoxGeometry(0.45, 0.6, 0.28);
-    const torsoMat = new THREE.MeshStandardMaterial({ color:0x77C0E0 });
-    const torso = new THREE.Mesh(torsoGeo, torsoMat);
-    torso.position.set(0,0.8,0);
-    avatarGroup.add(torso);
-
-    // ARMS - cilindros
-    function makeArm(x,rotZ){
-      const g = new THREE.Mesh(new THREE.CylinderGeometry(0.08,0.08,0.5,16), headMat);
-      g.position.set(x,0.9,0);
-      g.rotation.z = rotZ;
-      return g;
+    // factory to create a simple avatar (returns object with refs to parts)
+    function makeAvatarGroup(baseColor=0x77C0E0){
+      const g = new THREE.Group();
+      const headMat = new THREE.MeshStandardMaterial({color:0xF2C9A6,roughness:0.6,metalness:0.03});
+      const head = new THREE.Mesh(new THREE.SphereGeometry(0.28,32,32), headMat); head.position.set(0,1.45,0); g.add(head);
+      const eyeMat = new THREE.MeshStandardMaterial({color:0x111111});
+      const eyeL = new THREE.Mesh(new THREE.SphereGeometry(0.13,16,16), eyeMat); eyeL.position.set(-0.09,1.5,0.26);
+      const eyeR = new THREE.Mesh(new THREE.SphereGeometry(0.13,16,16), eyeMat); eyeR.position.set(0.09,1.5,0.26);
+      g.add(eyeL,eyeR);
+      const mouthMat = new THREE.MeshStandardMaterial({color:0x7B2E2E});
+      const mouth = new THREE.Mesh(new THREE.BoxGeometry(0.22,0.04,0.02), mouthMat); mouth.position.set(0,1.38,0.26); g.add(mouth);
+      const torsoMat = new THREE.MeshStandardMaterial({color:baseColor});
+      const torso = new THREE.Mesh(new THREE.BoxGeometry(0.45,0.6,0.28), torsoMat); torso.position.set(0,0.8,0); g.add(torso);
+      const armMat = new THREE.MeshStandardMaterial({color:0xF2C9A6});
+      const armL = new THREE.Mesh(new THREE.CylinderGeometry(0.08,0.08,0.5,16), armMat); armL.position.set(-0.46,0.9,0); armL.rotation.z = 0.12; g.add(armL);
+      const armR = armL.clone(); armR.position.set(0.46,0.9,0); armR.rotation.z = -0.12; g.add(armR);
+      const legMat = new THREE.MeshStandardMaterial({color:0x5A4E4E});
+      const legL = new THREE.Mesh(new THREE.CylinderGeometry(0.1,0.1,0.6,16), legMat); legL.position.set(-0.16,0.22,0); g.add(legL);
+      const legR = legL.clone(); legR.position.set(0.16,0.22,0); g.add(legR);
+      const heartMat = new THREE.MeshStandardMaterial({color:0xFF6B6B,emissive:0x000000});
+      const heart = new THREE.Mesh(new THREE.SphereGeometry(0.12,12,12), heartMat); heart.position.set(0.6,1.55,0); g.add(heart);
+      return { group:g, parts:{head, eyeL, eyeR, mouth, torso, armL, armR, legL, legR, heart}, mats:{headMat, torsoMat}};
     }
-    const armL = makeArm(-0.46, 0.12);
-    const armR = makeArm(0.46, -0.12);
-    avatarGroup.add(armL, armR);
 
-    // LEGS - cilindros
-    const legL = new THREE.Mesh(new THREE.CylinderGeometry(0.1,0.1,0.6,16), new THREE.MeshStandardMaterial({ color:0x5A4E4E }));
-    const legR = legL.clone();
-    legL.position.set(-0.16,0.22,0);
-    legR.position.set(0.16,0.22,0);
-    avatarGroup.add(legL, legR);
+    const leftAvatar = makeAvatarGroup(0x77C0E0); leftGroup.add(leftAvatar.group);
+    const centerAvatar = makeAvatarGroup(0x77C0E0); centerGroup.add(centerAvatar.group);
+    const rightAvatar = makeAvatarGroup(0x77C0E0); rightGroup.add(rightAvatar.group);
 
-    // ACCESSORY: HEART floating (sphere as stylized heart)
-    const heartMat = new THREE.MeshStandardMaterial({ color:0xFF6B6B, emissive:0x000000 });
-    const heart = new THREE.Mesh(new THREE.SphereGeometry(0.12, 12, 12), heartMat);
-    heart.position.set(0.6,1.55,0);
-    avatarGroup.add(heart);
+    // helper to map measurements into visual scales
+    function applyMeasurementsToAvatar(targetObj, measures){
+      // measures: { height, weight, arm, chest, waist, thigh }
+      const heightMeters = measures.height || 1.75;
+      const wVal = measures.weight || 80;
+      const hScale = Math.max(0.6, Math.min(1.4, (heightMeters - 1.2)/(2.1-1.2) + 0.8));
+      targetObj.group.scale.set(hScale,hScale,hScale);
 
-    // inicial scale do grupo (altura será aplicada aqui)
-    avatarGroup.scale.set(1,1,1);
+      // width mapping from chest or weight preference
+      const widthScale = Math.max(0.6, Math.min(1.6, ( (measures.chest || wVal) - 40 ) / (120-40) + 0.6));
+      targetObj.parts.torso.scale.set(widthScale, 1*widthScale, widthScale*0.8);
+      targetObj.parts.armL.scale.set(widthScale* ( (measures.arm? measures.arm/12 : 1) ), widthScale* ( (measures.arm? measures.arm/12 : 1) ), widthScale* ( (measures.arm? measures.arm/12 : 1) ));
+      targetObj.parts.armR.scale.copy(targetObj.parts.armL.scale);
+      targetObj.parts.legL.scale.set(widthScale*( (measures.thigh? measures.thigh/20 : 1) ), widthScale*( (measures.thigh? measures.thigh/20 : 1) ), widthScale*( (measures.thigh? measures.thigh/20 : 1) ));
+      targetObj.parts.legR.scale.copy(targetObj.parts.legL.scale);
 
-    /* -------------------------
-       Function que atualiza avatar visualmente com base em dados
-       - heightMeters: m
-       - weightKg: kg
-       - mood: 'sad' | 'neutral' | 'happy' | 'pumped'
-       Implementação: mudamos escala vertical (altura), largura do torso (largura),
-       olhos (tamanho/depth), boca (curvatura via rotation), cor do skin/heart.
-       ------------------------- */
-    function updateAvatar({ heightMeters, weightKg, mood }){
-      // mapear altura 1.2..2.1 -> scale 0.6..1.4 (mesma ideia da versão React)
-      const h = Math.max(1.2, Math.min(2.1, Number(heightMeters) || 1.75));
-      const heightScale = Math.max(0.6, Math.min(1.4, (h - 1.2) / (2.1 - 1.2) + 0.8));
-      avatarGroup.scale.set(heightScale, heightScale, heightScale);
-
-      // mapear peso 40..120 -> widthScale 0.6..1.4
-      const w = Math.max(40, Math.min(120, Number(weightKg) || 80));
-      const widthScale = Math.max(0.6, Math.min(1.4, (w - 40) / (120 - 40) + 0.6));
-      torso.scale.x = widthScale;
-      armL.scale.set(widthScale, widthScale, widthScale);
-      armR.scale.set(widthScale, widthScale, widthScale);
-      legL.scale.set(widthScale, widthScale, widthScale);
-      legR.scale.set(widthScale, widthScale, widthScale);
-
-      // olhos: variar tamanho sutilmente
-      const eyeSize = mood === 'sad' ? 0.12 : mood === 'happy' ? 0.14 : mood === 'pumped' ? 0.16 : 0.13;
-      eyeL.scale.set(eyeSize/0.13, eyeSize/0.13, eyeSize/0.13);
-      eyeR.scale.copy(eyeL.scale);
-
-      // boca: simular curvatura via rotacao Z (negativa = triste, positiva = sorriso)
+      // eyes/mouth based on a simple mood from waist->more waist = sad -> smaller eyes, mouth curve
+      let mood = 'neutral';
+      const pct = measures._percent ?? 0;
+      if(pct >= 95) mood = 'pumped'; else if(pct >= 50) mood = 'happy'; else if(pct >= 20) mood = 'neutral'; else mood = 'sad';
+      const eyeScale = mood === 'sad' ? 0.9 : mood === 'happy' ? 1.05 : mood === 'pumped' ? 1.2 : 1.0;
+      targetObj.parts.eyeL.scale.set(eyeScale,eyeScale,eyeScale); targetObj.parts.eyeR.scale.copy(targetObj.parts.eyeL.scale);
       const mouthCurv = mood === 'sad' ? -0.12 : mood === 'happy' ? 0.16 : mood === 'pumped' ? 0.22 : 0.03;
-      mouth.rotation.z = mouthCurv;
-
-      // cor da pele: sutil
-      headMat.color.set(mood === 'pumped' ? 0xFFD7B5 : 0xF2C9A6);
-      // coração: tamanho e emissive quando 'pumped'
-      if(mood === 'happy') heart.scale.set(1.4,1.4,1.4);
-      else heart.scale.set(1,1,1);
-      heart.material.emissive.set(mood === 'pumped' ? 0xFFB3B3 : 0x000000);
-      heart.material.color.set(mood === 'sad' ? 0xA3A3A3 : 0xFF6B6B);
+      targetObj.parts.mouth.rotation.z = mouthCurv;
+      targetObj.mats.headMat.color.set(mood === 'pumped' ? 0xFFD7B5 : 0xF2C9A6);
+      targetObj.parts.heart.scale.set(mood === 'happy' ? 1.4 : 1,1,1);
+      targetObj.parts.heart.material.emissive.set(mood === 'pumped' ? 0xFFB3B3 : 0x000000);
+      targetObj.parts.heart.material.color.set(mood === 'sad' ? 0xA3A3A3 : 0xFF6B6B);
     }
 
-    /* -------------------------
-       Idle animation (subtle sway/float)
-       ------------------------- */
+    // animation loop
     function animate(){
       requestAnimationFrame(animate);
       const t = performance.now()*0.001;
-      avatarGroup.rotation.y = Math.sin(t*0.6)*0.04;
-      avatarGroup.position.y = 0.02*Math.sin(t*1.2);
-      renderer.render(scene, camera);
+      leftGroup.rotation.y = Math.sin(t*0.6)*0.03;
+      centerGroup.rotation.y = Math.sin(t*0.6 + 0.3)*0.03;
+      rightGroup.rotation.y = Math.sin(t*0.6 + 0.6)*0.03;
+      leftGroup.position.y = 0.02*Math.sin(t*1.2);
+      centerGroup.position.y = 0.02*Math.sin(t*1.3);
+      rightGroup.position.y = 0.02*Math.sin(t*1.1);
+      renderer.render(scene,camera);
     }
     animate();
 
-    /* -------------------------
-       Resize handling
-       ------------------------- */
-    window.addEventListener('resize', ()=>{
-      const w = container.clientWidth, h = container.clientHeight;
-      camera.aspect = w/h;
-      camera.updateProjectionMatrix();
-      renderer.setSize(w,h);
-    });
+    // handle resize
+    window.addEventListener('resize', ()=>{ const w = container.clientWidth, h = container.clientHeight; camera.aspect = w/h; camera.updateProjectionMatrix(); renderer.setSize(w,h); });
 
-    /* -------------------------
-       UI wiring: inputs, buttons e lógica de persistência
-       ------------------------- */
-    const inpCurrent = document.getElementById('inpCurrent');
-    const inpHeight = document.getElementById('inpHeight');
-    const inpTarget = document.getElementById('inpTarget');
-    const btnMinus1 = document.getElementById('btnMinus1');
-    const btnPlus05 = document.getElementById('btnPlus05');
-    const btnPlus1 = document.getElementById('btnPlus1');
-    const btnSaveWeight = document.getElementById('btnSaveWeight');
-    const btnSaveTarget = document.getElementById('btnSaveTarget');
-    const lblPercent = document.getElementById('lblPercent');
-    const barFill = document.getElementById('barFill');
-    const msgMotiv = document.getElementById('msgMotiv');
-    const historyList = document.getElementById('historyList');
-    const btnExport = document.getElementById('btnExport');
+    // load stored data and initialize UI
+    let meta = loadMeta();
+    let weeks = loadWeeks();
 
-    // carregar meta/weeks
-    let meta = loadMeta(); // { initialWeight, targetWeight, height }
-    let weeks = loadWeeks(); // lista de { id, date, weight, cintura?, humor?, ... }
-
-    // Utility: format date
-    function fmtDate(iso){
-      try{ return new Date(iso).toLocaleString(); } catch(e) { return iso; }
-    }
-
-    // Inicializar inputs com dados existentes ou defaults
-    const lastWeight = weeks.length ? weeks[weeks.length-1].weight : (meta.initialWeight ?? 80);
-    inpCurrent.value = lastWeight;
-    inpHeight.value = meta.height ?? 1.75;
-    inpTarget.value = meta.targetWeight ?? (meta.initialWeight ? meta.initialWeight - 5 : 70);
-
-    // função que atualiza UI (progress bar, mensagem e avatar)
     function refreshUI(){
-      const initial = meta.initialWeight ?? (weeks.length ? weeks[0].weight : Number(inpCurrent.value));
-      const current = weeks.length ? weeks[weeks.length-1].weight : Number(inpCurrent.value);
-      const target = Number(inpTarget.value);
-      const percent = calcPercent(initial, current, target);
+      // populate inputs
+      const last = weeks.length ? weeks[weeks.length-1] : null;
+      inpCurrent.value = last ? last.weight : (meta.initialWeight ?? 80);
+      inpHeight.value = meta.height ?? 1.75;
+      inpTarget.value = meta.targetWeight ?? (meta.initialWeight? meta.initialWeight-5 : 70);
+      inpArm.value = meta.arm ?? 30;
+      inpChest.value = meta.chest ?? 95;
+      inpWaist.value = meta.waist ?? 85;
+      inpThigh.value = meta.thigh ?? 55;
 
-      lblPercent.textContent = `${percent}% towards ${target}kg`;
-      barFill.style.width = percent + '%';
-      msgMotiv.textContent = pickMessage(percent);
-
-      // mood simple mapping
-      let mood = 'neutral';
-      if(percent >= 95) mood = 'pumped';
-      else if(percent >= 50) mood = 'happy';
-      else if(percent >= 20) mood = 'neutral';
-      else mood = 'sad';
-
-      updateAvatar({ heightMeters: Number(inpHeight.value), weightKg: Number(inpCurrent.value), mood });
-
-      // history list
+      // build weeks select + history
+      selWeeks.innerHTML = '';
+      const optDefault = document.createElement('option'); optDefault.value = ''; optDefault.textContent = '-- selecione semana (central) --'; selWeeks.appendChild(optDefault);
       historyList.innerHTML = '';
       if(weeks.length===0){
-        historyList.innerHTML = '<div class="histItem">Sem entradas ainda. Salve sua primeira pesagem!</div>';
+        historyList.innerHTML = '<div class="histItem">Sem entradas ainda.</div>';
       } else {
-        // mostramos últimas 8 entradas (mais recentes primeiro)
-        const slice = weeks.slice(-8).reverse();
-        for(const w of slice){
-          const el = document.createElement('div');
-          el.className = 'histItem';
-          el.innerHTML = `<div style="font-weight:700">${fmtDate(w.date)}</div><div>Peso: ${w.weight} kg</div>${w.cintura?`<div>Cintura: ${w.cintura} cm</div>`:''}${w.humor?`<div>Humor: ${w.humor}</div>`:''}`;
+        for(let i=weeks.length-1;i>=0;i--){
+          const w = weeks[i];
+          const el = document.createElement('div'); el.className='histItem';
+          el.innerHTML = `<div style="font-weight:700">${new Date(w.date).toLocaleString()}</div><div>Peso: ${w.weight} kg · Cintura:${w.waist||''} cm</div>`;
           historyList.appendChild(el);
+          const opt = document.createElement('option'); opt.value = w.id; opt.textContent = `${new Date(w.date).toLocaleDateString()} — ${w.weight} kg`; selWeeks.appendChild(opt);
         }
       }
+
+      // compute percent
+      const initial = meta.initialWeight ?? (weeks.length? weeks[0].weight : Number(inpCurrent.value));
+      const current = Number(inpCurrent.value);
+      const target = Number(inpTarget.value);
+      const pct = calcPercent(initial,current,target);
+      lblPercent.textContent = `${pct}% towards ${target}kg`;
+      barFill.style.width = pct + '%';
+      msgMotiv.textContent = pickMessage(pct);
+      savedCount.textContent = weeks.length;
+
+      // apply avatars:
+      // left = current inputs
+      applyMeasurementsToAvatar(leftAvatar, { height:Number(inpHeight.value), weight:Number(inpCurrent.value), arm:Number(inpArm.value), chest:Number(inpChest.value), waist:Number(inpWaist.value), thigh:Number(inpThigh.value), _percent:pct });
+      // center = selected week (if any) or placeholder (initial)
+      const sel = selWeeks.value ? weeks.find(x=>x.id===selWeeks.value) : (weeks.length? weeks[weeks.length-1]: null);
+      if(sel){
+        applyMeasurementsToAvatar(centerAvatar, { height: sel.height ?? Number(inpHeight.value), weight: sel.weight, arm: sel.arm, chest: sel.chest, waist: sel.waist, thigh: sel.thigh, _percent: pct });
+      } else {
+        // if none selected show greyed placeholder with initial (or current)
+        applyMeasurementsToAvatar(centerAvatar, { height: Number(inpHeight.value), weight: Number(inpCurrent.value), arm:Number(inpArm.value), chest:Number(inpChest.value), waist:Number(inpWaist.value), thigh:Number(inpThigh.value), _percent: pct });
+      }
+      // right = target meta
+      applyMeasurementsToAvatar(rightAvatar, { height: Number(inpHeight.value), weight: Number(inpTarget.value), arm: meta.arm ?? Number(inpArm.value), chest: meta.chest ?? Number(inpChest.value), waist: meta.waist ?? Number(inpWaist.value), thigh: meta.thigh ?? Number(inpThigh.value), _percent: 100 });
     }
 
-    // save weigh-in
-    async function saveWeighIn(weight, extras={}){
-      // padrão: push em weeks e salvar no localStorage
-      const entry = { id:`local-${Date.now()}`, weight: Number(weight), date: new Date().toISOString(), ...extras };
-      weeks.push(entry);
-      saveWeeks(weeks);
-      // se initialWeight não existir, definimos agora
-      if(!meta.initialWeight){
-        meta.initialWeight = entry.weight;
-      }
-      // atualizar meta.height se estiver vazio
-      if(!meta.height) meta.height = Number(inpHeight.value);
+    // save weight (new week)
+    function saveWeighIn(){
+      const w = Number(inpCurrent.value);
+      if(!w || w<=0){ alert('Informe um peso válido'); return; }
+      const entry = { id:`local-${Date.now()}`, weight:w, date:new Date().toISOString(), height:Number(inpHeight.value), arm:Number(inpArm.value), chest:Number(inpChest.value), waist:Number(inpWaist.value), thigh:Number(inpThigh.value) };
+      weeks.push(entry); saveWeeks(weeks);
+      if(!meta.initialWeight) meta.initialWeight = w;
       saveMeta(meta);
       refreshUI();
+      alert('Pesagem salva!');
     }
 
-    // save target/meta
     function saveTarget(){
       meta.targetWeight = Number(inpTarget.value);
       meta.height = Number(inpHeight.value);
+      meta.arm = Number(inpArm.value); meta.chest = Number(inpChest.value); meta.waist = Number(inpWaist.value); meta.thigh = Number(inpThigh.value);
       saveMeta(meta);
       refreshUI();
+      alert('Meta salva!');
     }
 
-    // Quick adjust buttons
-    btnMinus1.addEventListener('click', async ()=>{
-      const newW = Math.round((Number(inpCurrent.value) - 1)*10)/10;
-      inpCurrent.value = newW;
-      await saveWeighIn(newW);
-    });
-    btnPlus05.addEventListener('click', async ()=>{
-      const newW = Math.round((Number(inpCurrent.value) + 0.5)*10)/10;
-      inpCurrent.value = newW;
-      await saveWeighIn(newW);
-    });
-    btnPlus1.addEventListener('click', async ()=>{
-      const newW = Math.round((Number(inpCurrent.value) + 1)*10)/10;
-      inpCurrent.value = newW;
-      await saveWeighIn(newW);
+    btnSave.addEventListener('click', saveWeighIn);
+    btnSaveTarget.addEventListener('click', saveTarget);
+
+    // select week change
+    selWeeks.addEventListener('change', ()=> refreshUI());
+
+    // delete selected week
+    btnDel.addEventListener('click', ()=>{
+      if(!selWeeks.value){ alert('Selecione uma semana para excluir'); return; }
+      if(!confirm('Confirma excluir esta entrada?')) return;
+      weeks = weeks.filter(w=>w.id!==selWeeks.value); saveWeeks(weeks); selWeeks.value=''; refreshUI();
     });
 
-    // Save buttons
-    btnSaveWeight.addEventListener('click', async ()=>{
-      const w = Number(inpCurrent.value);
-      if(isNaN(w) || w<=0){ alert('Informe um peso válido'); return; }
-      await saveWeighIn(w);
-      alert('Pesagem salva localmente!');
-    });
-    btnSaveTarget.addEventListener('click', ()=>{
-      saveTarget();
-      alert('Meta salva localmente!');
-    });
-
-    // Export CSV (local)
+    // export
     btnExport.addEventListener('click', ()=>{
-      if(!weeks.length){ alert('Sem histórico local para exportar.'); return; }
-      const rows = ['date,weight,cintura,humor,sono'];
-      for(const w of weeks){
-        rows.push(`${w.date},${w.weight},${w.cintura||''},${w.humor||''},${w.sono||''}`);
-      }
-      const blob = new Blob([rows.join('\n')], { type:'text/csv' });
-      const url = URL.createObjectURL(blob);
-      window.open(url, '_blank');
+      if(weeks.length===0){ alert('Sem histórico para exportar'); return; }
+      const rows=['date,weight,height,arm,chest,waist,thigh'];
+      for(const w of weeks) rows.push([w.date,w.weight,w.height||'',w.arm||'',w.chest||'',w.waist||'',w.thigh||''].join(','));
+      const blob = new Blob([rows.join('\n')],{type:'text/csv'}); const url = URL.createObjectURL(blob); window.open(url,'_blank');
     });
 
-    // respond to manual input changes: update avatar preview but do not auto-save
-    inpCurrent.addEventListener('input', ()=> refreshUI());
-    inpHeight.addEventListener('input', ()=> refreshUI());
-    inpTarget.addEventListener('input', ()=> refreshUI());
+    // instant preview on manual input
+    [inpCurrent,inpHeight,inpTarget,inpArm,inpChest,inpWaist,inpThigh].forEach(el=> el.addEventListener('input', refreshUI));
 
-    // Inicializar display
+    // Init defaults if empty
+    if(!meta.height) meta.height = 1.75;
+    if(!meta.initialWeight && weeks.length) meta.initialWeight = weeks[0].weight;
     refreshUI();
 
-    // small accessibility: allow pressing Enter on weight input to save
-    inpCurrent.addEventListener('keydown', (e) => { if(e.key==='Enter'){ btnSaveWeight.click(); }});
+    // small console help to diagnose if something fail to load
+    console.log('Avatar page initialized. If the 3D does not appear, check for console errors above.');
+
   </script>
 </body>
 </html>

@@ -118,6 +118,15 @@
 
 </div>
 
+<!-- IMPORT MAP para resolver 'three' quando módulos examples/jsm importam 'three' -->
+<script type="importmap">
+{
+  "imports": {
+    "three": "https://cdn.jsdelivr.net/npm/three@0.152.2/build/three.module.js"
+  }
+}
+</script>
+
 <!-- SCRIPT 3D + LÓGICA (módulo ES, CDN para three.js compatível com GitHub Pages) -->
 <script type="module">
   // ---- IMPORTS ----
@@ -212,7 +221,7 @@
     // material de pele reaproveitável
     const matSkin = new THREE.MeshStandardMaterial({ color: 0xf2c9a6 });
 
-    // cabe�a (esfera)
+    // cabeça (esfera)
     const head = new THREE.Mesh(new THREE.SphereGeometry(0.28, 28, 28), matSkin);
     head.position.set(0, 1.45, 0);
     g.add(head);

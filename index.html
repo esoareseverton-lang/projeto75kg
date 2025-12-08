@@ -2,17 +2,23 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8" />
-  <title>Sua evolução começa aqui - Dark Premium</title>
+  <title>Sua evolução começa aqui – Dark Premium</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <!-- Fonte básica do sistema para ficar leve -->
   <style>
     :root {
-      --bg: #0b0c10;
-      --card: #12151f;
+      --bg: #05060a;
+      --card: #111525;
+      --card-soft: #14192b;
       --accent: #4cc9f0;
+      --accent-soft: rgba(76,201,240,0.16);
       --accent2: #f72585;
+      --accent2-soft: rgba(247,37,133,0.16);
       --text: #f5f5f5;
-      --muted: #8a8fa3;
-      --border: #222533;
+      --muted: #9ba0c2;
+      --border: #262a3d;
+      --danger: #ff6b6b;
+      --success: #51cf66;
     }
     * {
       box-sizing: border-box;
@@ -20,143 +26,154 @@
     }
     body {
       margin: 0;
-      background: radial-gradient(circle at top, #141b2d, #05060a);
+      background: radial-gradient(circle at top, #151a30, #02030a);
       color: var(--text);
       min-height: 100vh;
     }
-    .shell {
+    a {
+      color: var(--accent);
+      text-decoration: none;
+    }
+    a:hover {
+      text-decoration: underline;
+    }
+    .app-shell {
       max-width: 1200px;
       margin: 0 auto;
       padding: 20px 12px 40px;
     }
-    .card {
-      background: linear-gradient(145deg, #111521, #090b12);
-      border-radius: 18px;
-      padding: 18px 16px;
-      border: 1px solid var(--border);
-      box-shadow: 0 18px 55px rgba(0,0,0,0.6);
+    .brand-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
       margin-bottom: 18px;
     }
-    h1, h2, h3 {
-      margin: 0 0 8px;
-    }
-    h1 {
-      font-size: 1.9rem;
-      letter-spacing: 0.05em;
+    .brand-title {
+      font-size: 1.6rem;
       text-transform: uppercase;
+      letter-spacing: 0.12em;
     }
-    h2 {
-      font-size: 1.2rem;
-    }
-    .tagline {
-      margin-top: 8px;
-      font-size: 0.95rem;
+    .brand-sub {
+      font-size: 0.8rem;
       color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.2em;
     }
-    .badge-row {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
-      margin-top: 6px;
-    }
-    .badge {
+    .chip {
       font-size: 0.75rem;
       padding: 4px 8px;
       border-radius: 999px;
       border: 1px solid var(--border);
       color: var(--muted);
+      background: rgba(0,0,0,0.3);
+      white-space: nowrap;
     }
-    .badge-accent {
+    .chip-accent {
       border-color: var(--accent);
       color: var(--accent);
     }
-    .meta-row {
+
+    .card {
+      background: linear-gradient(140deg, #101426, #070814);
+      border-radius: 18px;
+      padding: 18px 16px;
+      border: 1px solid var(--border);
+      box-shadow: 0 18px 45px rgba(0,0,0,0.75);
+      margin-bottom: 18px;
+    }
+    .card-soft {
+      background: linear-gradient(145deg, #151a31, #090b16);
+    }
+    .card-header {
       display: flex;
-      flex-wrap: wrap;
-      gap: 16px;
-      margin-top: 10px;
-      font-size: 0.85rem;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      margin-bottom: 8px;
+    }
+    h1,h2,h3 {
+      margin: 0 0 6px;
+    }
+    h2 {
+      font-size: 1.05rem;
+    }
+    h3 {
+      font-size: 0.95rem;
+    }
+    .muted {
       color: var(--muted);
+      font-size: 0.8rem;
     }
-    .meta-label {
-      text-transform: uppercase;
-      letter-spacing: 0.08em;
-      font-size: 0.7rem;
-      color: #6b7086;
-    }
-    .grid {
+
+    /* Layout principal */
+    .layout-main {
       display: grid;
-      grid-template-columns: minmax(0, 1.4fr) minmax(0, 1.2fr);
+      grid-template-columns: minmax(0, 1.35fr) minmax(0, 1.1fr);
       gap: 16px;
     }
     @media (max-width: 960px) {
-      .grid {
+      .layout-main {
         grid-template-columns: minmax(0, 1fr);
       }
     }
+
+    /* Inputs e botões */
     label {
       display: block;
-      font-size: 0.8rem;
-      margin-bottom: 4px;
+      font-size: 0.78rem;
+      margin-bottom: 3px;
       color: var(--muted);
     }
     input, select, textarea {
       width: 100%;
-      padding: 9px 11px;
-      border-radius: 10px;
+      padding: 9px 10px;
+      border-radius: 11px;
       border: 1px solid var(--border);
       background: #070910;
       color: var(--text);
-      font-size: 0.9rem;
+      font-size: 0.88rem;
       outline: none;
-    }
-    textarea {
       resize: vertical;
-      min-height: 60px;
     }
     input:focus, select:focus, textarea:focus {
       border-color: var(--accent);
       box-shadow: 0 0 0 1px rgba(76,201,240,0.3);
     }
-    .form-grid-2 {
+    .field-row {
       display: grid;
-      grid-template-columns: repeat(2, minmax(0,1fr));
+      grid-template-columns: repeat(2,minmax(0,1fr));
       gap: 10px;
     }
-    .form-grid-3 {
+    .field-row-3 {
       display: grid;
-      grid-template-columns: repeat(3, minmax(0,1fr));
+      grid-template-columns: repeat(3,minmax(0,1fr));
       gap: 10px;
     }
     @media (max-width: 720px) {
-      .form-grid-2, .form-grid-3 {
+      .field-row, .field-row-3 {
         grid-template-columns: minmax(0,1fr);
       }
     }
-    .btn-row {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-      margin-top: 12px;
-    }
+
     button {
       border-radius: 999px;
       border: none;
       cursor: pointer;
-      font-size: 0.85rem;
-      padding: 11px 18px;
+      font-size: 0.82rem;
+      padding: 9px 16px;
       display: inline-flex;
       align-items: center;
       justify-content: center;
       gap: 6px;
       font-weight: 500;
-      letter-spacing: 0.04em;
+      letter-spacing: 0.06em;
       text-transform: uppercase;
     }
     .btn-primary {
       background: linear-gradient(135deg, var(--accent), #4895ef);
       color: #020308;
-      box-shadow: 0 12px 30px rgba(72,149,239,0.45);
+      box-shadow: 0 10px 26px rgba(72,149,239,0.5);
     }
     .btn-ghost {
       background: transparent;
@@ -164,29 +181,46 @@
       color: var(--muted);
     }
     .btn-danger {
-      background: linear-gradient(135deg, #f72585, #b5179e);
-      color: #020308;
+      background: var(--danger);
+      color: #fff;
     }
-    @media (max-width: 600px) {
-      .btn-row {
-        flex-direction: column;
-      }
-      .btn-primary, .btn-ghost, .btn-danger {
-        width: 100%;
-      }
+    .btn-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 10px;
     }
-    .small {
-      font-size: 0.75rem;
+
+    /* Barra de progresso */
+    .progress-wrap {
+      margin-top: 6px;
+    }
+    .progress-label-row {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.78rem;
       color: var(--muted);
-      margin-top: 4px;
+      margin-bottom: 4px;
     }
-    .pill {
-      padding: 2px 7px;
+    .progress-bar {
+      position: relative;
+      width: 100%;
+      height: 12px;
       border-radius: 999px;
-      border: 1px solid rgba(255,255,255,0.12);
-      font-size: 0.7rem;
-      color: var(--muted);
+      background: #050612;
+      border: 1px solid var(--border);
+      overflow: hidden;
     }
+    .progress-fill {
+      position: absolute;
+      inset: 0;
+      width: 0%;
+      background: linear-gradient(90deg, var(--accent2), var(--accent));
+      box-shadow: 0 0 20px rgba(247,37,133,0.4);
+      transition: width 0.4s ease-out;
+    }
+
+    /* Tabelas e gráficos */
     .table-wrap {
       overflow-x: auto;
       border-radius: 14px;
@@ -198,416 +232,511 @@
       width: 100%;
       border-collapse: collapse;
       font-size: 0.8rem;
-      min-width: 620px;
+      min-width: 640px;
     }
     thead {
-      background: linear-gradient(90deg, #101320, #15192a);
+      background: linear-gradient(90deg, #111625, #171d33);
     }
     th, td {
-      padding: 8px 10px;
+      padding: 7px 9px;
       text-align: left;
       white-space: nowrap;
     }
     th {
       font-weight: 600;
-      font-size: 0.75rem;
+      font-size: 0.76rem;
       color: #c4c7de;
       border-bottom: 1px solid var(--border);
     }
     tbody tr:nth-child(even) {
-      background: rgba(255,255,255,0.015);
+      background: rgba(255,255,255,0.02);
     }
     tbody tr:hover {
       background: rgba(76,201,240,0.06);
     }
-    canvas {
-      width: 100% !important;
-      height: 260px !important;
-    }
-    .topbar {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 12px;
-      margin-bottom: 10px;
-    }
-    .topbar-user {
-      font-size: 0.85rem;
+    .pill {
+      padding: 2px 7px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,0.18);
+      font-size: 0.7rem;
       color: var(--muted);
     }
-    .hidden {
-      display: none !important;
+
+    canvas {
+      width: 100% !important;
+      max-height: 280px !important;
     }
-    .motivation {
-      margin-top: 8px;
-      padding: 10px 12px;
-      border-radius: 12px;
-      border: 1px dashed rgba(76,201,240,0.3);
+
+    /* Login */
+    .auth-layout {
+      display: grid;
+      grid-template-columns: minmax(0,1.1fr) minmax(0,1.1fr);
+      gap: 18px;
+    }
+    @media (max-width: 880px) {
+      .auth-layout {
+        grid-template-columns: minmax(0,1fr);
+      }
+    }
+
+    /* Mensagens / alertas */
+    .alert {
       font-size: 0.8rem;
+      border-radius: 12px;
+      padding: 8px 10px;
+      margin-top: 6px;
     }
-    .motivation-emoji {
-      margin-right: 6px;
+    .alert-info {
+      background: rgba(76,201,240,0.08);
+      border: 1px solid var(--accent-soft);
+      color: var(--accent);
     }
-    .chips-row {
+    .alert-error {
+      background: rgba(255,107,107,0.12);
+      border: 1px solid rgba(255,107,107,0.4);
+      color: var(--danger);
+    }
+
+    .tag-row {
       display: flex;
       flex-wrap: wrap;
       gap: 6px;
-      margin-top: 6px;
+      margin-top: 4px;
     }
-    .chip {
-      font-size: 0.7rem;
-      padding: 3px 8px;
+    .tag-pill {
+      padding: 3px 7px;
       border-radius: 999px;
       border: 1px solid var(--border);
+      font-size: 0.7rem;
       color: var(--muted);
       background: rgba(255,255,255,0.02);
     }
-    iframe {
-      border-radius: 12px;
-      border: 1px solid var(--border);
-      max-width: 100%;
+
+    .section-divider {
+      margin: 10px 0;
+      border-top: 1px dashed rgba(255,255,255,0.08);
     }
-    .auth-toggle {
-      text-align: center;
-      margin-top: 10px;
-      font-size: 0.8rem;
+
+    .two-col {
+      display: grid;
+      grid-template-columns: minmax(0,1fr) minmax(0,1fr);
+      gap: 14px;
     }
-    .auth-toggle button {
-      text-transform: none;
-      font-size: 0.8rem;
-      padding: 4px 8px;
+    @media (max-width: 720px) {
+      .two-col {
+        grid-template-columns: minmax(0,1fr);
+      }
     }
-    .error-text {
-      color: #ff6b6b;
+
+    .small {
       font-size: 0.75rem;
-      margin-top: 6px;
+      color: var(--muted);
     }
-    .success-text {
-      color: #4cc9f0;
-      font-size: 0.75rem;
-      margin-top: 6px;
+
+    /* Esconder telas por estado */
+    #app-main {
+      display: none;
     }
   </style>
 </head>
 <body>
-  <div class="shell">
-
-    <!-- AUTENTICAÇÃO -->
-    <div id="authCard" class="card">
-      <h1>Sua evolução começa aqui</h1>
-      <p class="tagline">
-        Crie sua conta ou entre para acessar seu painel Dark Premium.
-      </p>
-
-      <div class="form-grid-2" style="margin-top:10px;">
-        <div id="authNameGroup">
-          <label for="authName">Nome</label>
-          <input id="authName" type="text" placeholder="Como quer aparecer no painel" />
-        </div>
-        <div>
-          <label for="authEmail">E-mail</label>
-          <input id="authEmail" type="email" placeholder="voce@exemplo.com" />
-        </div>
+  <div class="app-shell">
+    <!-- Topo / Branding -->
+    <div class="brand-row">
+      <div>
+        <div class="brand-title">Sua evolução começa aqui</div>
+        <div class="brand-sub">DARK PREMIUM • FITNESS • SAÚDE</div>
       </div>
-
-      <div class="form-grid-2" style="margin-top:10px;">
-        <div>
-          <label for="authPassword">Senha</label>
-          <input id="authPassword" type="password" placeholder="Mínimo 6 caracteres" />
-        </div>
-        <div id="authPasswordConfirmGroup">
-          <label for="authPasswordConfirm">Confirmar senha</label>
-          <input id="authPasswordConfirm" type="password" placeholder="Repita a senha" />
-        </div>
-      </div>
-
-      <div class="btn-row">
-        <button id="authPrimaryBtn" class="btn-primary">Criar conta</button>
-      </div>
-      <div id="authMessage" class="error-text"></div>
-
-      <div class="auth-toggle">
-        <span id="authToggleText">Já tem conta?</span>
-        <button id="authToggleBtn" class="btn-ghost">Entrar</button>
+      <div class="tag-row">
+        <span class="chip chip-accent">Firebase + GitHub</span>
+        <span class="chip">Domínio: esoares.net.br</span>
       </div>
     </div>
 
-    <!-- APP -->
-    <div id="app" class="hidden">
+    <!-- =================== TELA DE LOGIN / CADASTRO =================== -->
+    <div id="auth-screen" class="card card-soft">
+      <div class="card-header">
+        <div>
+          <h2>Entrar na sua área</h2>
+          <p class="muted">
+            Cada pessoa tem sua própria área, metas e dados. E sim, ninguém vê
+            o “peso da realidade” de ninguém. 😅
+          </p>
+        </div>
+      </div>
 
-      <!-- HEADER -->
-      <div class="card">
-        <div class="topbar">
+      <div class="auth-layout">
+        <!-- Login -->
+        <div>
+          <h3>Já tenho conta</h3>
+          <form id="login-form">
+            <label for="login-email">E-mail</label>
+            <input type="email" id="login-email" autocomplete="email" required />
+
+            <label for="login-password" style="margin-top:8px;">Senha</label>
+            <input type="password" id="login-password" autocomplete="current-password" required />
+
+            <div class="btn-row">
+              <button type="submit" class="btn-primary">Entrar</button>
+            </div>
+            <div id="login-error" class="alert alert-error" style="display:none;"></div>
+          </form>
+          <p class="small" style="margin-top:10px;">
+            Esqueceu a senha? Você pode resetar direto pelo painel do Firebase
+            mais tarde, se quiser implementar recuperação.
+          </p>
+        </div>
+
+        <!-- Cadastro -->
+        <div>
+          <h3>Sou novo aqui</h3>
+          <form id="signup-form">
+            <label for="signup-email">E-mail</label>
+            <input type="email" id="signup-email" autocomplete="email" required />
+
+            <label for="signup-password" style="margin-top:8px;">Senha</label>
+            <input type="password" id="signup-password" minlength="6" autocomplete="new-password" required />
+
+            <label for="signup-name" style="margin-top:8px;">Como quer ser chamado(a)?</label>
+            <input type="text" id="signup-name" placeholder="Ex: Éverton" />
+
+            <div class="btn-row">
+              <button type="submit" class="btn-ghost">Criar conta</button>
+            </div>
+            <div id="signup-error" class="alert alert-error" style="display:none;"></div>
+          </form>
+          <p class="small" style="margin-top:10px;">
+            Depois do cadastro você configura altura, peso inicial, meta e objetivo.
+            O resto deixa com o painel. 😉
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- =================== APP PRINCIPAL =================== -->
+    <div id="app-main">
+      <!-- Barra superior logado -->
+      <div class="card card-soft">
+        <div class="card-header">
           <div>
-            <h1>Sua evolução começa aqui</h1>
-            <p class="tagline">
-              Painel multiusuário para acompanhar metas, treinos, dieta e IMC — com um toque de humor.
+            <h2 id="welcome-title">Olá 👋</h2>
+            <p class="muted" id="welcome-sub">
+              Pronto(a) para mais um passo hoje?
             </p>
-            <div class="badge-row">
-              <span class="badge badge-accent">Dark Premium</span>
-              <span class="badge">Domínio: esoares.net.br</span>
-              <span class="badge" id="goalBadge">Objetivo: personalizado</span>
+          </div>
+          <div style="text-align:right;">
+            <div class="muted" id="current-email"></div>
+            <div class="btn-row" style="justify-content:flex-end;margin-top:4px;">
+              <button id="btn-open-profile" class="btn-ghost">Perfil & Metas</button>
+              <button id="btn-logout" class="btn-danger">Sair</button>
             </div>
           </div>
-          <div style="text-align:right;min-width:140px;">
-            <div class="topbar-user" id="topbarUser">Carregando…</div>
-            <button id="logoutBtn" class="btn-ghost" style="margin-top:6px;">Sair</button>
-          </div>
         </div>
-        <div id="motivationBox" class="motivation">
-          <span class="motivation-emoji" id="motivationEmoji">🚀</span>
-          <span id="motivationText">Bem-vindo(a)! Comece preenchendo seu perfil e a semana 1.</span>
+
+        <!-- Barra de progresso -->
+        <div class="progress-wrap">
+          <div class="progress-label-row">
+            <span>Progresso em relação à meta</span>
+            <span id="progress-label">0%</span>
+          </div>
+          <div class="progress-bar">
+            <div class="progress-fill" id="progress-fill"></div>
+          </div>
+          <p class="small" id="motivation-text" style="margin-top:6px;">
+            Assim que você cadastrar peso inicial, meta e pelo menos um registro,
+            a mágica começa aqui. ✨
+          </p>
         </div>
       </div>
 
-      <!-- PERFIL & METAS -->
-      <div class="grid">
-        <div class="card">
-          <h2>Seu perfil & metas</h2>
-          <p class="small">
-            Esses dados são a base para cálculos de IMC, metas e recomendações.
-          </p>
-          <div class="form-grid-2" style="margin-top:10px;">
-            <div>
-              <label for="profileName">Nome</label>
-              <input id="profileName" type="text" placeholder="Seu nome" />
+      <!-- Layout principal: esquerda (dados), direita (insights) -->
+      <div class="layout-main">
+        <!-- COLUNA ESQUERDA: perfil + registros + tabela -->
+        <div>
+          <!-- Perfil & Metas -->
+          <div class="card">
+            <div class="card-header">
+              <div>
+                <h2>Perfil & Metas</h2>
+                <p class="muted">
+                  Ajuste seus dados iniciais, objetivo e plano alimentar.
+                </p>
+              </div>
             </div>
-            <div>
-              <label for="profileGender">Sexo</label>
-              <select id="profileGender">
-                <option value="">Selecione…</option>
-                <option value="M">Masculino</option>
-                <option value="F">Feminino</option>
-                <option value="O">Outro / Prefiro não dizer</option>
-              </select>
-            </div>
+
+            <form id="profile-form">
+              <div class="field-row">
+                <div>
+                  <label for="profile-name">Nome</label>
+                  <input id="profile-name" type="text" placeholder="Seu nome" />
+                </div>
+                <div>
+                  <label for="profile-gender">Sexo</label>
+                  <select id="profile-gender">
+                    <option value="">Selecione...</option>
+                    <option value="masculino">Masculino</option>
+                    <option value="feminino">Feminino</option>
+                    <option value="outro">Outro / Prefiro não dizer</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="field-row">
+                <div>
+                  <label for="profile-height">Altura (m)</label>
+                  <input id="profile-height" type="number" step="0.01" placeholder="Ex: 1.78" />
+                </div>
+                <div>
+                  <label for="profile-start-weight">Peso inicial (kg)</label>
+                  <input id="profile-start-weight" type="number" step="0.1" placeholder="Ex: 92.5" />
+                </div>
+              </div>
+
+              <div class="field-row">
+                <div>
+                  <label for="profile-goal-weight">Meta de peso (kg)</label>
+                  <input id="profile-goal-weight" type="number" step="0.1" placeholder="Ex: 75" />
+                </div>
+                <div>
+                  <label for="profile-goal-date">Prazo (opcional)</label>
+                  <input id="profile-goal-date" type="date" />
+                </div>
+              </div>
+
+              <div class="field-row">
+                <div>
+                  <label for="profile-objective">Objetivo principal</label>
+                  <select id="profile-objective">
+                    <option value="">Selecione...</option>
+                    <option value="emagrecimento">Emagrecimento</option>
+                    <option value="hipertrofia">Hipertrofia</option>
+                    <option value="recomposicao">Recomposição / Saúde geral</option>
+                    <option value="performance">Performance (corrida, esportes, etc.)</option>
+                  </select>
+                </div>
+                <div>
+                  <label for="profile-diet">Plano alimentar</label>
+                  <select id="profile-diet">
+                    <option value="">Selecione...</option>
+                    <option value="lowcarb">Low carb</option>
+                    <option value="hipertrofia">Alta proteína / hipertrofia</option>
+                    <option value="mediterranea">Mediterrânea</option>
+                    <option value="flexivel">Flexível / IIFYM</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="btn-row">
+                <button type="submit" class="btn-primary">Salvar perfil</button>
+              </div>
+              <div id="profile-msg" class="alert alert-info" style="display:none;"></div>
+            </form>
+
+            <div class="section-divider"></div>
+
+            <!-- Alterar senha (simples) -->
+            <h3>Segurança</h3>
+            <p class="small">
+              Quer trocar a senha? Use o campo abaixo. (Caso o Firebase peça
+              “login recente”, é só sair e entrar de novo antes de tentar).
+            </p>
+            <form id="password-form" style="margin-top:6px;">
+              <label for="new-password">Nova senha</label>
+              <input id="new-password" type="password" minlength="6" />
+              <div class="btn-row">
+                <button type="submit" class="btn-ghost">Atualizar senha</button>
+              </div>
+              <div id="password-msg" class="alert alert-info" style="display:none;"></div>
+            </form>
           </div>
 
-          <div class="form-grid-3" style="margin-top:10px;">
-            <div>
-              <label for="heightCm">Altura (cm)</label>
-              <input id="heightCm" type="number" step="0.1" placeholder="Ex: 175" />
+          <!-- Registro semanal -->
+          <div class="card">
+            <div class="card-header">
+              <div>
+                <h2>Registro semanal</h2>
+                <p class="muted">
+                  Quanto mais honesto você for aqui, mais bonito o gráfico
+                  (e a saúde) ficam. 😎
+                </p>
+              </div>
             </div>
-            <div>
-              <label for="startWeight">Peso inicial (kg)</label>
-              <input id="startWeight" type="number" step="0.1" placeholder="Ex: 92.5" />
-            </div>
-            <div>
-              <label for="goalWeight">Meta de peso (kg)</label>
-              <input id="goalWeight" type="number" step="0.1" placeholder="Ex: 78.0" />
-            </div>
+
+            <form id="entry-form">
+              <div class="field-row">
+                <div>
+                  <label for="entry-date">Data da semana</label>
+                  <input id="entry-date" type="date" required />
+                </div>
+                <div>
+                  <label for="entry-label">Nome da semana (opcional)</label>
+                  <input id="entry-label" type="text" placeholder="Ex: Semana 1, Semana 2..." />
+                </div>
+              </div>
+
+              <div class="field-row-3" style="margin-top:8px;">
+                <div>
+                  <label for="entry-weight">Peso (kg)</label>
+                  <input id="entry-weight" type="number" step="0.1" required />
+                </div>
+                <div>
+                  <label for="entry-waist">Cintura (cm)</label>
+                  <input id="entry-waist" type="number" step="0.1" />
+                </div>
+                <div>
+                  <label for="entry-energy">Energia (1–10)</label>
+                  <input id="entry-energy" type="number" min="1" max="10" />
+                </div>
+              </div>
+
+              <div class="field-row-3" style="margin-top:8px;">
+                <div>
+                  <label for="entry-mood">Humor (1–10)</label>
+                  <input id="entry-mood" type="number" min="1" max="10" />
+                </div>
+                <div>
+                  <label for="entry-sleep">Sono (1–10)</label>
+                  <input id="entry-sleep" type="number" min="1" max="10" />
+                </div>
+                <div>
+                  <label for="entry-notes">Observações</label>
+                  <input id="entry-notes" type="text" placeholder="Ex: +cardio, menos fome, viagem..." />
+                </div>
+              </div>
+
+              <div class="btn-row">
+                <button type="submit" class="btn-primary">＋ Registrar / atualizar semana</button>
+              </div>
+              <div id="entry-msg" class="alert alert-info" style="display:none;"></div>
+            </form>
           </div>
 
-          <div class="form-grid-2" style="margin-top:10px;">
-            <div>
-              <label for="goalType">Objetivo principal</label>
-              <select id="goalType">
-                <option value="">Selecione…</option>
-                <option value="emagrecimento">Emagrecimento</option>
-                <option value="hipertrofia">Hipertrofia</option>
-                <option value="recomposicao">Recomposição corporal</option>
-                <option value="saude">Saúde geral / bem-estar</option>
-              </select>
+          <!-- Histórico -->
+          <div class="card">
+            <div class="card-header">
+              <div>
+                <h2>Histórico & IMC</h2>
+                <p class="muted">
+                  Peso, cintura, IMC e sensação geral por semana.
+                </p>
+              </div>
             </div>
-            <div>
-              <label for="dietType">Tipo de dieta</label>
-              <select id="dietType">
-                <option value="">Selecione…</option>
-                <option value="lowcarb">Low carb</option>
-                <option value="highprotein">High protein</option>
-                <option value="hipercalorica">Hipercalórica (bulking)</option>
-                <option value="mediterranea">Mediterrânea</option>
-              </select>
+            <div class="table-wrap">
+              <table id="history-table">
+                <thead>
+                  <tr>
+                    <th>Semana</th>
+                    <th>Data</th>
+                    <th>Peso (kg)</th>
+                    <th>IMC</th>
+                    <th>Cintura (cm)</th>
+                    <th>Energia</th>
+                    <th>Humor</th>
+                    <th>Sono</th>
+                    <th>Obs.</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <!-- preenchido via JS -->
+                </tbody>
+              </table>
             </div>
           </div>
-
-          <div style="margin-top:10px;">
-            <label for="supplementsUser">O que você toma hoje? (suplementos / vitaminas)</label>
-            <textarea id="supplementsUser" placeholder="Ex: whey, creatina, vitamina D, magnésio…"></textarea>
-          </div>
-
-          <div class="btn-row">
-            <button id="saveProfileBtn" class="btn-primary">Salvar perfil</button>
-          </div>
-          <div id="profileMessage" class="success-text"></div>
         </div>
 
-        <div class="card">
-          <h2>Resumo rápido & IMC</h2>
-          <div class="small" id="bmiSummary">
-            Preencha primeiro seu peso inicial, meta e altura.
-          </div>
-          <div class="chips-row" id="chipsRow" style="margin-top:10px;">
-            <!-- preenchido via JS -->
-          </div>
-          <div class="small" style="margin-top:10px;">
-            IMC é apenas um indicador. Não substitui avaliação profissional — mas ajuda a acompanhar a curva.
-          </div>
-        </div>
-      </div>
-
-      <!-- PROGRESSO SEMANAL + GRÁFICOS -->
-      <div class="grid">
-        <div class="card">
-          <h2>Registrar semana</h2>
-          <p class="small">
-            Preencha e clique em <strong>Salvar semana</strong>. Os dados ficam vinculados ao seu usuário.
-          </p>
-
-          <div style="margin-top:10px;">
-            <label for="week">Semana</label>
-            <select id="week">
-              <option value="">Selecione…</option>
-              <option value="1">Semana 1</option>
-              <option value="2">Semana 2</option>
-              <option value="3">Semana 3</option>
-              <option value="4">Semana 4</option>
-              <option value="5">Semana 5</option>
-              <option value="6">Semana 6</option>
-              <option value="7">Semana 7</option>
-              <option value="8">Semana 8</option>
-              <option value="9">Semana 9</option>
-              <option value="10">Semana 10</option>
-              <option value="11">Semana 11</option>
-              <option value="12">Semana 12</option>
-            </select>
-          </div>
-
-          <div class="form-grid-3" style="margin-top:10px;">
-            <div>
-              <label for="peso">Peso da semana (kg)</label>
-              <input id="peso" type="number" step="0.1" placeholder="Ex: 87.0" />
+        <!-- COLUNA DIREITA: dashboards + dicas -->
+        <div>
+          <!-- Gráfico peso + IMC -->
+          <div class="card card-soft">
+            <div class="card-header">
+              <div>
+                <h2>Dashboard Peso + IMC</h2>
+                <p class="muted">
+                  Duas linhas, uma verdade: você está indo pra onde quer?
+                </p>
+              </div>
             </div>
-            <div>
-              <label for="cintura">Cintura (cm)</label>
-              <input id="cintura" type="number" step="0.1" placeholder="Ex: 90" />
-            </div>
-            <div>
-              <label for="energia">Energia (1–10)</label>
-              <input id="energia" type="number" min="1" max="10" placeholder="Ex: 8" />
-            </div>
-            <div>
-              <label for="humor">Humor (1–10)</label>
-              <input id="humor" type="number" min="1" max="10" placeholder="Ex: 9" />
-            </div>
-            <div>
-              <label for="sono">Sono (1–10)</label>
-              <input id="sono" type="number" min="1" max="10" placeholder="Ex: 7" />
-            </div>
+            <canvas id="chart-weight-bmi"></canvas>
+            <p class="small" style="margin-top:6px;" id="bmi-summary">
+              Assim que você registrar alguns dados, aparece um resumo do IMC aqui.
+            </p>
           </div>
 
-          <div style="margin-top:10px;">
-            <label for="obs">Observações da semana</label>
-            <input id="obs" type="text" placeholder="Ex: mais cardio, menos fome, viagem, etc." />
-          </div>
+          <!-- Dicas de treino + vídeos -->
+          <div class="card">
+            <div class="card-header">
+              <div>
+                <h2>Treinos recomendados</h2>
+                <p class="muted">
+                  Ajustados ao objetivo e sexo informados. Sempre respeite
+                  orientações do(a) profissional de saúde.
+                </p>
+              </div>
+            </div>
 
-          <div class="btn-row">
-            <button id="saveWeekBtn" class="btn-primary">Salvar semana</button>
-            <button id="clearWeeksBtn" class="btn-danger">Apagar todas as semanas</button>
-          </div>
-          <div id="weekMessage" class="success-text"></div>
-        </div>
-
-        <div class="card">
-          <h2>Gráficos de progresso</h2>
-          <p class="small">
-            Peso x cintura e IMC por semana. A ideia é ver a <strong>tendência</strong>, não sofrer com cada oscilação.
-          </p>
-          <div style="margin-top:10px;">
-            <canvas id="weightChart"></canvas>
-          </div>
-          <div style="margin-top:16px;">
-            <canvas id="bmiChart"></canvas>
-          </div>
-        </div>
-      </div>
-
-      <!-- HISTÓRICO -->
-      <div class="card">
-        <h2>Histórico completo</h2>
-        <p class="small">
-          Todas as semanas registradas para este usuário. Role para o lado no celular.
-        </p>
-        <div class="table-wrap">
-          <table id="historyTable">
-            <thead>
-              <tr>
-                <th>Semana</th>
-                <th>Peso (kg)</th>
-                <th>Cintura (cm)</th>
-                <th>IMC</th>
-                <th>Energia</th>
-                <th>Humor</th>
-                <th>Sono</th>
-                <th>Observações</th>
-              </tr>
-            </thead>
-            <tbody>
+            <div id="workout-content" class="small">
               <!-- preenchido via JS -->
-            </tbody>
-          </table>
-        </div>
-      </div>
+            </div>
 
-      <!-- RECOMENDAÇÕES DE TREINO / DIETA / SUPLEMENTOS -->
-      <div class="card">
-        <h2>Recomendações inteligentes (fixas no front)</h2>
-        <p class="small">
-          Baseado no <strong>sexo, objetivo e tipo de dieta</strong> que você salvou no perfil.
-          Isso aqui não é consulta médica nem nutri, é um atalho organizado para você discutir com seu profissional.
-        </p>
+            <div class="section-divider"></div>
 
-        <h3 style="margin-top:10px;">Sugestão de treino por objetivo</h3>
-        <div id="workoutSuggestions" class="small">
-          Salve primeiro seu objetivo no perfil.
-        </div>
-
-        <h3 style="margin-top:14px;">Dieta escolhida: alimentos recomendados x evitar</h3>
-        <div id="dietSuggestions" class="small">
-          Selecione e salve um tipo de dieta no perfil.
-        </div>
-
-        <h3 style="margin-top:14px;">Suplementos & vitaminas – organização de horários</h3>
-        <div id="supplementSuggestions" class="small">
-          Preencha o que você já usa no campo de suplementos. Aqui vão sugestões gerais de horário para low carb / high protein:
-          <ul>
-            <li><strong>Manhã:</strong> whey / proteína, creatina, polivitamínico, vitamina C.</li>
-            <li><strong>Pré/ pós-treino:</strong> whey ou refeição proteica forte + creatina + eletrólitos se suar muito.</li>
-            <li><strong>Noite:</strong> magnésio, vitamina D (se indicado), ômega-3 com refeição.</li>
-          </ul>
-          Sempre alinhe com seu médico ou nutricionista.
-        </div>
-
-        <h3 style="margin-top:14px;">Vídeos de referência – execução dos exercícios</h3>
-        <p class="small">
-          Selecionamos 2 playlists gerais. Use como base e salve seus favoritos:
-        </p>
-        <div class="form-grid-2" style="margin-top:8px;">
-          <div>
-            <p class="small"><strong>Full body / iniciante</strong></p>
-            <iframe width="100%" height="200" src="https://www.youtube.com/embed/videoseries?list=PLv2eAq3qEev-beginner-fullbody"
-              title="Treino iniciante full body" allowfullscreen loading="lazy"></iframe>
+            <h3>Vídeos de execução (YouTube)</h3>
+            <p class="small">
+              Alguns exemplos para conferir técnica (abra em nova aba):
+            </p>
+            <ul class="small">
+              <li><a href="https://www.youtube.com/results?search_query=agachamento+livre+execu%C3%A7%C3%A3o+correta" target="_blank">Agachamento livre – execução correta</a></li>
+              <li><a href="https://www.youtube.com/results?search_query=supino+reto+execu%C3%A7%C3%A3o+correta" target="_blank">Supino reto – execução correta</a></li>
+              <li><a href="https://www.youtube.com/results?search_query=remada+curvada+execu%C3%A7%C3%A3o+correta" target="_blank">Remada curvada – execução correta</a></li>
+              <li><a href="https://www.youtube.com/results?search_query=prancha+abdominal+execu%C3%A7%C3%A3o+correta" target="_blank">Prancha abdominal – execução correta</a></li>
+            </ul>
           </div>
-          <div>
-            <p class="small"><strong>Foco em pernas / glúteos</strong></p>
-            <iframe width="100%" height="200" src="https://www.youtube.com/embed/videoseries?list=PLv2eAq3qEev-glute-leg"
-              title="Treino de pernas e glúteos" allowfullscreen loading="lazy"></iframe>
-          </div>
-        </div>
-        <p class="small" style="margin-top:8px;">
-          Se quiser, troque as URLs das playlists pelos canais que você mais confia.
-        </p>
-      </div>
 
-    </div>
+          <!-- Dieta, suplementos e IA de bolso -->
+          <div class="card card-soft">
+            <div class="card-header">
+              <div>
+                <h2>Nutrição & Suplementos</h2>
+                <p class="muted">
+                  Sugestões rápidas de dieta + espaço para você registrar o que usa.
+                </p>
+              </div>
+            </div>
+
+            <div class="two-col">
+              <div>
+                <h3>Dieta selecionada</h3>
+                <div id="diet-content" class="small">
+                  <!-- preenchido via JS -->
+                </div>
+              </div>
+              <div>
+                <h3>Suplementos & horários</h3>
+                <form id="supp-form">
+                  <label for="supp-notes">O que você está tomando?</label>
+                  <textarea id="supp-notes" rows="3" placeholder="Ex: Whey, creatina, multivitamínico, vitamina D..."></textarea>
+                  <div class="btn-row" style="margin-top:8px;">
+                    <button type="submit" class="btn-ghost">Gerar sugestão de horários</button>
+                  </div>
+                </form>
+                <div id="supp-suggestion" class="small" style="margin-top:6px;">
+                  Digite seus suplementos e eu te devolvo uma sugestão geral de horários.
+                </div>
+              </div>
+            </div>
+          </div>
+        </div> <!-- fim coluna direita -->
+      </div> <!-- fim layout-main -->
+    </div> <!-- fim app-main -->
   </div>
 
   <!-- Chart.js CDN -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
-  <!-- Firebase SDK (modular v9+) -->
+  <!-- Firebase (versão modular) -->
   <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js";
+    // IMPORTS FIREBASE (modular v10.x)
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
     import {
       getAuth,
       onAuthStateChanged,
@@ -616,18 +745,21 @@
       signOut,
       updateProfile,
       updatePassword
-    } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-auth.js";
+    } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
     import {
       getFirestore,
       doc,
       setDoc,
       getDoc,
       collection,
+      addDoc,
       getDocs,
-      deleteDoc
-    } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-firestore.js";
+      query,
+      orderBy,
+      serverTimestamp
+    } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
-    // --- CONFIG DO SEU PROJETO FIREBASE ---
+    // ======== CONFIG DO SEU PROJETO FIREBASE =========
     const firebaseConfig = {
       apiKey: "AIzaSyBbz-DjxSv2S2g1qkWca8YpNn3g7C4Oic0",
       authDomain: "evolucao-dark-premium.firebaseapp.com",
@@ -641,345 +773,395 @@
     const auth = getAuth(app);
     const db = getFirestore(app);
 
-    // --- ELEMENTOS DOM ---
-    const authCard = document.getElementById("authCard");
-    const appDiv = document.getElementById("app");
+    // ======== ELEMENTOS DE TELA =========
+    const authScreen = document.getElementById("auth-screen");
+    const appMain   = document.getElementById("app-main");
 
-    const authNameGroup = document.getElementById("authNameGroup");
-    const authPasswordConfirmGroup = document.getElementById("authPasswordConfirmGroup");
-    const authName = document.getElementById("authName");
-    const authEmail = document.getElementById("authEmail");
-    const authPassword = document.getElementById("authPassword");
-    const authPasswordConfirm = document.getElementById("authPasswordConfirm");
-    const authPrimaryBtn = document.getElementById("authPrimaryBtn");
-    const authToggleBtn = document.getElementById("authToggleBtn");
-    const authToggleText = document.getElementById("authToggleText");
-    const authMessage = document.getElementById("authMessage");
+    const loginForm     = document.getElementById("login-form");
+    const signupForm    = document.getElementById("signup-form");
+    const loginErrorEl  = document.getElementById("login-error");
+    const signupErrorEl = document.getElementById("signup-error");
 
-    const logoutBtn = document.getElementById("logoutBtn");
-    const topbarUser = document.getElementById("topbarUser");
-    const goalBadge = document.getElementById("goalBadge");
-    const motivationBox = document.getElementById("motivationBox");
-    const motivationEmoji = document.getElementById("motivationEmoji");
-    const motivationText = document.getElementById("motivationText");
+    const welcomeTitle = document.getElementById("welcome-title");
+    const welcomeSub   = document.getElementById("welcome-sub");
+    const currentEmailEl = document.getElementById("current-email");
+    const btnLogout      = document.getElementById("btn-logout");
+    const btnOpenProfile = document.getElementById("btn-open-profile");
 
-    const profileName = document.getElementById("profileName");
-    const profileGender = document.getElementById("profileGender");
-    const heightCm = document.getElementById("heightCm");
-    const startWeight = document.getElementById("startWeight");
-    const goalWeight = document.getElementById("goalWeight");
-    const goalType = document.getElementById("goalType");
-    const dietType = document.getElementById("dietType");
-    const supplementsUser = document.getElementById("supplementsUser");
-    const saveProfileBtn = document.getElementById("saveProfileBtn");
-    const profileMessage = document.getElementById("profileMessage");
-    const bmiSummary = document.getElementById("bmiSummary");
-    const chipsRow = document.getElementById("chipsRow");
+    const progressFill  = document.getElementById("progress-fill");
+    const progressLabel = document.getElementById("progress-label");
+    const motivationText = document.getElementById("motivation-text");
 
-    const weekSelect = document.getElementById("week");
-    const pesoInput = document.getElementById("peso");
-    const cinturaInput = document.getElementById("cintura");
-    const energiaInput = document.getElementById("energia");
-    const humorInput = document.getElementById("humor");
-    const sonoInput = document.getElementById("sono");
-    const obsInput = document.getElementById("obs");
-    const saveWeekBtn = document.getElementById("saveWeekBtn");
-    const clearWeeksBtn = document.getElementById("clearWeeksBtn");
-    const weekMessage = document.getElementById("weekMessage");
-    const historyTableBody = document.querySelector("#historyTable tbody");
+    const profileForm = document.getElementById("profile-form");
+    const profileMsg  = document.getElementById("profile-msg");
 
-    const workoutSuggestions = document.getElementById("workoutSuggestions");
-    const dietSuggestions = document.getElementById("dietSuggestions");
+    const passwordForm = document.getElementById("password-form");
+    const passwordMsg  = document.getElementById("password-msg");
 
-    const weightChartCanvas = document.getElementById("weightChart");
-    const bmiChartCanvas = document.getElementById("bmiChart");
+    const entryForm = document.getElementById("entry-form");
+    const entryMsg  = document.getElementById("entry-msg");
+    const historyTableBody = document.querySelector("#history-table tbody");
 
-    let currentUser = null;
-    let weightChart = null;
-    let bmiChart = null;
-    let weeksData = [];
+    const bmiSummaryEl = document.getElementById("bmi-summary");
+    const workoutContent = document.getElementById("workout-content");
+    const dietContent = document.getElementById("diet-content");
+    const suppForm = document.getElementById("supp-form");
+    const suppNotes = document.getElementById("supp-notes");
+    const suppSuggestion = document.getElementById("supp-suggestion");
 
-    // --- MODO AUTH: cadastro x login ---
-    let isLoginMode = false;
+    // Campos de perfil
+    const profileNameEl = document.getElementById("profile-name");
+    const profileGenderEl = document.getElementById("profile-gender");
+    const profileHeightEl = document.getElementById("profile-height");
+    const profileStartWeightEl = document.getElementById("profile-start-weight");
+    const profileGoalWeightEl = document.getElementById("profile-goal-weight");
+    const profileGoalDateEl = document.getElementById("profile-goal-date");
+    const profileObjectiveEl = document.getElementById("profile-objective");
+    const profileDietEl = document.getElementById("profile-diet");
 
-    function setAuthMode(loginMode) {
-      isLoginMode = loginMode;
-      if (loginMode) {
-        authNameGroup.classList.add("hidden");
-        authPasswordConfirmGroup.classList.add("hidden");
-        authPrimaryBtn.textContent = "Entrar";
-        authToggleText.textContent = "Ainda não tem conta?";
-        authToggleBtn.textContent = "Criar conta";
+    // Campos registro semanal
+    const entryDateEl    = document.getElementById("entry-date");
+    const entryLabelEl   = document.getElementById("entry-label");
+    const entryWeightEl  = document.getElementById("entry-weight");
+    const entryWaistEl   = document.getElementById("entry-waist");
+    const entryEnergyEl  = document.getElementById("entry-energy");
+    const entryMoodEl    = document.getElementById("entry-mood");
+    const entrySleepEl   = document.getElementById("entry-sleep");
+    const entryNotesEl   = document.getElementById("entry-notes");
+
+    const newPasswordEl  = document.getElementById("new-password");
+
+    let chartWeightBmi = null;
+    let currentProfile = null;
+    let currentEntries = [];
+
+    // ========= AUTENTICAÇÃO ==========
+    onAuthStateChanged(auth, async (user) => {
+      if (user) {
+        authScreen.style.display = "none";
+        appMain.style.display = "block";
+        currentEmailEl.textContent = user.email || "";
+
+        welcomeTitle.textContent = user.displayName
+          ? `Olá, ${user.displayName} 👋`
+          : "Olá 👋";
+
+        await loadProfileAndEntries(user.uid);
       } else {
-        authNameGroup.classList.remove("hidden");
-        authPasswordConfirmGroup.classList.remove("hidden");
-        authPrimaryBtn.textContent = "Criar conta";
-        authToggleText.textContent = "Já tem conta?";
-        authToggleBtn.textContent = "Entrar";
+        appMain.style.display = "none";
+        authScreen.style.display = "block";
       }
-      authMessage.textContent = "";
-    }
-
-    authToggleBtn.addEventListener("click", () => {
-      setAuthMode(!isLoginMode);
     });
 
-    authPrimaryBtn.addEventListener("click", async () => {
-      authMessage.textContent = "";
+    loginForm.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      loginErrorEl.style.display = "none";
       try {
-        const email = authEmail.value.trim();
-        const password = authPassword.value;
-        if (!email || !password) {
-          authMessage.textContent = "Preencha e-mail e senha.";
-          return;
-        }
+        const email = document.getElementById("login-email").value.trim();
+        const password = document.getElementById("login-password").value;
+        await signInWithEmailAndPassword(auth, email, password);
+      } catch (err) {
+        console.error(err);
+        loginErrorEl.textContent = "Erro ao entrar: " + (err.message || err.code);
+        loginErrorEl.style.display = "block";
+      }
+    });
 
-        if (isLoginMode) {
-          await signInWithEmailAndPassword(auth, email, password);
-        } else {
-          const name = authName.value.trim();
-          const confirm = authPasswordConfirm.value;
-          if (!name) {
-            authMessage.textContent = "Informe seu nome.";
-            return;
-          }
-          if (password !== confirm) {
-            authMessage.textContent = "As senhas não coincidem.";
-            return;
-          }
-          const cred = await createUserWithEmailAndPassword(auth, email, password);
-          if (cred.user) {
-            await updateProfile(cred.user, { displayName: name });
-            // cria perfil inicial no Firestore
-            await setDoc(doc(db, "profiles", cred.user.uid), {
-              name,
-              gender: "",
-              heightCm: null,
-              startWeight: null,
-              goalWeight: null,
-              goalType: "",
-              dietType: "",
-              supplementsUser: "",
-              createdAt: new Date().toISOString()
-            });
-          }
+    signupForm.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      signupErrorEl.style.display = "none";
+      try {
+        const email = document.getElementById("signup-email").value.trim();
+        const password = document.getElementById("signup-password").value;
+        const name = document.getElementById("signup-name").value.trim();
+
+        const cred = await createUserWithEmailAndPassword(auth, email, password);
+        if (name) {
+          await updateProfile(cred.user, { displayName: name });
         }
       } catch (err) {
         console.error(err);
-        authMessage.textContent = "Erro: " + (err.message || "não foi possível autenticar.");
+        signupErrorEl.textContent = "Erro ao criar conta: " + (err.message || err.code);
+        signupErrorEl.style.display = "block";
       }
     });
 
-    logoutBtn.addEventListener("click", async () => {
+    btnLogout.addEventListener("click", async () => {
       await signOut(auth);
     });
 
-    // --- OBSERVA MUDANÇA DE LOGIN ---
-    onAuthStateChanged(auth, async (user) => {
-      currentUser = user;
-      if (!user) {
-        authCard.classList.remove("hidden");
-        appDiv.classList.add("hidden");
-        topbarUser.textContent = "";
+    btnOpenProfile.addEventListener("click", () => {
+      // Só rola até o card de perfil/metas
+      document.querySelector("#profile-form").scrollIntoView({ behavior: "smooth", block: "start" });
+    });
+
+    // ========= CARREGAR PERFIL + REGISTROS ==========
+    async function loadProfileAndEntries(uid) {
+      try {
+        // Perfil
+        const userRef = doc(db, "users", uid);
+        const snap = await getDoc(userRef);
+        if (snap.exists()) {
+          currentProfile = snap.data();
+        } else {
+          currentProfile = {};
+        }
+        fillProfileForm(currentProfile);
+
+        // Entradas
+        const entriesRef = collection(db, "users", uid, "entries");
+        const q = query(entriesRef, orderBy("date", "asc"));
+        const qSnap = await getDocs(q);
+        currentEntries = [];
+        qSnap.forEach(docSnap => {
+          currentEntries.push({
+            id: docSnap.id,
+            ...docSnap.data()
+          });
+        });
+
+        renderHistoryTable();
+        renderChartsAndProgress();
+        renderWorkoutSuggestions();
+        renderDietSuggestions();
+      } catch (err) {
+        console.error("Erro ao carregar dados:", err);
+      }
+    }
+
+    function fillProfileForm(profile) {
+      profileNameEl.value = profile.name || "";
+      profileGenderEl.value = profile.gender || "";
+      profileHeightEl.value = profile.height || "";
+      profileStartWeightEl.value = profile.startWeight || "";
+      profileGoalWeightEl.value  = profile.goalWeight || "";
+      profileGoalDateEl.value    = profile.goalDate || "";
+      profileObjectiveEl.value   = profile.objective || "";
+      profileDietEl.value        = profile.diet || "";
+    }
+
+    // ========= SALVAR PERFIL ==========
+    profileForm.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const user = auth.currentUser;
+      if (!user) return;
+
+      const data = {
+        name: profileNameEl.value.trim() || null,
+        gender: profileGenderEl.value || null,
+        height: profileHeightEl.value ? parseFloat(profileHeightEl.value.replace(",", ".")) : null,
+        startWeight: profileStartWeightEl.value ? parseFloat(profileStartWeightEl.value.replace(",", ".")) : null,
+        goalWeight: profileGoalWeightEl.value ? parseFloat(profileGoalWeightEl.value.replace(",", ".")) : null,
+        goalDate: profileGoalDateEl.value || null,
+        objective: profileObjectiveEl.value || null,
+        diet: profileDietEl.value || null,
+        updatedAt: serverTimestamp()
+      };
+
+      try {
+        // Atualiza displayName também
+        if (data.name) {
+          await updateProfile(user, { displayName: data.name });
+        }
+        await setDoc(doc(db, "users", user.uid), data, { merge: true });
+        profileMsg.textContent = "Perfil salvo com sucesso.";
+        profileMsg.style.display = "block";
+        setTimeout(() => profileMsg.style.display = "none", 3000);
+        await loadProfileAndEntries(user.uid);
+      } catch (err) {
+        console.error(err);
+        profileMsg.textContent = "Erro ao salvar perfil: " + (err.message || err.code);
+        profileMsg.style.display = "block";
+      }
+    });
+
+    // ========= TROCAR SENHA ==========
+    passwordForm.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const user = auth.currentUser;
+      if (!user) return;
+      const newPass = newPasswordEl.value;
+      if (!newPass || newPass.length < 6) {
+        passwordMsg.textContent = "A senha precisa ter pelo menos 6 caracteres.";
+        passwordMsg.style.display = "block";
         return;
       }
-      authCard.classList.add("hidden");
-      appDiv.classList.remove("hidden");
-      topbarUser.textContent = user.email || "Usuário logado";
-
-      await loadProfile(user.uid);
-      await loadWeeks(user.uid);
-    });
-
-    // --- PERFIL ---
-    async function loadProfile(uid) {
-      profileMessage.textContent = "";
-      const ref = doc(db, "profiles", uid);
-      const snap = await getDoc(ref);
-      let data = null;
-      if (snap.exists()) {
-        data = snap.data();
-      } else {
-        data = {};
-      }
-
-      profileName.value = data.name || (auth.currentUser?.displayName || "");
-      profileGender.value = data.gender || "";
-      heightCm.value = data.heightCm ?? "";
-      startWeight.value = data.startWeight ?? "";
-      goalWeight.value = data.goalWeight ?? "";
-      goalType.value = data.goalType || "";
-      dietType.value = data.dietType || "";
-      supplementsUser.value = data.supplementsUser || "";
-
-      updateGoalBadge();
-      updateBmiSummary();
-      updateRecommendations();
-    }
-
-    async function saveProfile() {
-      if (!currentUser) return;
-      const uid = currentUser.uid;
-      const ref = doc(db, "profiles", uid);
-
-      const name = profileName.value.trim();
-      const gender = profileGender.value;
-      const h = heightCm.value ? parseFloat(heightCm.value.replace(",", ".")) : null;
-      const sw = startWeight.value ? parseFloat(startWeight.value.replace(",", ".")) : null;
-      const gw = goalWeight.value ? parseFloat(goalWeight.value.replace(",", ".")) : null;
-      const gType = goalType.value;
-      const dType = dietType.value;
-      const supp = supplementsUser.value.trim();
-
-      await setDoc(ref, {
-        name,
-        gender,
-        heightCm: h,
-        startWeight: sw,
-        goalWeight: gw,
-        goalType: gType,
-        dietType: dType,
-        supplementsUser: supp,
-        updatedAt: new Date().toISOString()
-      }, { merge: true });
-
-      if (name && currentUser.displayName !== name) {
-        await updateProfile(currentUser, { displayName: name });
-      }
-
-      profileMessage.textContent = "Perfil salvo com sucesso.";
-      setTimeout(() => { profileMessage.textContent = ""; }, 3000);
-
-      updateGoalBadge();
-      updateBmiSummary();
-      updateRecommendations();
-      updateMotivation();
-    }
-
-    saveProfileBtn.addEventListener("click", () => {
-      saveProfile().catch(err => {
+      try {
+        await updatePassword(user, newPass);
+        passwordMsg.textContent = "Senha atualizada com sucesso.";
+        passwordMsg.style.display = "block";
+        newPasswordEl.value = "";
+        setTimeout(() => passwordMsg.style.display = "none", 3000);
+      } catch (err) {
         console.error(err);
-        profileMessage.textContent = "Erro ao salvar perfil.";
-      });
+        passwordMsg.textContent = "Erro ao atualizar senha: " + (err.message || err.code);
+        passwordMsg.style.display = "block";
+      }
     });
 
-    function updateGoalBadge() {
-      const gw = parseFloat(goalWeight.value.replace(",", "."));
-      if (!isNaN(gw)) {
-        goalBadge.textContent = "Objetivo: " + gw.toFixed(1) + " kg";
-      } else {
-        goalBadge.textContent = "Objetivo: personalizado";
-      }
-    }
+    // ========= REGISTRO SEMANAL ==========
+    entryForm.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const user = auth.currentUser;
+      if (!user) return;
 
-    function bmiFromWeight(weight, heightCmValue) {
-      if (!weight || !heightCmValue) return null;
-      const hM = heightCmValue / 100;
-      if (!hM) return null;
-      return weight / (hM * hM);
-    }
+      const date = entryDateEl.value;
+      const label = entryLabelEl.value.trim();
+      const weight = parseFloat((entryWeightEl.value || "").replace(",", "."));
+      const waist  = entryWaistEl.value ? parseFloat(entryWaistEl.value.replace(",", ".")) : null;
+      const energy = entryEnergyEl.value ? parseInt(entryEnergyEl.value, 10) : null;
+      const mood   = entryMoodEl.value ? parseInt(entryMoodEl.value, 10) : null;
+      const sleep  = entrySleepEl.value ? parseInt(entrySleepEl.value, 10) : null;
+      const notes  = entryNotesEl.value.trim() || null;
 
-    function bmiLabel(bmi) {
-      if (!bmi) return "";
-      if (bmi < 18.5) return "Abaixo do peso";
-      if (bmi < 25) return "Faixa saudável";
-      if (bmi < 30) return "Sobrepeso";
-      return "Obesidade";
-    }
-
-    function updateBmiSummary() {
-      const h = heightCm.value ? parseFloat(heightCm.value.replace(",", ".")) : null;
-      const sw = startWeight.value ? parseFloat(startWeight.value.replace(",", ".")) : null;
-      const gw = goalWeight.value ? parseFloat(goalWeight.value.replace(",", ".")) : null;
-
-      const bmiStart = sw ? bmiFromWeight(sw, h) : null;
-      const bmiGoal = gw ? bmiFromWeight(gw, h) : null;
-
-      let html = "";
-      const chips = [];
-
-      if (bmiStart) {
-        html += `IMC inicial aproximado: <strong>${bmiStart.toFixed(1)}</strong> (${bmiLabel(bmiStart)}).<br/>`;
-        chips.push(`IMC inicial: ${bmiStart.toFixed(1)}`);
-      }
-      if (bmiGoal) {
-        html += `IMC na meta: <strong>${bmiGoal.toFixed(1)}</strong> (${bmiLabel(bmiGoal)}).<br/>`;
-        chips.push(`IMC meta: ${bmiGoal.toFixed(1)}`);
-      }
-      if (!html) {
-        html = "Preencha altura, peso inicial e meta para ver o IMC.";
+      if (!date || isNaN(weight)) {
+        entryMsg.textContent = "Informe pelo menos data e peso.";
+        entryMsg.style.display = "block";
+        return;
       }
 
-      bmiSummary.innerHTML = html;
-      chipsRow.innerHTML = "";
-      chips.forEach(text => {
-        const span = document.createElement("span");
-        span.className = "chip";
-        span.textContent = text;
-        chipsRow.appendChild(span);
-      });
-    }
+      let bmi = null;
+      const h = profileHeightEl.value ? parseFloat(profileHeightEl.value.replace(",", ".")) : (currentProfile?.height || null);
+      if (h && !isNaN(h) && h > 0) {
+        bmi = +(weight / (h * h)).toFixed(1);
+      }
 
-    // --- SEMANAS / PROGRESSO ---
-    async function loadWeeks(uid) {
-      weeksData = [];
+      try {
+        // se já existir entrada nessa data, sobrescreve
+        const existing = currentEntries.find(e => e.date === date);
+        const payload = {
+          date,
+          label: label || null,
+          weight,
+          waist,
+          energy,
+          mood,
+          sleep,
+          notes,
+          bmi,
+          updatedAt: serverTimestamp()
+        };
+
+        const entriesRef = collection(db, "users", user.uid, "entries");
+        if (existing) {
+          // atualiza doc existente
+          await setDoc(doc(entriesRef, existing.id), payload, { merge: true });
+        } else {
+          await addDoc(entriesRef, {
+            ...payload,
+            createdAt: serverTimestamp()
+          });
+        }
+
+        entryMsg.textContent = "Semana registrada com sucesso.";
+        entryMsg.style.display = "block";
+        setTimeout(() => entryMsg.style.display = "none", 3000);
+
+        // limpa campos mais “sensíveis”
+        entryNotesEl.value = "";
+        entryLabelEl.value = "";
+
+        await loadProfileAndEntries(user.uid);
+      } catch (err) {
+        console.error(err);
+        entryMsg.textContent = "Erro ao salvar registro: " + (err.message || err.code);
+        entryMsg.style.display = "block";
+      }
+    });
+
+    // ========= HISTÓRICO TABELA ==========
+    function renderHistoryTable() {
       historyTableBody.innerHTML = "";
+      if (!currentEntries || currentEntries.length === 0) return;
 
-      const colRef = collection(db, "users", uid, "weeks");
-      const snap = await getDocs(colRef);
-      snap.forEach(docSnap => {
-        const d = docSnap.data();
-        weeksData.push(d);
-      });
-
-      weeksData.sort((a, b) => (a.week || 0) - (b.week || 0));
-      renderWeeksTable();
-      renderCharts();
-      updateMotivation();
-    }
-
-    function renderWeeksTable() {
-      historyTableBody.innerHTML = "";
-      const h = heightCm.value ? parseFloat(heightCm.value.replace(",", ".")) : null;
-
-      weeksData.forEach(row => {
+      currentEntries.forEach(entry => {
         const tr = document.createElement("tr");
-        const bmi = row.bmi || (row.weight && h ? bmiFromWeight(row.weight, h) : null);
+        const label = entry.label || "";
+        const weekLabel = label ? label : "–";
+        const dateStr = entry.date || "";
+        const bmiStr = entry.bmi != null ? entry.bmi.toFixed(1) : "";
 
         tr.innerHTML = `
-          <td><span class="pill">Semana ${row.week}</span></td>
-          <td>${row.weight ?? ""}</td>
-          <td>${row.waist ?? ""}</td>
-          <td>${bmi ? bmi.toFixed(1) : ""}</td>
-          <td>${row.energy ?? ""}</td>
-          <td>${row.mood ?? ""}</td>
-          <td>${row.sleep ?? ""}</td>
-          <td>${row.notes ?? ""}</td>
+          <td><span class="pill">${weekLabel}</span></td>
+          <td>${dateStr}</td>
+          <td>${entry.weight ?? ""}</td>
+          <td>${bmiStr}</td>
+          <td>${entry.waist ?? ""}</td>
+          <td>${entry.energy ?? ""}</td>
+          <td>${entry.mood ?? ""}</td>
+          <td>${entry.sleep ?? ""}</td>
+          <td>${entry.notes ?? ""}</td>
         `;
         historyTableBody.appendChild(tr);
       });
     }
 
-    function renderCharts() {
-      const h = heightCm.value ? parseFloat(heightCm.value.replace(",", ".")) : null;
-      const sorted = [...weeksData].sort((a, b) => (a.week || 0) - (b.week || 0));
+    // ========= GRÁFICOS + PROGRESSO ==========
+    function renderChartsAndProgress() {
+      // progresso / barra
+      const startWeight = currentProfile?.startWeight;
+      const goalWeight  = currentProfile?.goalWeight;
+      let latestWeight = null;
+      if (currentEntries.length > 0) {
+        latestWeight = currentEntries[currentEntries.length - 1].weight;
+      }
 
-      const labels = sorted.map(d => "S" + d.week);
-      const weights = sorted.map(d => d.weight ?? null);
-      const waists = sorted.map(d => d.waist ?? null);
-      const bmis = sorted.map(d => {
-        if (d.bmi) return d.bmi;
-        if (d.weight && h) return bmiFromWeight(d.weight, h);
-        return null;
-      });
+      let pct = 0;
+      if (startWeight && goalWeight && latestWeight) {
+        const start = startWeight;
+        const goal = goalWeight;
+        const current = latestWeight;
 
-      if (weightChart) weightChart.destroy();
-      if (bmiChart) bmiChart.destroy();
+        if (start > goal) {
+          // emagrecimento
+          const total = start - goal;
+          const done  = start - current;
+          pct = Math.max(0, Math.min(1, done / total));
+        } else if (goal > start) {
+          // ganho de peso
+          const total = goal - start;
+          const done  = current - start;
+          pct = Math.max(0, Math.min(1, done / total));
+        }
+      }
 
-      const ctxW = weightChartCanvas.getContext("2d");
-      const ctxB = bmiChartCanvas.getContext("2d");
+      const pctDisplay = Math.round(pct * 100);
+      progressFill.style.width = pctDisplay + "%";
+      progressLabel.textContent = pctDisplay + "%";
 
-      weightChart = new Chart(ctxW, {
+      // mensagem motivacional
+      let msg;
+      if (!startWeight || !goalWeight || !latestWeight) {
+        msg = "Defina peso inicial, meta e registre pelo menos uma semana para liberar o modo turbo de motivação. 🚀";
+      } else if (pctDisplay <= 0) {
+        msg = "Oficialmente começando do zero. Nada mais perigoso que alguém decidido a sair do 0%. 😉";
+      } else if (pctDisplay < 25) {
+        msg = `Você já saiu da inércia (${pctDisplay}%). A parte mais difícil já foi: começar. Continua que o gráfico vai ficando bonito.`;
+      } else if (pctDisplay < 60) {
+        msg = `${pctDisplay}% completos. Você está naquela fase em que as pessoas começam a perguntar: “o que você está fazendo?” 😏`;
+      } else if (pctDisplay < 90) {
+        msg = `${pctDisplay}%! Já dá pra considerar “modo quase final boss”. Só não para agora, que a reta final é traiçoeira.`;
+      } else {
+        msg = `${pctDisplay}% da meta. É praticamente outra pessoa já. Só falta o “fechar com chave de ouro”. 🔒✨`;
+      }
+      motivationText.textContent = msg;
+
+      // gráfico peso + IMC
+      const ctx = document.getElementById("chart-weight-bmi").getContext("2d");
+      if (chartWeightBmi) {
+        chartWeightBmi.destroy();
+      }
+
+      if (!currentEntries || currentEntries.length === 0) {
+        bmiSummaryEl.textContent = "Sem dados suficientes ainda. Registre pelo menos uma semana para ver o gráfico.";
+        return;
+      }
+
+      const labels = currentEntries.map(e => e.label || e.date || "");
+      const weights = currentEntries.map(e => e.weight || null);
+      const bmis    = currentEntries.map(e => e.bmi || null);
+
+      chartWeightBmi = new Chart(ctx, {
         type: "line",
         data: {
           labels,
@@ -988,50 +1170,16 @@
               label: "Peso (kg)",
               data: weights,
               borderColor: "#4cc9f0",
-              backgroundColor: "rgba(76,201,240,0.1)",
+              backgroundColor: "rgba(76,201,240,0.14)",
               borderWidth: 2,
               tension: 0.35,
               pointRadius: 3
             },
-            {
-              label: "Cintura (cm)",
-              data: waists,
-              borderColor: "#f72585",
-              backgroundColor: "rgba(247,37,133,0.1)",
-              borderWidth: 2,
-              tension: 0.35,
-              pointRadius: 3
-            }
-          ]
-        },
-        options: {
-          responsive: true,
-          plugins: {
-            legend: { labels: { color: "#d0d3ea", usePointStyle: true } }
-          },
-          scales: {
-            x: {
-              ticks: { color: "#9ba0c2" },
-              grid: { color: "rgba(255,255,255,0.03)" }
-            },
-            y: {
-              ticks: { color: "#9ba0c2" },
-              grid: { color: "rgba(255,255,255,0.03)" }
-            }
-          }
-        }
-      });
-
-      bmiChart = new Chart(ctxB, {
-        type: "line",
-        data: {
-          labels,
-          datasets: [
             {
               label: "IMC",
               data: bmis,
-              borderColor: "#ffb703",
-              backgroundColor: "rgba(255,183,3,0.1)",
+              borderColor: "#f72585",
+              backgroundColor: "rgba(247,37,133,0.16)",
               borderWidth: 2,
               tension: 0.35,
               pointRadius: 3
@@ -1040,8 +1188,11 @@
         },
         options: {
           responsive: true,
+          maintainAspectRatio: false,
           plugins: {
-            legend: { labels: { color: "#d0d3ea", usePointStyle: true } }
+            legend: {
+              labels: { color: "#d0d3ea", usePointStyle: true }
+            }
           },
           scales: {
             x: {
@@ -1055,247 +1206,221 @@
           }
         }
       });
-    }
 
-    async function saveWeek() {
-      if (!currentUser) return;
-      const uid = currentUser.uid;
-
-      const weekVal = parseInt(weekSelect.value, 10);
-      if (!weekVal || isNaN(weekVal)) {
-        weekMessage.textContent = "Selecione a semana.";
-        return;
-      }
-
-      const pesoVal = pesoInput.value ? parseFloat(pesoInput.value.replace(",", ".")) : null;
-      if (!pesoVal) {
-        weekMessage.textContent = "Informe o peso da semana.";
-        return;
-      }
-
-      const cinturaVal = cinturaInput.value ? parseFloat(cinturaInput.value.replace(",", ".")) : null;
-      const energiaVal = energiaInput.value ? parseInt(energiaInput.value, 10) : null;
-      const humorVal = humorInput.value ? parseInt(humorInput.value, 10) : null;
-      const sonoVal = sonoInput.value ? parseInt(sonoInput.value, 10) : null;
-      const obsVal = obsInput.value.trim();
-      const h = heightCm.value ? parseFloat(heightCm.value.replace(",", ".")) : null;
-      const bmi = h ? bmiFromWeight(pesoVal, h) : null;
-
-      const weekRef = doc(db, "users", uid, "weeks", "week-" + weekVal);
-      await setDoc(weekRef, {
-        week: weekVal,
-        weight: pesoVal,
-        waist: cinturaVal,
-        energy: energiaVal,
-        mood: humorVal,
-        sleep: sonoVal,
-        notes: obsVal,
-        bmi: bmi,
-        updatedAt: new Date().toISOString()
-      }, { merge: true });
-
-      weekMessage.textContent = "Semana salva com sucesso.";
-      setTimeout(() => { weekMessage.textContent = ""; }, 3000);
-
-      await loadWeeks(uid);
-
-      // mini reset
-      obsInput.value = "";
-    }
-
-    saveWeekBtn.addEventListener("click", () => {
-      saveWeek().catch(err => {
-        console.error(err);
-        weekMessage.textContent = "Erro ao salvar semana.";
-      });
-    });
-
-    clearWeeksBtn.addEventListener("click", async () => {
-      if (!currentUser) return;
-      if (!confirm("Tem certeza que deseja apagar TODAS as semanas deste usuário?")) return;
-      const uid = currentUser.uid;
-      const colRef = collection(db, "users", uid, "weeks");
-      const snap = await getDocs(colRef);
-      const promises = [];
-      snap.forEach(docSnap => {
-        promises.push(deleteDoc(docSnap.ref));
-      });
-      await Promise.all(promises);
-      weeksData = [];
-      renderWeeksTable();
-      renderCharts();
-      updateMotivation();
-      weekMessage.textContent = "Todas as semanas foram apagadas.";
-      setTimeout(() => { weekMessage.textContent = ""; }, 3000);
-    });
-
-    // --- MOTIVAÇÃO ---
-    function updateMotivation() {
-      if (!weeksData.length) {
-        motivationEmoji.textContent = "✨";
-        motivationText.textContent = "Começo de tudo: preencha a semana 1 e marque esse ponto zero. O resto é curva descendente.";
-        return;
-      }
-
-      const sorted = [...weeksData].sort((a, b) => (a.week || 0) - (b.week || 0));
-      const last = sorted[sorted.length - 1];
-      const prev = sorted.length > 1 ? sorted[sorted.length - 2] : null;
-
-      const gw = goalWeight.value ? parseFloat(goalWeight.value.replace(",", ".")) : null;
-      const sw = startWeight.value ? parseFloat(startWeight.value.replace(",", ".")) : null;
-
-      if (gw && last.weight && last.weight <= gw) {
-        motivationEmoji.textContent = "🎉";
-        motivationText.textContent = "Meta alcançada! Agora o desafio é manter. Não some, porque manter é mais difícil que chegar. 😉";
-        return;
-      }
-
-      if (prev && last.weight && prev.weight) {
-        if (last.weight < prev.weight) {
-          motivationEmoji.textContent = "🔥";
-          motivationText.textContent = `Desceu de ${prev.weight.toFixed(1)} kg para ${last.weight.toFixed(1)} kg. Quem diria que disciplina emagrece mais que filtro do Instagram, né?`;
-          return;
-        }
-        if (last.weight > prev.weight) {
-          motivationEmoji.textContent = "🍕";
-          motivationText.textContent = `Peso subiu um pouco (${prev.weight.toFixed(1)} → ${last.weight.toFixed(1)} kg). Acontece. Só não deixa “só hoje” virar “ano que vem eu começo”.`;
-          return;
-        }
-      }
-
-      if (sw && last.weight && last.weight < sw) {
-        motivationEmoji.textContent = "🚀";
-        motivationText.textContent = `Você já saiu de ${sw.toFixed(1)} kg para ${last.weight.toFixed(1)} kg. O “eu do futuro” está oficialmente te aplaudindo de pé.`;
-        return;
-      }
-
-      motivationEmoji.textContent = "💪";
-      motivationText.textContent = "Os dados estão entrando. Agora é seguir colocando semana a semana. O app faz os gráficos, você faz a mágica.";
-    }
-
-    // --- RECOMENDAÇÕES DE TREINO / DIETA ---
-    function updateRecommendations() {
-      // treino
-      const gType = goalType.value;
-      const gender = profileGender.value;
-      let htmlTreino = "";
-      if (!gType) {
-        htmlTreino = "Selecione um objetivo no perfil para ver a divisão sugerida de treinos.";
-      } else if (gType === "emagrecimento") {
-        htmlTreino = `
-          <ul>
-            <li><strong>Frequência ideal:</strong> 3–5x por semana.</li>
-            <li><strong>Musculação:</strong> 3x/semana em esquema full body (corpo todo) com foco em movimentos básicos.</li>
-            <li><strong>Cardio:</strong> 20–40 min após treino ou em dias alternados (caminhada acelerada, bike, elíptico).</li>
-          </ul>
-        `;
-      } else if (gType === "hipertrofia") {
-        htmlTreino = `
-          <ul>
-            <li><strong>Frequência ideal:</strong> 4–6x por semana.</li>
-            <li><strong>Divisão sugerida:</strong> 
-              ${gender === "F"
-                ? "Inferiores (perna/glúteo) 2x + Superiores 2x + 1 dia opcional de foco extra em glúteo."
-                : "Peito/Tríceps • Costas/Bíceps • Pernas • Ombro/Abdômen (pode repetir pernas ou superiores)."}
-            </li>
-            <li><strong>Estilo:</strong> 3–4 séries de 8–12 repetições, buscando progressão de carga.</li>
-          </ul>
-        `;
-      } else if (gType === "recomposicao") {
-        htmlTreino = `
-          <ul>
-            <li><strong>Frequência ideal:</strong> 4–5x por semana.</li>
-            <li>Musculação forte + 2–3 sessões de cardio leve/moderado.</li>
-            <li>Controle fino de dieta (não comer de menos nem demais).</li>
-          </ul>
-        `;
+      // resumo de IMC mais recente
+      const last = currentEntries[currentEntries.length - 1];
+      if (last && last.bmi) {
+        const bmi = last.bmi;
+        let cat = "";
+        if (bmi < 18.5) cat = "Abaixo do peso";
+        else if (bmi < 25) cat = "Peso adequado";
+        else if (bmi < 30) cat = "Sobrepeso";
+        else cat = "Obesidade";
+        bmiSummaryEl.textContent = `IMC atual aproximado: ${bmi.toFixed(1)} (${cat}). Lembre: IMC é só um indicador, não define sua história. 😉`;
       } else {
-        htmlTreino = `
+        bmiSummaryEl.textContent = "Ainda não foi possível calcular o IMC. Confira se a altura e o peso estão preenchidos.";
+      }
+    }
+
+    // ========= TREINOS (por objetivo + sexo) ==========
+    function renderWorkoutSuggestions() {
+      const obj = currentProfile?.objective || "";
+      const gender = currentProfile?.gender || "";
+      let titleExtra = "";
+      if (gender === "feminino") {
+        titleExtra = " com foco extra em glúteos, pernas e postura, se desejar.";
+      } else if (gender === "masculino") {
+        titleExtra = " com foco clássico em força, peitoral e costas – sem esquecer perna, hein. 😉";
+      } else {
+        titleExtra = " focado em saúde, força e estética de forma geral.";
+      }
+
+      let html = `<p class="small">Planejamento sugerido considerando seu objetivo selecionado${titleExtra}</p>`;
+
+      if (obj === "emagrecimento" || obj === "") {
+        html += `
+          <h3>Fase base – Emagrecimento saudável</h3>
           <ul>
-            <li><strong>Frequência ideal:</strong> 3–4x por semana, alternando musculação e cardio.</li>
+            <li><strong>Musculação: 3–4x/semana</strong>
+              <ul>
+                <li>Agachamento livre ou leg press – 3x10–12</li>
+                <li>Supino reto ou máquina – 3x10–12</li>
+                <li>Remada baixa ou curvada – 3x10–12</li>
+                <li>Desenvolvimento de ombro – 3x10–12</li>
+                <li>Prancha abdominal – 3x30–40s</li>
+              </ul>
+            </li>
+            <li><strong>Cardio leve: 4–6x/semana</strong> – caminhadas rápidas de 20–30 minutos.</li>
+            <li><strong>Dica:</strong> se estiver muito pesado, comece com 10–15 min de caminhada e vá subindo.</li>
+          </ul>
+        `;
+      } else if (obj === "hipertrofia") {
+        html += `
+          <h3>Fase base – Hipertrofia</h3>
+          <ul>
+            <li><strong>Musculação: 4–5x/semana</strong>
+              <ul>
+                <li>Dia 1: Peito + tríceps – 3–4 exercícios, 3x8–10</li>
+                <li>Dia 2: Costas + bíceps – 3–4 exercícios, 3x8–10</li>
+                <li>Dia 3: Pernas + glúteo – 4–5 exercícios, 3x8–12</li>
+                <li>Dia 4: Ombro + abdômen – 3–4 exercícios, 3x10–12</li>
+              </ul>
+            </li>
+            <li><strong>Cardio leve: 2–3x/semana</strong> – 15–20 min só pra saúde, não pra se matar.</li>
+          </ul>
+        `;
+      } else if (obj === "performance") {
+        html += `
+          <h3>Fase base – Performance</h3>
+          <ul>
+            <li><strong>Musculação: 2–3x/semana</strong> – foco em força geral (agachamento, terra, supino, remada).</li>
+            <li><strong>Treino específico: 3–4x/semana</strong> – corrida, bike, esporte que você pratica.</li>
+            <li><strong>Cardio intervalado</strong> 1–2x/semana, se já tiver base de condicionamento.</li>
+          </ul>
+        `;
+      } else if (obj === "recomposicao") {
+        html += `
+          <h3>Fase base – Recomposição corporal</h3>
+          <ul>
+            <li><strong>Musculação: 3–4x/semana</strong> – alternando parte superior e inferior.</li>
+            <li><strong>Cardio moderado: 3x/semana</strong> – 20–30 min.</li>
           </ul>
         `;
       }
-      workoutSuggestions.innerHTML = htmlTreino;
 
-      // dieta
-      const dType = dietType.value;
-      let htmlDieta = "";
-      if (!dType) {
-        htmlDieta = "Selecione um tipo de dieta no perfil para ver a tabelinha de alimentos recomendados x evitar.";
-      } else if (dType === "lowcarb") {
-        htmlDieta = `
-          <table>
-            <thead>
-              <tr><th>Recomendados</th><th>Evitar / reduzir</th></tr>
-            </thead>
-            <tbody>
-              <tr><td>Carnes magras, ovos, peixes</td><td>Pães, massas, bolos, biscoitos</td></tr>
-              <tr><td>Verduras, legumes, saladas</td><td>Refrigerantes, sucos açucarados</td></tr>
-              <tr><td>Oleaginosas (castanhas, nozes)</td><td>Doces em geral</td></tr>
-              <tr><td>Queijos, iogurte natural</td><td>Arroz e batata em excesso</td></tr>
-            </tbody>
-          </table>
-        `;
-      } else if (dType === "highprotein") {
-        htmlDieta = `
-          <table>
-            <thead>
-              <tr><th>Recomendados</th><th>Evitar / reduzir</th></tr>
-            </thead>
-            <tbody>
-              <tr><td>Frango, peixe, carne magra</td><td>Frituras frequentes</td></tr>
-              <tr><td>Ovos, whey, iogurte grego</td><td>Fast food</td></tr>
-              <tr><td>Arroz integral, feijão, legumes</td><td>Excesso de álcool</td></tr>
-              <tr><td>Frutas em porções controladas</td><td>Doces todo dia</td></tr>
-            </tbody>
-          </table>
-        `;
-      } else if (dType === "hipercalorica") {
-        htmlDieta = `
-          <table>
-            <thead>
-              <tr><th>Recomendados</th><th>Evitar / reduzir</th></tr>
-            </thead>
-            <tbody>
-              <tr><td>Arroz, batata, aveia, massas</td><td>Calorias vazias (só açúcar)</td></tr>
-              <tr><td>Proteínas em todas as refeições</td><td>Pular refeições importantes</td></tr>
-              <tr><td>Oleaginosas, azeite, abacate</td><td>“Bulking de lixo” o tempo todo</td></tr>
-            </tbody>
-          </table>
-        `;
-      } else if (dType === "mediterranea") {
-        htmlDieta = `
-          <table>
-            <thead>
-              <tr><th>Recomendados</th><th>Evitar / reduzir</th></tr>
-            </thead>
-            <tbody>
-              <tr><td>Peixes, azeite de oliva, castanhas</td><td>Ultraprocessados</td></tr>
-              <tr><td>Frutas, legumes, grãos integrais</td><td>Refrigerantes e embutidos</td></tr>
-              <tr><td>Laticínios em moderação</td><td>Doces frequentes</td></tr>
-            </tbody>
-          </table>
-        `;
-      }
-      dietSuggestions.innerHTML = htmlDieta;
+      html += `
+        <p class="small">
+          Lembre: séries, repetições e exercícios podem (e devem) ser ajustados por um(a) profissional de educação física
+          de acordo com suas limitações e histórico.
+        </p>
+      `;
+
+      workoutContent.innerHTML = html;
     }
 
-    // Atualiza BMI/resumo quando campos mudam
-    [heightCm, startWeight, goalWeight].forEach(el => {
-      el.addEventListener("input", () => {
-        updateBmiSummary();
-        renderWeeksTable();
-        renderCharts();
-      });
-    });
-    [goalType, dietType, profileGender].forEach(el => {
-      el.addEventListener("change", () => {
-        updateRecommendations();
-        updateMotivation();
-      });
-    });
+    // ========= DIETA (por plano) ==========
+    function renderDietSuggestions() {
+      const diet = currentProfile?.diet || "";
+      let html = "";
 
+      if (!diet) {
+        html = `
+          <p class="small">
+            Selecione um plano alimentar em “Perfil & Metas” para ver aqui
+            uma sugestão básica de alimentos recomendados, evitar e um exemplo de dia.
+          </p>
+        `;
+        dietContent.innerHTML = html;
+        return;
+      }
+
+      if (diet === "lowcarb") {
+        html += `
+          <p><strong>Low carb – foco em controle de carboidratos</strong></p>
+          <div class="tag-row">
+            <span class="tag-pill">Proteína em todas as refeições</span>
+            <span class="tag-pill">Carbo de qualidade</span>
+            <span class="tag-pill">Muita salada</span>
+          </div>
+          <p class="small"><strong>Recomendados:</strong> ovos, carnes magras, peixe, frango, queijos magros, azeite, abacate, castanhas, saladas, legumes, frutas com menos açúcar (morango, kiwi, frutas vermelhas).</p>
+          <p class="small"><strong>Evitar:</strong> açúcar, refrigerante, pães brancos, massas, doces, ultraprocessados em geral.</p>
+          <p class="small"><strong>Exemplo de dia:</strong><br/>
+            • Café da manhã: omelete com queijo + café sem açúcar<br/>
+            • Almoço: frango grelhado + salada grande + legumes refogados<br/>
+            • Lanche: iogurte natural + castanhas<br/>
+            • Jantar: peixe assado + salada + legumes
+          </p>
+        `;
+      } else if (diet === "hipertrofia") {
+        html += `
+          <p><strong>Dieta para hipertrofia – alta proteína</strong></p>
+          <div class="tag-row">
+            <span class="tag-pill">Proteína 1,6–2,2 g/kg</span>
+            <span class="tag-pill">Carbo em torno do treino</span>
+            <span class="tag-pill">Gorduras boas</span>
+          </div>
+          <p class="small"><strong>Recomendados:</strong> arroz, batata-doce, aveia, frango, carne magra, ovos, feijão, lentilha, frutas, azeite, pasta de amendoim.</p>
+          <p class="small"><strong>Evitar excesso de:</strong> frituras, álcool, fast-food, doces em excesso.</p>
+          <p class="small"><strong>Exemplo de dia:</strong><br/>
+            • Café: ovos mexidos + pão integral + fruta<br/>
+            • Almoço: arroz + feijão + carne magra + salada<br/>
+            • Pré-treino: banana + aveia + whey (se usar)<br/>
+            • Pós-treino: refeição com boa proteína + carbo de qualidade<br/>
+            • Jantar: fonte de proteína + legumes + um pouco de carbo
+          </p>
+        `;
+      } else if (diet === "mediterranea") {
+        html += `
+          <p><strong>Dieta mediterrânea – saúde geral</strong></p>
+          <div class="tag-row">
+            <span class="tag-pill">Muito vegetal</span>
+            <span class="tag-pill">Azeite de oliva</span>
+            <span class="tag-pill">Peixes e grãos</span>
+          </div>
+          <p class="small"><strong>Recomendados:</strong> peixes, azeite, frutas, legumes, grãos integrais, nozes, castanhas.</p>
+          <p class="small"><strong>Evitar excesso de:</strong> ultraprocessados, carnes muito gordas, açúcar.</p>
+        `;
+      } else if (diet === "flexivel") {
+        html += `
+          <p><strong>Dieta flexível – IIFYM</strong></p>
+          <div class="tag-row">
+            <span class="tag-pill">Conta macros</span>
+            <span class="tag-pill">80% comida “de verdade”</span>
+            <span class="tag-pill">20% flexível</span>
+          </div>
+          <p class="small">
+            Ideia: bater proteína, carbo e gordura diários, com maioria das calorias vindas de comida boa,
+            permitindo pequenas flexibilizações (pizza, doce, etc.) de forma planejada.
+          </p>
+        `;
+      }
+
+      html += `
+        <p class="small">
+          Essas são apenas linhas gerais. Nutricionista é sempre o(a) melhor amigo(a)
+          para personalizar tudo de acordo com exames, histórico e preferências.
+        </p>
+      `;
+
+      dietContent.innerHTML = html;
+    }
+
+    // ========= “IA” de suplementos (regras simples) ==========
+    suppForm.addEventListener("submit", (e) => {
+      e.preventDefault();
+      const text = (suppNotes.value || "").toLowerCase();
+      if (!text.trim()) {
+        suppSuggestion.textContent = "Escreva pelo menos um suplemento para eu poder te sugerir horários gerais.";
+        return;
+      }
+
+      let parts = [];
+      if (text.includes("whey")) {
+        parts.push("• Whey: geralmente pós-treino ou como lanche proteico entre refeições.");
+      }
+      if (text.includes("creatina")) {
+        parts.push("• Creatina: 3–5 g por dia, horário flexível (junto de alguma refeição). Consistência é mais importante que horário.");
+      }
+      if (text.includes("vitamina d")) {
+        parts.push("• Vitamina D: normalmente 1x ao dia, com refeição que tenha alguma gordura (melhora absorção).");
+      }
+      if (text.includes("multivit") || text.includes("multivitam")) {
+        parts.push("• Multivitamínico: junto de uma refeição principal (café, almoço ou jantar).");
+      }
+      if (text.includes("cafeina") || text.includes("cafeína") || text.includes("pré-treino") || text.includes("pre-treino")) {
+        parts.push("• Cafeína / pré-treino: 30–45 min antes do treino (evitar muito tarde para não atrapalhar o sono).");
+      }
+
+      if (parts.length === 0) {
+        parts.push("Não encontrei suplementos específicos no texto, então a sugestão geral é: distribua vitaminas junto das refeições principais, creatina em qualquer horário do dia e estimulantes (cafeína) longe da hora de dormir.");
+      }
+
+      suppSuggestion.innerHTML = `
+        <p class="small"><strong>Sugestão geral de horários:</strong></p>
+        <p class="small">${parts.join("<br/>")}</p>
+        <p class="small">Sempre siga as orientações do(a) médico(a) / nutricionista. Aqui é só um guia geral.</p>
+      `;
+    });
   </script>
 </body>
 </html>

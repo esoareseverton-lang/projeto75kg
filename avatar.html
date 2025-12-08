@@ -6,6 +6,7 @@
   <title>Evolução 3D — Avatar</title>
 
   <style>
+    /* Estilo simples e escuro — mantive sua aparência original */
     :root{
       --bg:#071124;
       --card:#0b1220;
@@ -33,97 +34,22 @@
       border:1px solid rgba(255,255,255,0.05);
       box-shadow:0 8px 28px rgba(0,0,0,0.5);
     }
-    h1{
-      margin:0 0 6px;
-      font-size:18px;
-    }
-    p.muted{
-      margin:0 0 10px;
-      font-size:13px;
-      color:var(--muted);
-    }
-    #viewport{
-      width:100%;
-      height:560px;
-      border-radius:10px;
-      background:#050b18;
-      overflow:hidden;
-    }
-    label{
-      font-size:13px;
-      color:var(--muted);
-      display:block;
-      margin-bottom:4px;
-    }
-    input{
-      width:100%;
-      padding:8px;
-      border-radius:8px;
-      background:transparent;
-      border:1px solid rgba(255,255,255,0.08);
-      color:white;
-      margin-bottom:10px;
-    }
-    .btn{
-      padding:10px 12px;
-      border-radius:10px;
-      border:none;
-      cursor:pointer;
-      font-weight:600;
-    }
-    .btn-primary{
-      background:linear-gradient(90deg,#06b6d4,#10b981);
-      color:#021015;
-    }
-    .btn-ghost{
-      background:transparent;
-      border:1px solid rgba(255,255,255,0.08);
-      color:var(--muted);
-    }
-
-    .progressBar{
-      height:14px;
-      background:rgba(255,255,255,0.07);
-      border-radius:999px;
-      overflow:hidden;
-      margin-top:6px;
-    }
-    .fill{
-      height:100%;
-      width:0%;
-      background:linear-gradient(90deg,#06b6d4,#10b981);
-      transition:width .5s ease;
-    }
-
-    .history{
-      max-height:260px;
-      overflow-y:auto;
-      display:flex;
-      flex-direction:column;
-      gap:6px;
-      margin-top:10px;
-    }
-    .histItem{
-      padding:8px;
-      background:rgba(255,255,255,0.06);
-      border-radius:8px;
-      font-size:13px;
-    }
-
-    footer{
-      margin-top:14px;
-      text-align:center;
-      font-size:12px;
-      color:var(--muted);
-    }
-
+    h1{ margin:0 0 6px; font-size:18px; }
+    p.muted{ margin:0 0 10px; font-size:13px; color:var(--muted); }
+    #viewport{ width:100%; height:560px; border-radius:10px; background:#050b18; overflow:hidden; }
+    label{ font-size:13px; color:var(--muted); display:block; margin-bottom:4px; }
+    input{ width:100%; padding:8px; border-radius:8px; background:transparent; border:1px solid rgba(255,255,255,0.08); color:white; margin-bottom:10px; }
+    .btn{ padding:10px 12px; border-radius:10px; border:none; cursor:pointer; font-weight:600; }
+    .btn-primary{ background:linear-gradient(90deg,#06b6d4,#10b981); color:#021015; }
+    .btn-ghost{ background:transparent; border:1px solid rgba(255,255,255,0.08); color:var(--muted); }
+    .progressBar{ height:14px; background:rgba(255,255,255,0.07); border-radius:999px; overflow:hidden; margin-top:6px; }
+    .fill{ height:100%; width:0%; background:linear-gradient(90deg,#06b6d4,#10b981); transition:width .5s ease; }
+    .history{ max-height:260px; overflow-y:auto; display:flex; flex-direction:column; gap:6px; margin-top:10px; }
+    .histItem{ padding:8px; background:rgba(255,255,255,0.06); border-radius:8px; font-size:13px; }
+    footer{ margin-top:14px; text-align:center; font-size:12px; color:var(--muted); }
     @media(max-width:900px){
-      .wrap{
-        grid-template-columns:1fr;
-      }
-      #viewport{
-        height:420px;
-      }
+      .wrap{ grid-template-columns:1fr; }
+      #viewport{ height:420px; }
     }
   </style>
 </head>
@@ -132,34 +58,29 @@
 
 <div class="wrap">
 
-  <!-- 🟦 Coluna do Avatar (3 bonecos lado a lado) -->
+  <!-- COLUNA DO AVATAR (3 VIEWS: atual · semana · meta) -->
   <div class="card">
     <h1>Avatar 3D — Atual · Semana · Meta</h1>
     <p class="muted">Ajuste as medidas → Salve → Compare com semanas → Veja evolução visual.</p>
 
+    <!-- Canvas container (Three.js) -->
     <div id="viewport"></div>
 
     <div style="display:flex;gap:10px;margin-top:10px;flex-wrap:wrap">
-      <button id="saveWeigh" class="btn btn-primary">Salvar Pesagem</button>
-      <button id="saveMeta" class="btn btn-ghost">Salvar Meta</button>
-      <button id="exportCSV" class="btn btn-ghost">Exportar CSV</button>
+      <!-- IDs mantidos para facilitar seleção; no script usaremos nomes de variáveis distintas para evitar colisões -->
+      <button id="btnSaveWeigh" class="btn btn-primary">Salvar Pesagem</button>
+      <button id="btnSaveMeta" class="btn btn-ghost">Salvar Meta</button>
+      <button id="btnExportCSV" class="btn btn-ghost">Exportar CSV</button>
     </div>
 
+    <!-- Inputs principais -->
     <div style="margin-top:12px;display:grid;grid-template-columns:repeat(3,1fr);gap:10px">
-      <div>
-        <label>Peso Atual (kg)</label>
-        <input id="w" type="number" step="0.1">
-      </div>
-      <div>
-        <label>Altura (m)</label>
-        <input id="h" type="number" step="0.01">
-      </div>
-      <div>
-        <label>Meta (kg)</label>
-        <input id="t" type="number" step="0.1">
-      </div>
+      <div><label>Peso Atual (kg)</label><input id="w" type="number" step="0.1"></div>
+      <div><label>Altura (m)</label><input id="h" type="number" step="0.01"></div>
+      <div><label>Meta (kg)</label><input id="t" type="number" step="0.1"></div>
     </div>
 
+    <!-- Medidas adicionais para deformar o modelo -->
     <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:10px">
       <div><label>Braço</label><input id="arm" type="number" step="0.1"></div>
       <div><label>Peito</label><input id="chest" type="number" step="0.1"></div>
@@ -167,6 +88,7 @@
       <div><label>Coxa</label><input id="thigh" type="number" step="0.1"></div>
     </div>
 
+    <!-- Barra de progresso -->
     <div style="margin-top:12px">
       <div style="display:flex;justify-content:space-between">
         <strong>Progresso</strong>
@@ -178,7 +100,7 @@
 
   </div>
 
-  <!-- 🟪 Coluna do Histórico -->
+  <!-- COLUNA DO HISTÓRICO -->
   <div class="card">
     <h1>Histórico</h1>
     <p class="muted">Selecione uma semana para ver o boneco correspondente no centro.</p>
@@ -192,39 +114,40 @@
     <div id="history" class="history"></div>
 
     <footer>Entradas salvas: <span id="count">0</span></footer>
-
   </div>
 
 </div>
 
-<!-- ⚙️ SCRIPT 3D + LÓGICA -->
+<!-- SCRIPT 3D + LÓGICA (módulo ES, CDN para three.js compatível com GitHub Pages) -->
 <script type="module">
-  /* IMPORTAÇÃO 100% COMPATÍVEL COM GITHUB PAGES */
+  // ---- IMPORTS ----
   import * as THREE from "https://cdn.jsdelivr.net/npm/three@0.152.2/build/three.module.js";
   import { OrbitControls } from "https://cdn.jsdelivr.net/npm/three@0.152.2/examples/jsm/controls/OrbitControls.js";
 
-  /* ------------------------------
-       STORAGE LOCAL
-  ------------------------------ */
-  const META_KEY = "fb_meta";
-  const WEEKS_KEY = "fb_weeks";
+  // ---- STORAGE KEYS ----
+  // Chaves usadas no localStorage. Mantê-las consistentes permite persistir metadados e histórico.
+  const STORAGE_META = "fb_meta_v1";
+  const STORAGE_WEEKS = "fb_weeks_v1";
 
-  function loadMeta() {
-    return JSON.parse(localStorage.getItem(META_KEY) || "{}");
+  // Helpers para ler/gravar JSON no localStorage (com fallback seguro)
+  function loadMetaData() {
+    try { return JSON.parse(localStorage.getItem(STORAGE_META) || "{}"); }
+    catch (e) { console.warn("meta parse error", e); return {}; }
   }
-  function saveMeta(v) {
-    localStorage.setItem(META_KEY, JSON.stringify(v));
+  function saveMetaData(v) {
+    try { localStorage.setItem(STORAGE_META, JSON.stringify(v)); }
+    catch (e) { console.warn("save meta failed", e); }
   }
   function loadWeeks() {
-    return JSON.parse(localStorage.getItem(WEEKS_KEY) || "[]");
+    try { return JSON.parse(localStorage.getItem(STORAGE_WEEKS) || "[]"); }
+    catch (e) { console.warn("weeks parse error", e); return []; }
   }
-  function saveWeeks(arr) {
-    localStorage.setItem(WEEKS_KEY, JSON.stringify(arr));
+  function saveWeeksData(arr) {
+    try { localStorage.setItem(STORAGE_WEEKS, JSON.stringify(arr)); }
+    catch (e) { console.warn("save weeks failed", e); }
   }
 
-  /* ------------------------------
-      ELEMENTOS HTML
-  ------------------------------ */
+  // ---- ELEMENTOS DO DOM (variáveis locais claras para evitar colisões de nomes) ----
   const elW = document.getElementById("w");
   const elH = document.getElementById("h");
   const elT = document.getElementById("t");
@@ -242,48 +165,59 @@
   const historyDiv = document.getElementById("history");
   const count = document.getElementById("count");
 
-  /* ------------------------------
-      3D — CENA
-  ------------------------------ */
+  // Buttons (variáveis com prefixo btn para maior clareza)
+  const btnSaveWeigh = document.getElementById("btnSaveWeigh");
+  const btnSaveMeta = document.getElementById("btnSaveMeta");
+  const btnExportCSV = document.getElementById("btnExportCSV");
+  const btnDelWeek = document.getElementById("delWeek");
+
+  // ---- THREE.JS: cena, camera, renderer ----
   const container = document.getElementById("viewport");
   const scene = new THREE.Scene();
   scene.background = new THREE.Color(0x050b18);
 
-  const camera = new THREE.PerspectiveCamera(
-    36,
-    container.clientWidth / container.clientHeight,
-    0.1,
-    100
-  );
+  // Criamos câmera com aspecto baseado no tamanho atual do container
+  const camera = new THREE.PerspectiveCamera(36, container.clientWidth / container.clientHeight, 0.1, 100);
   camera.position.set(0, 1.4, 6);
 
-  const renderer = new THREE.WebGLRenderer({ antialias: true });
+  // Renderer WebGL — antialias para suavizar bordas
+  const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: false });
   renderer.setSize(container.clientWidth, container.clientHeight);
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
   container.appendChild(renderer.domElement);
 
+  // Controles (rotacionar e zoom, pan desativado pra manter vista central)
   const controls = new OrbitControls(camera, renderer.domElement);
   controls.enablePan = false;
   controls.maxPolarAngle = Math.PI / 2;
 
+  // Luz ambiente + direcional para sombras simples
   scene.add(new THREE.AmbientLight(0xffffff, 0.7));
   const dl = new THREE.DirectionalLight(0xffffff, 0.6);
   dl.position.set(5, 8, 5);
   scene.add(dl);
 
-  /* ------------------------------
-      FUNÇÃO PARA CRIAR BONECO
-  ------------------------------ */
+  // Ajusta o renderer ao redimensionar janela (manter aspecto e tamanho)
+  window.addEventListener("resize", () => {
+    camera.aspect = container.clientWidth / container.clientHeight;
+    camera.updateProjectionMatrix();
+    renderer.setSize(container.clientWidth, container.clientHeight);
+  });
+
+  // ---- FUNÇÃO QUE CRIA UM AVATAR (RETORNA OBJECTS PRA PODER ALTERAR ESCALAS) ----
+  // Usamos primitivas (Sphere, Box, Cylinder) para evitar dependência de arquivos 3D
   function createAvatar(color = 0x77c0e0) {
     const g = new THREE.Group();
 
+    // material de pele reaproveitável
     const matSkin = new THREE.MeshStandardMaterial({ color: 0xf2c9a6 });
 
-    // cabeça
+    // cabe�a (esfera)
     const head = new THREE.Mesh(new THREE.SphereGeometry(0.28, 28, 28), matSkin);
     head.position.set(0, 1.45, 0);
     g.add(head);
 
-    // olhos
+    // olhos (duas esferas pequenas) - retornamos referências para poder ajustar tamanho/posição
     const eyeMat = new THREE.MeshStandardMaterial({ color: 0x111111 });
     const eyeL = new THREE.Mesh(new THREE.SphereGeometry(0.12, 12, 12), eyeMat);
     eyeL.position.set(-0.09, 1.5, 0.26);
@@ -291,117 +225,100 @@
     eyeR.position.x = 0.09;
     g.add(eyeL, eyeR);
 
-    // boca
-    const mouth = new THREE.Mesh(
-      new THREE.BoxGeometry(0.22, 0.04, 0.02),
-      new THREE.MeshStandardMaterial({ color: 0x7b2e2e })
-    );
+    // boca (caixa fina) - guardamos referência para alterar rotação (sorriso/carranca)
+    const mouth = new THREE.Mesh(new THREE.BoxGeometry(0.22, 0.04, 0.02), new THREE.MeshStandardMaterial({ color: 0x7b2e2e }));
     mouth.position.set(0, 1.38, 0.26);
     g.add(mouth);
 
-    // tronco
-    const torso = new THREE.Mesh(
-      new THREE.BoxGeometry(0.45, 0.6, 0.28),
-      new THREE.MeshStandardMaterial({ color })
-    );
+    // tronco (caixa) com material colorido (parâmetro color)
+    const torso = new THREE.Mesh(new THREE.BoxGeometry(0.45, 0.6, 0.28), new THREE.MeshStandardMaterial({ color }));
     torso.position.set(0, 0.8, 0);
     g.add(torso);
 
-    // braços
-    const arm = new THREE.Mesh(
-      new THREE.CylinderGeometry(0.08, 0.08, 0.5, 16),
-      matSkin
-    );
-    const armL = arm.clone();
-    armL.position.set(-0.46, 0.9, 0);
-    armL.rotation.z = 0.12;
-
-    const armR = arm.clone();
-    armR.position.set(0.46, 0.9, 0);
-    armR.rotation.z = -0.12;
-
+    // braços (cilindros) - clones para esquerda/direita
+    const arm = new THREE.Mesh(new THREE.CylinderGeometry(0.08, 0.08, 0.5, 16), matSkin);
+    const armL = arm.clone(); armL.position.set(-0.46, 0.9, 0); armL.rotation.z = 0.12;
+    const armR = arm.clone(); armR.position.set(0.46, 0.9, 0); armR.rotation.z = -0.12;
     g.add(armL, armR);
 
-    // pernas
+    // pernas (cilindros)
     const legMat = new THREE.MeshStandardMaterial({ color: 0x5a4e4e });
-    const leg = new THREE.Mesh(
-      new THREE.CylinderGeometry(0.1, 0.1, 0.6, 16),
-      legMat
-    );
-
-    const legL = leg.clone();
-    legL.position.set(-0.16, 0.22, 0);
-    const legR = leg.clone();
-    legR.position.set(0.16, 0.22, 0);
-
+    const leg = new THREE.Mesh(new THREE.CylinderGeometry(0.1, 0.1, 0.6, 16), legMat);
+    const legL = leg.clone(); legL.position.set(-0.16, 0.22, 0);
+    const legR = leg.clone(); legR.position.set(0.16, 0.22, 0);
     g.add(legL, legR);
 
+    // Retornamos o grupo + referências para transformações posteriores
     return { group: g, head, eyeL, eyeR, mouth, torso, armL, armR, legL, legR };
   }
 
-  /* ------------------------------
-      3 BONECOS: atual · semana · meta
-  ------------------------------ */
+  // ---- CRIAR 3 AVATARES (VISÕES: atual, semana, meta) ----
   const avatarCurrent = createAvatar(0x3ba3f7);
   const avatarWeek = createAvatar(0x66cc99);
   const avatarTarget = createAvatar(0xffc94d);
 
+  // posicionar lado a lado e adicionar cena
   avatarCurrent.group.position.x = -2.2;
   avatarWeek.group.position.x = 0;
   avatarTarget.group.position.x = 2.2;
+  scene.add(avatarCurrent.group, avatarWeek.group, avatarTarget.group);
 
-  scene.add(avatarCurrent.group);
-  scene.add(avatarWeek.group);
-  scene.add(avatarTarget.group);
-
-  /* ------------------------------
-      APLICAR MEDIDAS NO BONECO
-  ------------------------------ */
-  function applyMeasures(avatar, m) {
-    const h = m.height || 1.75;
-
-    const scaleH = Math.max(0.65, Math.min(1.35, (h - 1.2) / 1.2));
+  // ---- APLICAR MEDIDAS NO AVATAR (ESCALAS E PROPORÇÕES) ----
+  // A função mapeia medidas (height, chest, arm, thigh) para escalas seguras.
+  function applyMeasures(avatar, measures = {}) {
+    // altura (em metros) -> escala uniforme do grupo (x,y,z)
+    const height = Number(measures.height) || 1.75;
+    // mapear faixa [1.2..2.4] para escala [0.65..1.35] (evita extremos)
+    const scaleH = Math.max(0.65, Math.min(1.35, (height - 1.2) / 1.2));
     avatar.group.scale.set(scaleH, scaleH, scaleH);
 
-    const chest = m.chest || 95;
+    // peito -> largura do torso (x) e profundidade (z)
+    const chest = Number(measures.chest) || 95; // cm
+    // mapeamento arbitrário mas estável: chest 70->1.0, 120->1.5
     const scaleW = Math.max(0.7, Math.min(1.5, (chest - 70) / 50 + 1));
     avatar.torso.scale.x = scaleW;
     avatar.torso.scale.z = scaleW * 0.8;
 
-    const leg = m.thigh || 55;
-    const arm = m.arm || 30;
-
+    // braço -> espessura dos cilindros
+    const arm = Number(measures.arm) || 30;
     const armScale = Math.max(0.6, Math.min(1.6, arm / 30));
     avatar.armL.scale.set(armScale, armScale, armScale);
     avatar.armR.scale.set(armScale, armScale, armScale);
 
-    const legScale = Math.max(0.6, Math.min(1.6, leg / 50));
+    // coxa -> escala vertical das pernas
+    const thigh = Number(measures.thigh) || 55;
+    const legScale = Math.max(0.6, Math.min(1.6, thigh / 50));
     avatar.legL.scale.set(legScale, legScale, legScale);
     avatar.legR.scale.set(legScale, legScale, legScale);
+
+    // Observação: podemos também alterar posições para evitar interseções quando escalamos,
+    // mas, para simplicidade, mantemos as posições base e apenas escalamos as geometrias.
   }
 
-  /* ------------------------------
-      RENDER LOOP
-  ------------------------------ */
+  // ---- ANIMAÇÃO (render loop) ----
+  // Mantemos leve rotação em cada avatar para dar sensação de "vida"
   function animate() {
     requestAnimationFrame(animate);
-
-    avatarCurrent.group.rotation.y += 0.003;
-    avatarWeek.group.rotation.y += 0.003;
-    avatarTarget.group.rotation.y += 0.003;
-
+    const rot = 0.003; // velocidade muito baixa
+    avatarCurrent.group.rotation.y += rot;
+    avatarWeek.group.rotation.y += rot;
+    avatarTarget.group.rotation.y += rot;
     renderer.render(scene, camera);
   }
   animate();
 
-  /* ------------------------------
-      FUNÇÕES DE PROGRESSO
-  ------------------------------ */
+  // ---- CÁLCULO DE PROGRESSO ----
+  // initial: peso na primeira entrada (ou peso meta inicial); current: peso atual; target: meta alvo
+  // função robusta que lida com ganhar/perder peso (target maior ou menor que initial)
   function calcPercent(initial, current, target) {
+    // validação simples
+    initial = Number(initial);
+    current = Number(current);
+    target = Number(target);
     if (!initial || !current || !target) return 0;
     if (initial === target) return 100;
 
-    const losing = target < initial;
+    const losing = target < initial; // se target < initial -> objetivo é perder peso
     if (losing) {
       const total = initial - target;
       const done = initial - current;
@@ -413,28 +330,32 @@
     }
   }
 
-  /* ------------------------------
-      CARREGAR DADOS
-  ------------------------------ */
-  let meta = loadMeta();
+  // ---- CARREGAR DADOS INICIAIS DO STORAGE ----
+  // meta: objeto com medidas atuais e meta; weeks: array de entradas de pesagem (histórico)
+  let meta = loadMetaData();
   let weeks = loadWeeks();
 
+  // ---- REFRESH UI: sincroniza inputs, avatares e histórico ----
   function refreshUI() {
-    elW.value = meta.currentWeight || 80;
-    elH.value = meta.height || 1.75;
-    elT.value = meta.targetWeight || 75;
+    // Preencher inputs com meta ou valores padrão
+    elW.value = meta.currentWeight ?? 80;
+    elH.value = meta.height ?? 1.75;
+    elT.value = meta.targetWeight ?? 75;
 
-    elArm.value = meta.arm || 30;
-    elChest.value = meta.chest || 95;
-    elWaist.value = meta.waist || 85;
-    elThigh.value = meta.thigh || 55;
+    elArm.value = meta.arm ?? 30;
+    elChest.value = meta.chest ?? 95;
+    elWaist.value = meta.waist ?? 85;
+    elThigh.value = meta.thigh ?? 55;
 
+    // Aplica medidas no avatar atual e no avatar target (usando targetWeight para visualização)
     applyMeasures(avatarCurrent, meta);
-    applyMeasures(avatarTarget, { ...meta, weight: meta.targetWeight });
+    applyMeasures(avatarTarget, { ...meta, weight: meta.targetWeight, chest: meta.chest, thigh: meta.thigh, arm: meta.arm, height: meta.height });
 
+    // Recria opções do select e lista de histórico
     weekSel.innerHTML = `<option value="">-- Selecione semana --</option>`;
     historyDiv.innerHTML = "";
 
+    // Preenchimento em ordem cronológica (mais antigo primeiro). Se quiser trocar ordem, inverta o array.
     weeks.forEach(w => {
       const opt = document.createElement("option");
       opt.value = w.id;
@@ -449,93 +370,99 @@
 
     count.textContent = weeks.length;
 
-    const initial = weeks.length ? weeks[0].weight : elW.value;
-    const pct = calcPercent(initial, elW.value, elT.value);
-
+    // Calcula progresso usando a primeira entrada como 'initial' se existir, senão usa peso atual no input
+    const initial = (weeks.length ? weeks[0].weight : Number(elW.value)) || Number(elW.value);
+    const pct = calcPercent(initial, Number(elW.value), Number(elT.value));
     percentLabel.textContent = pct.toFixed(0) + "%";
     bar.style.width = pct + "%";
 
-    msg.textContent =
-      pct >= 95
-        ? "Quase lá!"
-        : pct >= 50
-        ? "Ótimo progresso!"
-        : pct >= 20
-        ? "Continue firme!"
-        : "Começando bem!";
+    msg.textContent = pct >= 95 ? "Quase lá!" : pct >= 50 ? "Ótimo progresso!" : pct >= 20 ? "Continue firme!" : "Começando bem!";
 
-    // boneco week selecionado
+    // Se uma semana estiver selecionada, aplicamos suas medidas no avatar do meio, caso contrário mostramos meta/current
     const wk = weeks.find(x => x.id === weekSel.value);
     if (wk) applyMeasures(avatarWeek, wk);
     else applyMeasures(avatarWeek, meta);
   }
 
+  // Inicializa UI com dados do storage
   refreshUI();
 
-  /* ------------------------------
-      EVENTOS
-  ------------------------------ */
-  saveWeigh.onclick = () => {
+  // ---- EVENTOS (BOTÕES) ----
+  // Salvar pesagem (adiciona entrada ao histórico 'weeks' e persiste)
+  btnSaveWeigh.onclick = () => {
     const w = parseFloat(elW.value);
-    if (!w) return alert("Peso inválido!");
+    if (!w || isNaN(w)) return alert("Peso inválido!");
 
     const entry = {
       id: "w" + Date.now(),
       weight: w,
-      height: parseFloat(elH.value),
-      arm: parseFloat(elArm.value),
-      chest: parseFloat(elChest.value),
-      waist: parseFloat(elWaist.value),
-      thigh: parseFloat(elThigh.value),
+      height: parseFloat(elH.value) || 1.75,
+      arm: parseFloat(elArm.value) || 30,
+      chest: parseFloat(elChest.value) || 95,
+      waist: parseFloat(elWaist.value) || 85,
+      thigh: parseFloat(elThigh.value) || 55,
       date: new Date().toISOString()
     };
 
+    // Inserir no final do array (ou use unshift para inserir no início)
     weeks.push(entry);
-    saveWeeks(weeks);
+    saveWeeksData(weeks);
     refreshUI();
   };
 
-  saveMeta.onclick = () => {
+  // Salvar meta (substitui objeto 'meta' e persiste)
+  // OBS: nome da função de persistência é saveMetaData para evitar colisão com o botão DOM -> nunca use nomes idênticos!
+  btnSaveMeta.onclick = () => {
     meta = {
-      currentWeight: parseFloat(elW.value),
-      height: parseFloat(elH.value),
-      targetWeight: parseFloat(elT.value),
-      arm: parseFloat(elArm.value),
-      chest: parseFloat(elChest.value),
-      waist: parseFloat(elWaist.value),
-      thigh: parseFloat(elThigh.value)
+      currentWeight: parseFloat(elW.value) || 80,
+      height: parseFloat(elH.value) || 1.75,
+      targetWeight: parseFloat(elT.value) || 75,
+      arm: parseFloat(elArm.value) || 30,
+      chest: parseFloat(elChest.value) || 95,
+      waist: parseFloat(elWaist.value) || 85,
+      thigh: parseFloat(elThigh.value) || 55
     };
-    saveMeta(meta);
+    saveMetaData(meta); // grava no localStorage
     refreshUI();
   };
 
-  exportCSV.onclick = () => {
+  // Exportar CSV (gera blob e abre em nova aba)
+  btnExportCSV.onclick = () => {
     if (!weeks.length) return alert("Sem dados!");
-
-    const rows = [
-      "date,weight,height,arm,chest,waist,thigh"
-    ];
-
+    const rows = ["date,weight,height,arm,chest,waist,thigh"];
     weeks.forEach(w => {
-      rows.push(
-        `${w.date},${w.weight},${w.height},${w.arm},${w.chest},${w.waist},${w.thigh}`
-      );
+      // usar toISOString para facilitar import/analise posterior
+      rows.push(`${w.date},${w.weight},${w.height},${w.arm},${w.chest},${w.waist},${w.thigh}`);
     });
-
     const blob = new Blob([rows.join("\n")], { type: "text/csv" });
     const url = URL.createObjectURL(blob);
+    // abrir em nova aba faz download/visualização dependendo do browser
     window.open(url, "_blank");
   };
 
+  // Quando troca a semana selecionada, atualizamos a visualização (avatar central)
   weekSel.onchange = refreshUI;
 
-  delWeek.onclick = () => {
+  // Excluir semana selecionada
+  btnDelWeek.onclick = () => {
     if (!weekSel.value) return alert("Selecione primeiro.");
     weeks = weeks.filter(w => w.id !== weekSel.value);
-    saveWeeks(weeks);
+    saveWeeksData(weeks);
     weekSel.value = "";
     refreshUI();
   };
+
+  // Pequena melhoria: salvar automaticamente meta quando o usuário altera os inputs (opcional)
+  // Aqui mantive como comentário — descomente se quiser real-time save:
+  /*
+  [elW, elH, elT, elArm, elChest, elWaist, elThigh].forEach(inp => {
+    inp.addEventListener('change', () => {
+      btnSaveMeta.click();
+    });
+  });
+  */
+
+  // ----- FIM DO SCRIPT -----
 </script>
 
 </body>

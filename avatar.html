@@ -1,73 +1,98 @@
 <!doctype html>
 <html lang="pt-BR">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Evolução 3D — Avatar Realista (DEBUG)</title>
-  <style>
-    :root{ --bg:#071124; --card:#0b1220; --muted:#9fb0c6; }
-    html,body{ height:100%; margin:0; font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial; color:#e6eef8; background:linear-gradient(180deg,#071124,#04101a); }
-    .wrap{ max-width:1200px; margin:20px auto; padding:16px; display:grid; grid-template-columns:1fr 340px; gap:16px; }
-    .card{ background:var(--card); padding:14px; border-radius:12px; border:1px solid rgba(255,255,255,0.05); box-shadow:0 8px 28px rgba(0,0,0,0.5); }
-    h1{ margin:0 0 6px; font-size:18px; }
-    p.muted{ margin:0 0 10px; font-size:13px; color:var(--muted); }
-    #viewport{ width:100%; height:560px; border-radius:10px; background:#050b18; overflow:hidden; position:relative; }
-    .status{ position:absolute; left:10px; bottom:10px; background:rgba(0,0,0,0.45); padding:6px 10px; border-radius:6px; font-size:13px; color:#dff; }
-    label{ font-size:13px; color:var(--muted); display:block; margin-bottom:4px; }
-    input, select, button { width:100%; padding:8px; border-radius:8px; background:transparent; border:1px solid rgba(255,255,255,0.08); color:white; margin-bottom:10px; }
-    .small { width:auto; display:inline-block; padding:8px 10px; margin-right:8px; }
-    .btn-primary{ background:linear-gradient(90deg,#06b6d4,#10b981); color:#021015; border:none; }
-    .btn-ghost{ background:transparent; border:1px solid rgba(255,255,255,0.08); color:var(--muted); }
-    .history{ max-height:260px; overflow-y:auto; display:flex; flex-direction:column; gap:6px; margin-top:10px; }
-    .histItem{ padding:8px; background:rgba(255,255,255,0.06); border-radius:8px; font-size:13px; }
-    footer{ margin-top:14px; text-align:center; font-size:12px; color:var(--muted); }
-    @media(max-width:900px){ .wrap{ grid-template-columns:1fr; } #viewport{ height:420px; } }
-  </style>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Avatar Animado + Contornos de Evolução</title>
+<style>
+  :root{ --bg:#071124; --card:#0b1220; --muted:#9fb0c6; }
+  html,body{ height:100%; margin:0; font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial; color:#e6eef8; background:linear-gradient(180deg,#071124,#04101a); }
+  .wrap{ max-width:1200px; margin:20px auto; padding:16px; display:grid; grid-template-columns:1fr 360px; gap:16px; }
+  .card{ background:var(--card); padding:14px; border-radius:12px; border:1px solid rgba(255,255,255,0.05); box-shadow:0 8px 28px rgba(0,0,0,0.5); }
+  h1{ margin:0 0 6px; font-size:18px; }
+  p.muted{ margin:0 0 10px; font-size:13px; color:var(--muted); }
+  #viewport{ width:100%; height:620px; border-radius:10px; background:#050b18; overflow:hidden; position:relative; }
+  .status{ position:absolute; left:10px; bottom:10px; background:rgba(0,0,0,0.45); padding:6px 10px; border-radius:6px; font-size:13px; color:#dff; }
+  label{ font-size:13px; color:var(--muted); display:block; margin-bottom:4px; }
+  input, select, button { width:100%; padding:8px; border-radius:8px; background:transparent; border:1px solid rgba(255,255,255,0.08); color:white; margin-bottom:10px; }
+  .small { width:auto; display:inline-block; padding:8px 10px; margin-right:8px; }
+  .btn-primary{ background:linear-gradient(90deg,#06b6d4,#10b981); color:#021015; border:none; }
+  .btn-ghost{ background:transparent; border:1px solid rgba(255,255,255,0.08); color:var(--muted); }
+  .history{ max-height:380px; overflow-y:auto; display:flex; flex-direction:column; gap:6px; margin-top:10px; }
+  .histItem{ padding:8px; background:rgba(255,255,255,0.04); border-radius:8px; font-size:13px; color:var(--muted); }
+  footer{ margin-top:14px; text-align:center; font-size:12px; color:var(--muted); }
+  .controls-row{ display:flex; gap:8px; align-items:center; }
+  @media(max-width:900px){ .wrap{ grid-template-columns:1fr; } #viewport{ height:420px; } }
+</style>
 </head>
 <body>
-<div class="wrap">
 
+<div class="wrap">
+  <!-- coluna principal: viewport 3D -->
   <div class="card">
-    <h1>Avatar 3D — Teste Realista</h1>
-    <p class="muted">Clique em "Carregar modelo realista de teste" para ver um GLB humano real carregado diretamente no navegador.</p>
+    <h1>Avatar Animado — com contornos de evolução</h1>
+    <p class="muted">Clique em "Carregar modelo animado de teste". Salve pesagens para ver os contornos (wireframes) da evolução.</p>
 
     <div id="viewport">
-      <div id="status" class="status">Status: Inativo</div>
+      <div id="status" class="status">Status: pronto</div>
+    </div>
+
+    <div style="display:flex;gap:8px;margin-top:12px">
+      <button id="btnLoadTest" class="small btn-primary">Carregar modelo animado de teste</button>
+      <button id="btnLoadFunny" class="small btn-ghost">Carregar modelo engraçado</button>
+      <input id="customUrl" placeholder="URL direta para .glb (opcional)" style="flex:1" />
+      <button id="btnLoadCustom" class="small btn-ghost">Carregar URL</button>
+    </div>
+
+    <div style="margin-top:12px;display:grid;grid-template-columns:repeat(3,1fr);gap:10px">
+      <div><label>Peso Atual (kg)</label><input id="w" type="number" step="0.1" value="80"></div>
+      <div><label>Altura (m)</label><input id="h" type="number" step="0.01" value="1.75"></div>
+      <div><label>Meta (kg)</label><input id="t" type="number" step="0.1" value="75"></div>
+    </div>
+
+    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:10px">
+      <div><label>Braço</label><input id="arm" type="number" step="0.1" value="30"></div>
+      <div><label>Peito</label><input id="chest" type="number" step="0.1" value="95"></div>
+      <div><label>Barriga</label><input id="waist" type="number" step="0.1" value="85"></div>
+      <div><label>Coxa</label><input id="thigh" type="number" step="0.1" value="55"></div>
     </div>
 
     <div style="display:flex;gap:8px;margin-top:10px">
-      <button id="btnLoadTest" class="small btn-primary">Carregar modelo realista de teste</button>
-      <button id="btnLoadMale" class="small btn-ghost">Forçar modelo masculino</button>
-      <button id="btnLoadFemale" class="small btn-ghost">Forçar modelo feminino</button>
+      <button id="btnSaveWeigh" class="btn-primary" style="flex:1">Salvar Pesagem (adiciona contorno)</button>
+      <button id="btnSaveMeta" class="btn-ghost" style="flex:1">Salvar Meta</button>
+      <button id="btnClearGhosts" class="btn-ghost" style="flex:1">Limpar contornos</button>
     </div>
 
     <div style="margin-top:12px">
-      <label>Selecione seu próprio .glb (URL)</label>
-      <input id="customUrl" placeholder="Cole aqui a URL direta para um .glb (CORS habilitado)" />
-      <button id="btnLoadCustom" class="small btn-ghost">Carregar URL personalizada</button>
+      <div style="display:flex;justify-content:space-between">
+        <strong>Progresso</strong><span id="percent" style="color:var(--muted)">0%</span>
+      </div>
+      <div style="height:14px;background:rgba(255,255,255,0.06);border-radius:999px;margin-top:6px;overflow:hidden">
+        <div id="bar" style="height:100%;width:0%;background:linear-gradient(90deg,#ffb86b,#ff6b6b);transition:width .6s"></div>
+      </div>
     </div>
 
-    <div style="margin-top:12px">
-      <p class="muted">Se o modelo não carregar: verá a mensagem de erro aqui e no console (F12). Cole a mensagem do console aqui que eu corrijo.</p>
-    </div>
   </div>
 
+  <!-- coluna direita: histórico + ações -->
   <div class="card">
-    <h1>Instruções rápidas</h1>
-    <p class="muted">Use o botão de teste para confirmar que seu navegador mostra um humano realista. Depois cole sua URL .glb (se tiver) e clique em "Carregar URL personalizada".</p>
-    <div style="margin-top:10px">
-      <strong>Observações úteis:</strong>
-      <ul style="color:var(--muted)">
-        <li>Se aparecer o boneco quadrado, procurar por erros no Console (F12 → Console).</li>
-        <li>Se a URL do .glb retornar erro de CORS, precisaremos hospedar o arquivo em lugar com CORS ativo (eu te explico).</li>
-      </ul>
-    </div>
-    <footer>Quando estiver ok, eu atualizo seu arquivo principal com as mesmas URLs.</footer>
-  </div>
+    <h1>Histórico & Contornos</h1>
+    <p class="muted">Cada pesagem salva adiciona um contorno (wireframe) para representar como você estava.</p>
 
+    <div class="controls-row" style="margin-bottom:8px">
+      <button id="btnExportCSV" class="btn-ghost small">Exportar CSV</button>
+      <button id="btnToggleOutlineLabels" class="btn-ghost small">Mostrar rótulos</button>
+    </div>
+
+    <select id="weekSel" style="width:100%;padding:8px;margin-bottom:8px;border-radius:8px;background:#050b18;color:white;border:1px solid rgba(255,255,255,0.08)">
+      <option value="">-- Selecione semana --</option>
+    </select>
+    <div id="history" class="history"></div>
+    <footer>Entradas salvas: <span id="count">0</span></footer>
+  </div>
 </div>
 
-<!-- importmap para three -->
+<!-- importmap para resolver 'three' nos exemplos -->
 <script type="importmap">
 {
   "imports": {
@@ -77,163 +102,510 @@
 </script>
 
 <script type="module">
+/* =========================
+   Imports
+   ========================= */
 import * as THREE from "https://cdn.jsdelivr.net/npm/three@0.152.2/build/three.module.js";
 import { OrbitControls } from "https://cdn.jsdelivr.net/npm/three@0.152.2/examples/jsm/controls/OrbitControls.js";
 import { GLTFLoader } from "https://cdn.jsdelivr.net/npm/three@0.152.2/examples/jsm/loaders/GLTFLoader.js";
 
-/* ---------- Scene basic ---------- */
-const container = document.getElementById('viewport');
+/* =========================
+   Elementos DOM
+   ========================= */
 const statusEl = document.getElementById('status');
+const container = document.getElementById('viewport');
+const bar = document.getElementById('bar');
+const percentLabel = document.getElementById('percent');
 
+const elW = document.getElementById('w');
+const elH = document.getElementById('h');
+const elT = document.getElementById('t');
+const elArm = document.getElementById('arm');
+const elChest = document.getElementById('chest');
+const elWaist = document.getElementById('waist');
+const elThigh = document.getElementById('thigh');
+
+const btnLoadTest = document.getElementById('btnLoadTest');
+const btnLoadFunny = document.getElementById('btnLoadFunny');
+const btnLoadCustom = document.getElementById('btnLoadCustom');
+const customUrl = document.getElementById('customUrl');
+
+const btnSaveWeigh = document.getElementById('btnSaveWeigh');
+const btnSaveMeta = document.getElementById('btnSaveMeta');
+const btnClearGhosts = document.getElementById('btnClearGhosts');
+
+const historyDiv = document.getElementById('history');
+const weekSel = document.getElementById('weekSel');
+const countEl = document.getElementById('count');
+
+const btnExportCSV = document.getElementById('btnExportCSV');
+const btnToggleOutlineLabels = document.getElementById('btnToggleOutlineLabels');
+
+/* =========================
+   Three.js scene init
+   ========================= */
 const scene = new THREE.Scene();
-scene.background = new THREE.Color(0x050b18);
+scene.background = new THREE.Color(0x071124);
 
-const camera = new THREE.PerspectiveCamera(36, 1, 0.1, 100);
+const camera = new THREE.PerspectiveCamera(40, 1, 0.1, 100);
 camera.position.set(0, 1.6, 6);
 
-const renderer = new THREE.WebGLRenderer({ antialias: true });
+const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: false });
 renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 container.appendChild(renderer.domElement);
 
 const controls = new OrbitControls(camera, renderer.domElement);
 controls.enablePan = false;
-controls.maxPolarAngle = Math.PI / 2;
+controls.maxPolarAngle = Math.PI / 2.1;
 
-const hemi = new THREE.HemisphereLight(0xffffff, 0x444444, 0.7);
+/* iluminação suave e engraçada */
+const hemi = new THREE.HemisphereLight(0xffffff, 0x222233, 0.6);
 scene.add(hemi);
-const dir = new THREE.DirectionalLight(0xffffff, 0.8);
+const dir = new THREE.DirectionalLight(0xffffff, 1.0);
 dir.position.set(5, 10, 7);
 scene.add(dir);
-const rim = new THREE.DirectionalLight(0xfff6e0, 0.15);
+const rim = new THREE.DirectionalLight(0xfff6e0, 0.12);
 rim.position.set(-5, 2, -3);
 scene.add(rim);
 
-/* ground - subtle */
-const ground = new THREE.Mesh(new THREE.PlaneGeometry(40,40), new THREE.MeshStandardMaterial({color:0x000000, transparent:true, opacity:0}));
-ground.rotation.x = -Math.PI/2;
+/* ground invisível para manter referência de chão */
+const ground = new THREE.Mesh(new THREE.PlaneGeometry(40, 40), new THREE.MeshStandardMaterial({ color: 0x000000, opacity: 0, transparent: true }));
+ground.rotation.x = -Math.PI / 2;
+ground.receiveShadow = true;
 scene.add(ground);
 
+/* resize handling */
 function resize() {
   const w = Math.max(320, container.clientWidth || 320);
   const h = Math.max(240, container.clientHeight || 240);
-  renderer.setSize(w,h);
-  camera.aspect = w/h;
+  renderer.setSize(w, h);
+  camera.aspect = w / h;
   camera.updateProjectionMatrix();
   controls.update();
 }
 window.addEventListener('resize', resize);
 resize();
 
+/* =========================
+   Loader e animações
+   ========================= */
 const loader = new GLTFLoader();
 
-/* utility: set status on page and console */
-function setStatus(msg, isError=false) {
-  statusEl.textContent = "Status: " + msg;
+// modelo animado de teste (funny/expressivo) — proveniente de exemplos three.js (carrega sem CORS)
+const TEST_MODEL = "https://cdn.jsdelivr.net/gh/mrdoob/three.js@r152/examples/models/gltf/RobotExpressive/RobotExpressive.glb";
+// outro modelo bem conhecido (rosto humano de exemplo) — alternativo
+const LEE_MODEL = "https://threejs.org/examples/models/gltf/LeePerrySmith/LeePerrySmith.glb";
+
+/* referências do modelo carregado + mixer para animação */
+let baseScene = null;         // cena do gltf original
+let mixer = null;            // AnimationMixer para o avatar principal
+let clock = new THREE.Clock();
+
+/* avatar principal (instância clonada do baseScene) */
+let avatarMain = null;
+
+/* lista de contornos/ghosts (cada ghost = { group, labelEl }) */
+const ghosts = [];
+
+/* flag para mostrar rótulos nos contornos */
+let showLabels = false;
+
+/* helper: status visível */
+function setStatus(text, isError = false) {
+  statusEl.textContent = "Status: " + text;
   statusEl.style.background = isError ? "rgba(120,10,10,0.6)" : "rgba(0,80,60,0.6)";
-  console.log("[AVATAR STATUS]", msg);
+  console.log("[STATUS]", text);
 }
 
-/* helper to clear existing model(s) */
-let currentModelGroup = null;
-function clearModel() {
-  if (currentModelGroup) {
-    scene.remove(currentModelGroup);
-    currentModelGroup.traverse(n => {
-      if (n.geometry) n.geometry.dispose();
-      if (n.material) {
-        if (Array.isArray(n.material)) n.material.forEach(m=>m.dispose && m.dispose());
-        else n.material.dispose && n.material.dispose();
-      }
-    });
-    currentModelGroup = null;
-  }
-}
-
-/* helper to add and center model */
-function addModelToScene(gltfScene, scale=1.0) {
-  clearModel();
-  const root = gltfScene.clone(true);
-  // clone materials to avoid shared state
-  root.traverse(node => {
-    if (node.isMesh && node.material) node.material = node.material.clone();
-  });
-  root.scale.set(scale, scale, scale);
-  // center model: compute bbox and shift
-  const bbox = new THREE.Box3().setFromObject(root);
-  const center = bbox.getCenter(new THREE.Vector3());
-  // move model so center.x -> 0 and base sits at y=0
-  const size = bbox.getSize(new THREE.Vector3());
-  const yShift = bbox.min.y; // lowest point
-  root.position.x -= center.x;
-  root.position.z -= center.z;
-  root.position.y -= yShift; // bring feet to ground plane
-  scene.add(root);
-  currentModelGroup = root;
-}
-
-/* tried-and-true test model (works in three.js examples) */
-const TEST_MODEL = "https://threejs.org/examples/models/gltf/LeePerrySmith/LeePerrySmith.glb";
-
-/* alternative human test (if you want another) */
-const ALT_TEST = "https://cdn.jsdelivr.net/gh/mrdoob/three.js@master/examples/models/gltf/RobotExpressive/RobotExpressive.glb";
-
-/* readyplayer.me sample URLs (may redirect / require CORS) - not used by default here
-   Keep as reference if you want to test: 
-   https://models.readyplayer.me/646d1b75be30f89a3d922b35.glb
-   https://models.readyplayer.me/646d1b9a21db005edec50a18.glb
-*/
-
-/* load GLB helper with detailed logging */
-async function loadAndShow(url, desiredScale=1.0) {
-  setStatus("Carregando: " + url);
-  console.log("Loading GLB:", url);
+/* =========================
+   Carregar modelo GLB e retornar scene (com log)
+   ========================= */
+async function loadGLB(url) {
+  setStatus("Carregando modelo...");
   try {
     const gltf = await new Promise((resolve, reject) => {
-      loader.load(url, (g) => resolve(g), (xhr) => {
-        // progress (optional)
-      }, (err) => reject(err));
+      loader.load(url, resolve, undefined, reject);
     });
-    if (!gltf || !gltf.scene) throw new Error("Arquivo GLB carregado mas sem scene");
-    addModelToScene(gltf.scene, desiredScale);
-    setStatus("Modelo carregado com sucesso");
-    return true;
+    setStatus("Modelo carregado");
+    return gltf.scene;
   } catch (err) {
-    console.error("GLB load failed:", err);
-    setStatus("Falha ao carregar GLB — veja console (F12) para erro", true);
-    return false;
+    console.error("Erro ao carregar GLB:", err);
+    setStatus("Falha ao carregar modelo — veja console (F12).", true);
+    return null;
   }
 }
 
-/* Buttons */
-document.getElementById('btnLoadTest').onclick = async () => {
-  await loadAndShow(TEST_MODEL, 1.8);
-};
-document.getElementById('btnLoadMale').onclick = async () => {
-  // quick human-like test (use same test model or replace by your URL)
-  await loadAndShow(TEST_MODEL, 1.8);
-};
-document.getElementById('btnLoadFemale').onclick = async () => {
-  // alternate expressive robot (not human) just to show variation
-  await loadAndShow(ALT_TEST, 0.9);
-};
+/* =========================
+   Instancia o avatar principal (clona baseScene) e configura animações
+   ========================= */
+function instantiateMainAvatarFromScene(sceneRoot) {
+  // remove anterior se existir
+  if (avatarMain && avatarMain.parent) scene.remove(avatarMain);
 
-document.getElementById('btnLoadCustom').onclick = async () => {
-  const url = document.getElementById('customUrl').value.trim();
-  if (!url) return alert("Cole a URL direta de um .glb no campo acima.");
-  const ok = await loadAndShow(url, 1.0);
-  if (!ok) {
-    alert("Falha ao carregar seu .glb. Abra o Console (F12) -> Console e cole a mensagem de erro aqui que eu te digo o motivo.");
+  const inst = sceneRoot.clone(true);
+
+  // clonar materiais para evitar conflito
+  inst.traverse(node => {
+    if (node.isMesh && node.material) node.material = node.material.clone();
+  });
+
+  // centro e ajuste
+  const bbox = new THREE.Box3().setFromObject(inst);
+  const yShift = bbox.min.y;
+  // recentrar modelo na origem e colocar no chão (y=0)
+  const center = bbox.getCenter(new THREE.Vector3());
+  inst.position.x -= center.x;
+  inst.position.z -= center.z;
+  inst.position.y -= yShift;
+
+  // escala inicial confortável
+  inst.scale.set(1.0, 1.0, 1.0);
+
+  // adicionar à cena e guardar referência
+  avatarMain = inst;
+  scene.add(avatarMain);
+
+  // configurar mixer para animações (se o gltf carregado tem animações)
+  mixer = null;
+  // procurar animações na carga original via loader (não recebemos clips aqui),
+  // mas GLTFLoader as retorna junto ao objeto; para simplificar vamos tentar criar um mixer
+  // e tocar todas as animações encontradas no gltf original — se não houver, não faz nada.
+  // OBS: Quando chamamos loadGLB usamos gltf.scene, mas perdemos clips — para simplificar,
+  // vamos recarregar via loader.load com callback que traz gltf.animations.
+}
+
+/* função que carrega com clips e inicializa mixer (usa loader.load direto) */
+function instantiateWithAnimations(url) {
+  // removemos instâncias antigas
+  if (avatarMain && avatarMain.parent) scene.remove(avatarMain);
+  // carregar com callback para ter acesso a animations
+  loader.load(url, (gltf) => {
+    baseScene = gltf.scene;
+    // clonar e adicionar
+    const inst = gltf.scene.clone(true);
+    inst.traverse(node => { if (node.isMesh && node.material) node.material = node.material.clone(); });
+    // centralizar como antes
+    const bbox = new THREE.Box3().setFromObject(inst);
+    const center = bbox.getCenter(new THREE.Vector3());
+    const yShift = bbox.min.y;
+    inst.position.x -= center.x; inst.position.z -= center.z; inst.position.y -= yShift;
+    inst.scale.set(1.0,1.0,1.0);
+    scene.add(inst);
+    avatarMain = inst;
+
+    // mixer e tocar animações (se houver)
+    if (gltf.animations && gltf.animations.length) {
+      mixer = new THREE.AnimationMixer(inst);
+      // vamos tocar a primeira animação principal — loop infinito
+      const action = mixer.clipAction(gltf.animations[0]);
+      action.reset().play();
+      // se houver mais, podemos alternar ou misturar — aqui mantemos simples
+    } else {
+      mixer = null;
+    }
+
+    setStatus("Avatar animado carregado");
+    console.log("Animações disponíveis:", gltf.animations ? gltf.animations.length : 0);
+  }, undefined, (err) => {
+    console.error("Erro load com clips:", err);
+    setStatus("Erro ao carregar animação (veja console)", true);
+  });
+}
+
+/* =========================
+   Criar um contorno (wireframe) baseado nas medidas atuais
+   - clona o baseScene (ou avatarMain se tiver apenas primitives)
+   - aplica material wireframe colorido e posição lateral
+   - adiciona label DOM se showLabels = true
+   ========================= */
+function createGhostFromCurrent(measures, labelText) {
+  // usamos avatarMain se tivermos um gltf; se não, criamos um procedural simples
+  let source = avatarMain;
+  if (!source) {
+    // fallback procedural group (bem simples)
+    const fallback = new THREE.Group();
+    const matSkin = new THREE.MeshStandardMaterial({ color: 0xf2c9a6 });
+    const head = new THREE.Mesh(new THREE.SphereGeometry(0.28, 16, 16), matSkin); head.position.set(0,1.45,0);
+    fallback.add(head);
+    source = fallback;
   }
-};
 
-/* small orbit animation */
+  // clona a árvore e substitui materiais por wireframe
+  const ghost = source.clone(true);
+  ghost.traverse(node => {
+    if (node.isMesh) {
+      // material de contorno — wireframe e semi-transparente
+      node.material = new THREE.MeshBasicMaterial({ color: 0x00ffff, wireframe: true, transparent: true, opacity: 0.65 });
+      node.renderOrder = 999; // desenha por cima
+    }
+  });
+
+  // aplicar medidas (simples: escala por altura e largura do peito)
+  const height = Number(measures.height) || 1.75;
+  const chest = Number(measures.chest) || 95;
+  const scaleH = Math.max(0.7, Math.min(1.3, ((height - 1.2) / 1.2) || 0.85));
+  const scaleW = Math.max(0.75, Math.min(1.4, ((chest - 70) / 50 + 1) || 1));
+  ghost.scale.set(scaleH * scaleW, scaleH * scaleW, scaleH * scaleW);
+
+  // posicionar o ghost à direita dos outros, em uma sequência, calcule offset pela contagem atual
+  const offsetIndex = ghosts.length;
+  const baseX = 2.8; // distância do avatar principal
+  const gap = 1.1;   // gap entre ghosts
+  ghost.position.set(baseX + offsetIndex * gap, 0, (offsetIndex % 2 === 0) ? -0.2 : 0.2); // leve zig-zag
+
+  // animação simples: começar transparente pequeno -> aparecer e pulsar
+  ghost.scale.multiplyScalar(0.6); // inicia menor, depois animamos para o target
+  ghost.userData.targetScale = new THREE.Vector3(scaleH * scaleW, scaleH * scaleW, scaleH * scaleW);
+  ghost.userData.growing = 0; // dado de animação
+
+  scene.add(ghost);
+
+  // label opcional (DOM) — posiciona ao lado no painel (histórico) e também pequena etiqueta 2D
+  const id = "g" + Date.now();
+  const div = document.createElement('div');
+  div.className = 'histItem';
+  div.textContent = `${labelText} — ${measures.weight}kg`;
+  div.dataset.ghostId = id;
+  historyDiv.prepend(div); // adicionar no topo
+  weekSel.innerHTML = `<option value="">-- Selecione semana --</option>`; // we'll regenerate list later
+
+  // armazenar referência para update loop
+  ghosts.push({ id, group: ghost, dom: div });
+
+  // atualizar contador e select
+  countEl.textContent = ghosts.length;
+  refreshWeekSelect();
+
+  return ghost;
+}
+
+/* remove todos os ghosts da cena e limpa estado */
+function clearGhosts() {
+  ghosts.forEach(g => {
+    if (g.group) scene.remove(g.group);
+  });
+  ghosts.length = 0;
+  historyDiv.innerHTML = "";
+  weekSel.innerHTML = `<option value="">-- Selecione semana --</option>`;
+  countEl.textContent = 0;
+  setStatus("Contornos limpos");
+}
+
+/* =========================
+   Simples persistência local (localStorage)
+   ========================= */
+const STORAGE_GHOSTS = 'evo_ghosts_v1';
+function saveGhostsLocal() {
+  // salvamos apenas dados úteis (peso, height, chest, date, id)
+  const data = ghosts.map(g => {
+    const wg = g.group;
+    return {
+      id: g.id,
+      weight: g.dom ? g.dom.textContent.split(' — ')[1].replace('kg','') : null,
+      date: Date.now()
+    };
+  });
+  try { localStorage.setItem(STORAGE_GHOSTS, JSON.stringify(data)); } catch(e){ console.warn(e); }
+}
+function loadGhostsLocal() {
+  try {
+    const raw = JSON.parse(localStorage.getItem(STORAGE_GHOSTS) || '[]');
+    return raw;
+  } catch { return []; }
+}
+
+/* =========================
+   UI: salvar pesagem -> cria ghost + atualiza progresso
+   ========================= */
+btnSaveWeigh.addEventListener('click', () => {
+  const measures = {
+    weight: parseFloat(elW.value) || 0,
+    height: parseFloat(elH.value) || 1.75,
+    chest: parseFloat(elChest.value) || 95,
+    arm: parseFloat(elArm.value) || 30,
+    thigh: parseFloat(elThigh.value) || 55
+  };
+  const label = new Date().toLocaleString();
+  createGhostFromCurrent(measures, label);
+  saveGhostsLocal();
+  updateProgressBar();
+  setStatus("Pesagem salva — contorno adicionado 🎉");
+});
+
+/* salvar meta (atualiza barra) */
+btnSaveMeta.addEventListener('click', () => {
+  updateProgressBar();
+  setStatus("Meta atualizada");
+});
+
+/* limpar ghosts */
+btnClearGhosts.addEventListener('click', () => {
+  clearGhosts();
+});
+
+/* export CSV (histórico simplificado) */
+btnExportCSV.addEventListener('click', () => {
+  if (!ghosts.length) { alert("Sem contornos/dados!"); return; }
+  const rows = ["label,weight"];
+  ghosts.forEach(g => rows.push(`${g.dom.textContent},${g.dom.textContent.split(' — ')[1].replace('kg','')}`));
+  const blob = new Blob([rows.join("\n")], { type: "text/csv" });
+  const url = URL.createObjectURL(blob);
+  window.open(url, "_blank");
+});
+
+/* Toggle labels */
+btnToggleOutlineLabels.addEventListener('click', () => {
+  showLabels = !showLabels;
+  ghosts.forEach(g => { g.dom.style.display = showLabels ? 'block' : 'none'; });
+});
+
+/* semana select handler (focar um ghost quando selecionado) */
+weekSel.addEventListener('change', () => {
+  const id = weekSel.value;
+  if (!id) {
+    if (avatarMain) controls.target.set(0,1,0);
+    return;
+  }
+  const found = ghosts.find(g => g.id === id);
+  if (found) {
+    // move camera to look at ghost
+    const pos = new THREE.Vector3();
+    found.group.getWorldPosition(pos);
+    // animate camera quickly (simple set)
+    camera.position.set(pos.x + 2.4, pos.y + 1.4, pos.z + 1.8);
+    controls.target.copy(pos);
+    controls.update();
+  }
+});
+
+/* atualizar select com ghosts */
+function refreshWeekSelect() {
+  weekSel.innerHTML = `<option value="">-- Selecione semana --</option>`;
+  ghosts.forEach(g => {
+    const opt = document.createElement('option');
+    opt.value = g.id;
+    opt.textContent = g.dom.textContent;
+    weekSel.appendChild(opt);
+    // show/hide dom label according to toggle
+    g.dom.style.display = showLabels ? 'block' : 'none';
+  });
+}
+
+/* atualiza barra de progresso com base em peso atual e meta */
+function updateProgressBar() {
+  const initial = ghosts.length ? parseFloat(ghosts[0].dom.textContent.split(' — ')[1].replace('kg','')) : parseFloat(elW.value);
+  const current = parseFloat(elW.value);
+  const target = parseFloat(elT.value);
+  if (!initial || !current || !target) { bar.style.width = '0%'; percentLabel.textContent = '0%'; return; }
+  // mesma lógica do calcPercent anterior
+  let pct = 0;
+  if (initial === target) pct = 100;
+  else if (target < initial) {
+    pct = Math.min(100, Math.max(0, ((initial - current) / (initial - target)) * 100));
+  } else {
+    pct = Math.min(100, Math.max(0, ((current - initial) / (target - initial)) * 100));
+  }
+  bar.style.width = pct + "%";
+  percentLabel.textContent = Math.round(pct) + "%";
+}
+
+/* =========================
+   Animation loop: atualiza mixer e anima ghosts (crescer/pulsar)
+   ========================= */
 function animate() {
   requestAnimationFrame(animate);
+  const dt = clock.getDelta();
+  if (mixer) mixer.update(dt);
+
+  // animação simples dos ghosts: crescimento até targetScale e leve pulsação
+  ghosts.forEach((g, idx) => {
+    const grp = g.group;
+    if (!grp) return;
+    // animação de "grow" até target
+    if (grp.userData.growing < 1) {
+      grp.userData.growing += dt * 1.2; // velocidade de crescimento
+      const t = Math.min(1, grp.userData.growing);
+      const target = grp.userData.targetScale || new THREE.Vector3(1,1,1);
+      grp.scale.lerpVectors(new THREE.Vector3(0.6,0.6,0.6), target, t);
+      // diminuir opacidade gradualmente (apagar um pouco com o tempo)
+      grp.traverse(node => {
+        if (node.isMesh && node.material && node.material.opacity !== undefined) {
+          node.material.opacity = 0.65 * (0.6 + 0.4 * t); // 0.39..0.65
+        }
+      });
+    } else {
+      // pulsação sutil
+      const pulse = 0.02 * Math.sin(performance.now() / 300 + idx);
+      grp.scale.multiplyScalar(1 + pulse * dt * 6);
+    }
+  });
+
   renderer.render(scene, camera);
 }
 animate();
 
-setStatus("Pronto — carregue um modelo de teste");
+/* =========================
+   Initial model loads / controls for test
+   ========================= */
+btnLoadTest.addEventListener('click', async () => {
+  setStatus("Carregando modelo animado de teste...");
+  // instanciamos com animação (usa loader.load com clips internamente)
+  instantiateWithAnimations(TEST_MODEL);
+});
+
+btnLoadFunny.addEventListener('click', async () => {
+  setStatus("Carregando modelo engraçado (alternativo)...");
+  instantiateWithAnimations(LEE_MODEL);
+});
+
+btnLoadCustom.addEventListener('click', async () => {
+  const url = customUrl.value.trim();
+  if (!url) { alert("Cole a URL direta para um .glb no campo acima."); return; }
+  setStatus("Carregando URL personalizada...");
+  instantiateWithAnimations(url);
+});
+
+/* =========================
+   Carregar ghosts salvos (se existirem) - simplificado
+   ========================= */
+(function loadSavedGhostsOnStart() {
+  // aqui apenas restauramos a contagem visual; para simplicidade não recriamos os meshes salvo em disco
+  const saved = JSON.parse(localStorage.getItem('evo_ghosts_v1') || '[]');
+  // reconstruímos entradas no painel (sem mesh) — user pode recriar manualmente salvando novamente
+  saved.forEach(s => {
+    const div = document.createElement('div');
+    div.className = 'histItem';
+    div.textContent = s.label + ' — ' + (s.weight || '0') + 'kg';
+    historyDiv.appendChild(div);
+  });
+  countEl.textContent = saved.length;
+})();
+
+/* =========================
+   simplify: instantiateWithAnimations uses loader.load and sets mixer.
+   (function defined earlier)
+   ========================= */
+
+/* tiny helper para centrar a câmera no avatarMain depois de carregar */
+function focusMainAvatar() {
+  if (!avatarMain) return;
+  const pos = new THREE.Vector3();
+  avatarMain.getWorldPosition(pos);
+  controls.target.copy(pos);
+  camera.position.set(pos.x + 0.8, pos.y + 1.4, pos.z + 2.6);
+  controls.update();
+}
+
+/* after model loads, try to focus */
+setInterval(() => { if (avatarMain) focusMainAvatar(); }, 500);
+
+/* =========================
+   Observações finais (simples)
+   - este exemplo usa um modelo animado (RobotExpressive) que já contém animações engraçadas.
+   - quando salvar pesagem, criamos contorno wireframe + label no painel.
+   - para usar seus .glb definitivos, cole a URL no campo e clique "Carregar URL".
+   ========================= */
+
 </script>
 </body>
 </html>

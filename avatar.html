@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Evolução 3D — Avatar Realista</title>
+  <title>Evolução 3D — Avatar Realista (DEBUG)</title>
   <style>
     :root{ --bg:#071124; --card:#0b1220; --muted:#9fb0c6; }
     html,body{ height:100%; margin:0; font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial; color:#e6eef8; background:linear-gradient(180deg,#071124,#04101a); }
@@ -11,94 +11,63 @@
     .card{ background:var(--card); padding:14px; border-radius:12px; border:1px solid rgba(255,255,255,0.05); box-shadow:0 8px 28px rgba(0,0,0,0.5); }
     h1{ margin:0 0 6px; font-size:18px; }
     p.muted{ margin:0 0 10px; font-size:13px; color:var(--muted); }
-    #viewport{ width:100%; height:560px; border-radius:10px; background:#050b18; overflow:hidden; }
+    #viewport{ width:100%; height:560px; border-radius:10px; background:#050b18; overflow:hidden; position:relative; }
+    .status{ position:absolute; left:10px; bottom:10px; background:rgba(0,0,0,0.45); padding:6px 10px; border-radius:6px; font-size:13px; color:#dff; }
     label{ font-size:13px; color:var(--muted); display:block; margin-bottom:4px; }
-    input, select{ width:100%; padding:8px; border-radius:8px; background:transparent; border:1px solid rgba(255,255,255,0.08); color:white; margin-bottom:10px; }
-    .btn{ padding:10px 12px; border-radius:10px; border:none; cursor:pointer; font-weight:600; }
-    .btn-primary{ background:linear-gradient(90deg,#06b6d4,#10b981); color:#021015; }
+    input, select, button { width:100%; padding:8px; border-radius:8px; background:transparent; border:1px solid rgba(255,255,255,0.08); color:white; margin-bottom:10px; }
+    .small { width:auto; display:inline-block; padding:8px 10px; margin-right:8px; }
+    .btn-primary{ background:linear-gradient(90deg,#06b6d4,#10b981); color:#021015; border:none; }
     .btn-ghost{ background:transparent; border:1px solid rgba(255,255,255,0.08); color:var(--muted); }
-    .progressBar{ height:14px; background:rgba(255,255,255,0.07); border-radius:999px; overflow:hidden; margin-top:6px; }
-    .fill{ height:100%; width:0%; background:linear-gradient(90deg,#06b6d4,#10b981); transition:width .5s ease; }
     .history{ max-height:260px; overflow-y:auto; display:flex; flex-direction:column; gap:6px; margin-top:10px; }
     .histItem{ padding:8px; background:rgba(255,255,255,0.06); border-radius:8px; font-size:13px; }
     footer{ margin-top:14px; text-align:center; font-size:12px; color:var(--muted); }
-    .authRow{ display:flex; gap:8px; align-items:center; margin-bottom:8px; }
-    .authRow input{ width:auto; min-width:140px; }
     @media(max-width:900px){ .wrap{ grid-template-columns:1fr; } #viewport{ height:420px; } }
   </style>
 </head>
 <body>
 <div class="wrap">
+
   <div class="card">
-    <h1>Avatar 3D — Atual · Semana · Meta (Realista)</h1>
-    <p class="muted">Modelos humanos reais. Ajuste medidas, salve e veja a evolução.</p>
+    <h1>Avatar 3D — Teste Realista</h1>
+    <p class="muted">Clique em "Carregar modelo realista de teste" para ver um GLB humano real carregado diretamente no navegador.</p>
 
-    <div id="viewport" aria-hidden="false"></div>
-
-    <div style="margin-top:12px" class="card" aria-hidden="true">
-      <div class="authRow">
-        <input id="email" placeholder="email" type="email" />
-        <input id="password" placeholder="senha" type="password" />
-        <button id="btnRegister" class="btn btn-ghost">Registrar</button>
-        <button id="btnLogin" class="btn btn-ghost">Entrar</button>
-        <button id="btnLogout" class="btn btn-ghost" style="display:none">Sair</button>
-      </div>
-      <div style="display:flex;gap:8px;align-items:center">
-        <label style="color:var(--muted);margin-right:8px">Modelo:</label>
-        <select id="selectGender" style="width:auto">
-          <option value="neutral">Neutro (procedural)</option>
-          <option value="male">Masculino (realista)</option>
-          <option value="female">Feminino (realista)</option>
-        </select>
-      </div>
+    <div id="viewport">
+      <div id="status" class="status">Status: Inativo</div>
     </div>
 
-    <div style="display:flex;gap:10px;margin-top:10px;flex-wrap:wrap">
-      <button id="btnSaveWeigh" class="btn btn-primary">Salvar Pesagem</button>
-      <button id="btnSaveMeta" class="btn btn-ghost">Salvar Meta</button>
-      <button id="btnExportCSV" class="btn btn-ghost">Exportar CSV</button>
-    </div>
-
-    <div style="margin-top:12px;display:grid;grid-template-columns:repeat(3,1fr);gap:10px">
-      <div><label>Peso Atual (kg)</label><input id="w" type="number" step="0.1" inputmode="decimal"></div>
-      <div><label>Altura (m)</label><input id="h" type="number" step="0.01" inputmode="decimal"></div>
-      <div><label>Meta (kg)</label><input id="t" type="number" step="0.1" inputmode="decimal"></div>
-    </div>
-
-    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:10px">
-      <div><label>Braço</label><input id="arm" type="number" step="0.1"></div>
-      <div><label>Peito</label><input id="chest" type="number" step="0.1"></div>
-      <div><label>Barriga</label><input id="waist" type="number" step="0.1"></div>
-      <div><label>Coxa</label><input id="thigh" type="number" step="0.1"></div>
+    <div style="display:flex;gap:8px;margin-top:10px">
+      <button id="btnLoadTest" class="small btn-primary">Carregar modelo realista de teste</button>
+      <button id="btnLoadMale" class="small btn-ghost">Forçar modelo masculino</button>
+      <button id="btnLoadFemale" class="small btn-ghost">Forçar modelo feminino</button>
     </div>
 
     <div style="margin-top:12px">
-      <div style="display:flex;justify-content:space-between">
-        <strong>Progresso</strong>
-        <span id="percent" style="color:var(--muted)">0%</span>
-      </div>
-      <div class="progressBar"><div class="fill" id="bar"></div></div>
-      <p id="msg" class="muted" style="margin-top:6px">Registre uma pesagem para começar.</p>
+      <label>Selecione seu próprio .glb (URL)</label>
+      <input id="customUrl" placeholder="Cole aqui a URL direta para um .glb (CORS habilitado)" />
+      <button id="btnLoadCustom" class="small btn-ghost">Carregar URL personalizada</button>
+    </div>
+
+    <div style="margin-top:12px">
+      <p class="muted">Se o modelo não carregar: verá a mensagem de erro aqui e no console (F12). Cole a mensagem do console aqui que eu corrijo.</p>
     </div>
   </div>
 
   <div class="card">
-    <h1>Histórico</h1>
-    <p class="muted">Selecione uma semana para ver o boneco correspondente no centro.</p>
-
-    <select id="weekSel" style="width:100%;padding:8px;margin-bottom:8px;border-radius:8px;background:#050b18;color:white;border:1px solid rgba(255,255,255,0.08)">
-      <option value="">-- Selecione semana --</option>
-    </select>
-
-    <button id="delWeek" class="btn btn-ghost" style="width:100%;margin-bottom:10px">Excluir Semana</button>
-
-    <div id="history" class="history"></div>
-
-    <footer>Entradas salvas: <span id="count">0</span></footer>
+    <h1>Instruções rápidas</h1>
+    <p class="muted">Use o botão de teste para confirmar que seu navegador mostra um humano realista. Depois cole sua URL .glb (se tiver) e clique em "Carregar URL personalizada".</p>
+    <div style="margin-top:10px">
+      <strong>Observações úteis:</strong>
+      <ul style="color:var(--muted)">
+        <li>Se aparecer o boneco quadrado, procurar por erros no Console (F12 → Console).</li>
+        <li>Se a URL do .glb retornar erro de CORS, precisaremos hospedar o arquivo em lugar com CORS ativo (eu te explico).</li>
+      </ul>
+    </div>
+    <footer>Quando estiver ok, eu atualizo seu arquivo principal com as mesmas URLs.</footer>
   </div>
+
 </div>
 
-<!-- importmap to resolve 'three' used by examples/jsm -->
+<!-- importmap para three -->
 <script type="importmap">
 {
   "imports": {
@@ -108,75 +77,14 @@
 </script>
 
 <script type="module">
-/* =========================
-   IMPORTS
-   ========================= */
 import * as THREE from "https://cdn.jsdelivr.net/npm/three@0.152.2/build/three.module.js";
 import { OrbitControls } from "https://cdn.jsdelivr.net/npm/three@0.152.2/examples/jsm/controls/OrbitControls.js";
 import { GLTFLoader } from "https://cdn.jsdelivr.net/npm/three@0.152.2/examples/jsm/loaders/GLTFLoader.js";
 
-/* Firebase (modular) - keep placeholders or replace with your config if needed */
-import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-app.js";
-import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-auth.js";
-import { getFirestore, doc, setDoc, collection, getDocs, query } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-firestore.js";
+/* ---------- Scene basic ---------- */
+const container = document.getElementById('viewport');
+const statusEl = document.getElementById('status');
 
-/* ========== MODEL URLS (REALISTA) ========== 
-These are the realistic model URLs I promised.
-If you later want to change them, replace the strings below.
-*/
-const MODEL_URLS = {
-  neutral: null,
-  male: "https://models.readyplayer.me/646d1b75be30f89a3d922b35.glb",
-  female: "https://models.readyplayer.me/646d1b9a21db005edec50a18.glb"
-};
-
-/* ========== Firebase config placeholders ==========
-Replace with your project's Firebase config if you want cloud sync.
-*/
-const firebaseConfig = {
-  apiKey: "YOUR_FIREBASE_API_KEY",
-  authDomain: "YOUR_FIREBASE_AUTH_DOMAIN",
-  projectId: "YOUR_FIREBASE_PROJECT_ID",
-  storageBucket: "YOUR_FIREBASE_STORAGE_BUCKET",
-  messagingSenderId: "YOUR_FIREBASE_MESSAGING_SENDER_ID",
-  appId: "YOUR_FIREBASE_APP_ID"
-};
-
-/* ========== Storage keys ========== */
-const STORAGE_META = "fb_meta_v1";
-const STORAGE_WEEKS = "fb_weeks_v1";
-
-/* ========== DOM ========== */
-const elW = document.getElementById("w");
-const elH = document.getElementById("h");
-const elT = document.getElementById("t");
-const elArm = document.getElementById("arm");
-const elChest = document.getElementById("chest");
-const elWaist = document.getElementById("waist");
-const elThigh = document.getElementById("thigh");
-
-const percentLabel = document.getElementById("percent");
-const bar = document.getElementById("bar");
-const msg = document.getElementById("msg");
-
-const weekSel = document.getElementById("weekSel");
-const historyDiv = document.getElementById("history");
-const count = document.getElementById("count");
-
-const btnSaveWeigh = document.getElementById("btnSaveWeigh");
-const btnSaveMeta = document.getElementById("btnSaveMeta");
-const btnExportCSV = document.getElementById("btnExportCSV");
-const btnDelWeek = document.getElementById("delWeek");
-
-const emailInput = document.getElementById("email");
-const passwordInput = document.getElementById("password");
-const btnRegister = document.getElementById("btnRegister");
-const btnLogin = document.getElementById("btnLogin");
-const btnLogout = document.getElementById("btnLogout");
-const selectGender = document.getElementById("selectGender");
-
-/* ========== three.js scene setup ========== */
-const container = document.getElementById("viewport");
 const scene = new THREE.Scene();
 scene.background = new THREE.Color(0x050b18);
 
@@ -189,474 +97,143 @@ container.appendChild(renderer.domElement);
 
 const controls = new OrbitControls(camera, renderer.domElement);
 controls.enablePan = false;
-controls.maxPolarAngle = Math.PI / 2.1;
+controls.maxPolarAngle = Math.PI / 2;
 
-// Lights: hemisphere + directional for soft, realistic look
 const hemi = new THREE.HemisphereLight(0xffffff, 0x444444, 0.7);
 scene.add(hemi);
 const dir = new THREE.DirectionalLight(0xffffff, 0.8);
 dir.position.set(5, 10, 7);
-dir.castShadow = false;
 scene.add(dir);
-
-// subtle rim light to highlight silhouettes
 const rim = new THREE.DirectionalLight(0xfff6e0, 0.15);
 rim.position.set(-5, 2, -3);
 scene.add(rim);
 
-/* resize protection */
-function resizeIfNeeded() {
+/* ground - subtle */
+const ground = new THREE.Mesh(new THREE.PlaneGeometry(40,40), new THREE.MeshStandardMaterial({color:0x000000, transparent:true, opacity:0}));
+ground.rotation.x = -Math.PI/2;
+scene.add(ground);
+
+function resize() {
   const w = Math.max(320, container.clientWidth || 320);
   const h = Math.max(240, container.clientHeight || 240);
-  renderer.setSize(w, h);
-  camera.aspect = w / h;
+  renderer.setSize(w,h);
+  camera.aspect = w/h;
   camera.updateProjectionMatrix();
   controls.update();
 }
-window.addEventListener("resize", resizeIfNeeded);
-resizeIfNeeded();
+window.addEventListener('resize', resize);
+resize();
 
-/* debug ground (very subtle) */
-const ground = new THREE.Mesh(
-  new THREE.PlaneGeometry(20, 20),
-  new THREE.ShadowMaterial({ opacity: 0.05 })
-);
-ground.rotation.x = -Math.PI / 2;
-ground.position.y = 0;
-ground.receiveShadow = true;
-scene.add(ground);
+const loader = new GLTFLoader();
 
-/* debug marker */
-console.log("Scene ready — loading avatars when requested.");
-
-/* ========== avatar handling (GLTF fallback to primitives) ========== */
-const gltfLoader = new GLTFLoader();
-
-function createAvatarPrimitive(color = 0x77c0e0) {
-  const g = new THREE.Group();
-  const matSkin = new THREE.MeshStandardMaterial({ color: 0xf2c9a6, roughness: 0.7, metalness: 0.0 });
-
-  const head = new THREE.Mesh(new THREE.SphereGeometry(0.28, 28, 28), matSkin);
-  head.position.set(0, 1.45, 0);
-  g.add(head);
-
-  const eyeMat = new THREE.MeshStandardMaterial({ color: 0x111111 });
-  const eyeL = new THREE.Mesh(new THREE.SphereGeometry(0.12, 12, 12), eyeMat);
-  eyeL.position.set(-0.09, 1.5, 0.26);
-  const eyeR = eyeL.clone(); eyeR.position.x = 0.09;
-  g.add(eyeL, eyeR);
-
-  const mouth = new THREE.Mesh(new THREE.BoxGeometry(0.22, 0.04, 0.02), new THREE.MeshStandardMaterial({ color: 0x7b2e2e }));
-  mouth.position.set(0, 1.38, 0.26);
-  g.add(mouth);
-
-  const torso = new THREE.Mesh(new THREE.BoxGeometry(0.45, 0.6, 0.28), new THREE.MeshStandardMaterial({ color }));
-  torso.position.set(0, 0.8, 0);
-  g.add(torso);
-
-  const arm = new THREE.Mesh(new THREE.CylinderGeometry(0.08, 0.08, 0.5, 16), matSkin);
-  const armL = arm.clone(); armL.position.set(-0.46, 0.9, 0); armL.rotation.z = 0.12;
-  const armR = arm.clone(); armR.position.set(0.46, 0.9, 0); armR.rotation.z = -0.12;
-  g.add(armL, armR);
-
-  const legMat = new THREE.MeshStandardMaterial({ color: 0x5a4e4e });
-  const leg = new THREE.Mesh(new THREE.CylinderGeometry(0.1, 0.1, 0.6, 16), legMat);
-  const legL = leg.clone(); legL.position.set(-0.16, 0.22, 0);
-  const legR = leg.clone(); legR.position.set(0.16, 0.22, 0);
-  g.add(legL, legR);
-
-  return { group: g, head, eyeL, eyeR, mouth, torso, armL, armR, legL, legR };
+/* utility: set status on page and console */
+function setStatus(msg, isError=false) {
+  statusEl.textContent = "Status: " + msg;
+  statusEl.style.background = isError ? "rgba(120,10,10,0.6)" : "rgba(0,80,60,0.6)";
+  console.log("[AVATAR STATUS]", msg);
 }
 
-/* avatar instances references */
-let avatarCurrent = null;
-let avatarWeek = null;
-let avatarTarget = null;
-
-/* helper to load gltf */
-function loadGLTF(url) {
-  return new Promise((resolve) => {
-    if (!url) return resolve(null);
-    gltfLoader.load(url, (gltf) => {
-      resolve(gltf.scene);
-    }, undefined, (err) => {
-      console.error("GLTF load error:", err);
-      resolve(null);
+/* helper to clear existing model(s) */
+let currentModelGroup = null;
+function clearModel() {
+  if (currentModelGroup) {
+    scene.remove(currentModelGroup);
+    currentModelGroup.traverse(n => {
+      if (n.geometry) n.geometry.dispose();
+      if (n.material) {
+        if (Array.isArray(n.material)) n.material.forEach(m=>m.dispose && m.dispose());
+        else n.material.dispose && n.material.dispose();
+      }
     });
+    currentModelGroup = null;
+  }
+}
+
+/* helper to add and center model */
+function addModelToScene(gltfScene, scale=1.0) {
+  clearModel();
+  const root = gltfScene.clone(true);
+  // clone materials to avoid shared state
+  root.traverse(node => {
+    if (node.isMesh && node.material) node.material = node.material.clone();
   });
+  root.scale.set(scale, scale, scale);
+  // center model: compute bbox and shift
+  const bbox = new THREE.Box3().setFromObject(root);
+  const center = bbox.getCenter(new THREE.Vector3());
+  // move model so center.x -> 0 and base sits at y=0
+  const size = bbox.getSize(new THREE.Vector3());
+  const yShift = bbox.min.y; // lowest point
+  root.position.x -= center.x;
+  root.position.z -= center.z;
+  root.position.y -= yShift; // bring feet to ground plane
+  scene.add(root);
+  currentModelGroup = root;
 }
 
-/* helper clone function for GLTF (clone materials) */
-function cloneGltf(sceneRoot) {
-  const cloned = sceneRoot.clone(true);
-  cloned.traverse(node => {
-    if (node.isMesh) {
-      if (node.material) node.material = node.material.clone();
-      node.castShadow = true;
-      node.receiveShadow = true;
-    }
-  });
-  return cloned;
-}
+/* tried-and-true test model (works in three.js examples) */
+const TEST_MODEL = "https://threejs.org/examples/models/gltf/LeePerrySmith/LeePerrySmith.glb";
 
-/* create 3 instances based on selected model */
-async function createAvatarInstancesForModel(selectedGender) {
-  // remove existing
-  [avatarCurrent, avatarWeek, avatarTarget].forEach(av => { if (av && av.group) scene.remove(av.group); });
+/* alternative human test (if you want another) */
+const ALT_TEST = "https://cdn.jsdelivr.net/gh/mrdoob/three.js@master/examples/models/gltf/RobotExpressive/RobotExpressive.glb";
 
-  const modelUrl = MODEL_URLS[selectedGender] || null;
-  if (!modelUrl) {
-    // fallback primitives
-    avatarCurrent = createAvatarPrimitive(0x3ba3f7);
-    avatarWeek = createAvatarPrimitive(0x66cc99);
-    avatarTarget = createAvatarPrimitive(0xffc94d);
-    avatarCurrent.group.position.x = -2.2;
-    avatarWeek.group.position.x = 0;
-    avatarTarget.group.position.x = 2.2;
-    scene.add(avatarCurrent.group, avatarWeek.group, avatarTarget.group);
-    console.log("Procedural fallback avatars added");
-    return;
-  }
+/* readyplayer.me sample URLs (may redirect / require CORS) - not used by default here
+   Keep as reference if you want to test: 
+   https://models.readyplayer.me/646d1b75be30f89a3d922b35.glb
+   https://models.readyplayer.me/646d1b9a21db005edec50a18.glb
+*/
 
-  // load model
-  const base = await loadGLTF(modelUrl);
-  if (!base) {
-    console.warn("GLTF failed to load — using fallback primitives");
-    avatarCurrent = createAvatarPrimitive(0x3ba3f7);
-    avatarWeek = createAvatarPrimitive(0x66cc99);
-    avatarTarget = createAvatarPrimitive(0xffc94d);
-    avatarCurrent.group.position.x = -2.2;
-    avatarWeek.group.position.x = 0;
-    avatarTarget.group.position.x = 2.2;
-    scene.add(avatarCurrent.group, avatarWeek.group, avatarTarget.group);
-    return;
-  }
-
-  avatarCurrent = { group: cloneGltf(base) };
-  avatarWeek = { group: cloneGltf(base) };
-  avatarTarget = { group: cloneGltf(base) };
-
-  // position side-by-side
-  avatarCurrent.group.position.x = -2.2;
-  avatarWeek.group.position.x = 0;
-  avatarTarget.group.position.x = 2.2;
-
-  // nice initial scale - may tweak depending on model
-  const modelScale = 0.95;
-  avatarCurrent.group.scale.set(modelScale, modelScale, modelScale);
-  avatarWeek.group.scale.set(modelScale, modelScale, modelScale);
-  avatarTarget.group.scale.set(modelScale, modelScale, modelScale);
-
-  scene.add(avatarCurrent.group, avatarWeek.group, avatarTarget.group);
-  console.log("Realistic GLTF avatars loaded for:", selectedGender);
-}
-
-/* apply simple measures -> group scale/vertical offset */
-function applyMeasures(avatar, measures = {}) {
-  if (!avatar || !avatar.group) return;
-  const height = Number(measures.height) || 1.75;
-  const scaleH = Math.max(0.7, Math.min(1.3, ((height - 1.2) / 1.2) || 0.85));
-  avatar.group.scale.set(scaleH, scaleH, scaleH);
-
-  // vertical offset to keep feet on ground if model pivot is at center
-  // small nudge to align visually
-  avatar.group.position.y = 0; // leave on ground plane
-
-  // If primitive, tweak torso/limbs as before
-  if (avatar.torso) {
-    const chest = Number(measures.chest) || 95;
-    const scaleW = Math.max(0.75, Math.min(1.4, ((chest - 70) / 50 + 1) || 1));
-    avatar.torso.scale.x = scaleW;
-    avatar.torso.scale.z = scaleW * 0.8;
+/* load GLB helper with detailed logging */
+async function loadAndShow(url, desiredScale=1.0) {
+  setStatus("Carregando: " + url);
+  console.log("Loading GLB:", url);
+  try {
+    const gltf = await new Promise((resolve, reject) => {
+      loader.load(url, (g) => resolve(g), (xhr) => {
+        // progress (optional)
+      }, (err) => reject(err));
+    });
+    if (!gltf || !gltf.scene) throw new Error("Arquivo GLB carregado mas sem scene");
+    addModelToScene(gltf.scene, desiredScale);
+    setStatus("Modelo carregado com sucesso");
+    return true;
+  } catch (err) {
+    console.error("GLB load failed:", err);
+    setStatus("Falha ao carregar GLB — veja console (F12) para erro", true);
+    return false;
   }
 }
 
-/* render loop */
+/* Buttons */
+document.getElementById('btnLoadTest').onclick = async () => {
+  await loadAndShow(TEST_MODEL, 1.8);
+};
+document.getElementById('btnLoadMale').onclick = async () => {
+  // quick human-like test (use same test model or replace by your URL)
+  await loadAndShow(TEST_MODEL, 1.8);
+};
+document.getElementById('btnLoadFemale').onclick = async () => {
+  // alternate expressive robot (not human) just to show variation
+  await loadAndShow(ALT_TEST, 0.9);
+};
+
+document.getElementById('btnLoadCustom').onclick = async () => {
+  const url = document.getElementById('customUrl').value.trim();
+  if (!url) return alert("Cole a URL direta de um .glb no campo acima.");
+  const ok = await loadAndShow(url, 1.0);
+  if (!ok) {
+    alert("Falha ao carregar seu .glb. Abra o Console (F12) -> Console e cole a mensagem de erro aqui que eu te digo o motivo.");
+  }
+};
+
+/* small orbit animation */
 function animate() {
   requestAnimationFrame(animate);
-  const rot = 0.0025;
-  if (avatarCurrent && avatarCurrent.group) avatarCurrent.group.rotation.y += rot;
-  if (avatarWeek && avatarWeek.group) avatarWeek.group.rotation.y += rot;
-  if (avatarTarget && avatarTarget.group) avatarTarget.group.rotation.y += rot;
   renderer.render(scene, camera);
 }
 animate();
 
-/* ========== Progress calculation & storage (local fallback) ========== */
-function calcPercent(initial, current, target) {
-  initial = Number(initial);
-  current = Number(current);
-  target = Number(target);
-  if (!initial || !current || !target) return 0;
-  if (initial === target) return 100;
-  const losing = target < initial;
-  if (losing) {
-    const total = initial - target;
-    const done = initial - current;
-    return Math.min(100, Math.max(0, (done / total) * 100));
-  } else {
-    const total = target - initial;
-    const done = current - initial;
-    return Math.min(100, Math.max(0, (done / total) * 100));
-  }
-}
-
-function loadMetaLocal() {
-  try { return JSON.parse(localStorage.getItem(STORAGE_META) || "{}"); } catch { return {}; }
-}
-function loadWeeksLocal() {
-  try { return JSON.parse(localStorage.getItem(STORAGE_WEEKS) || "[]"); } catch { return []; }
-}
-function saveMetaLocal(v) { try { localStorage.setItem(STORAGE_META, JSON.stringify(v)); return true; } catch { return false; } }
-function saveWeeksLocal(arr) { try { localStorage.setItem(STORAGE_WEEKS, JSON.stringify(arr)); return true; } catch { return false; } }
-
-/* ========== Firebase init (optional) ========== */
-let firebaseEnabled = false;
-let auth = null;
-let db = null;
-try {
-  const app = initializeApp(firebaseConfig);
-  auth = getAuth(app);
-  db = getFirestore(app);
-  firebaseEnabled = true;
-  console.log("Firebase initialized (cloud mode enabled)");
-} catch (e) {
-  console.warn("Firebase not initialized — using localStorage only", e);
-}
-
-/* ========== Load/save logic that uses cloud if logged in, otherwise local ========== */
-let meta = loadMetaLocal();
-let weeks = loadWeeksLocal();
-let currentUser = null;
-
-/* placeholder firestore helpers (if you enable firebase) */
-async function loadUserDataFromFirestore(uid) {
-  try {
-    const weeksCol = collection(db, "users", uid, "weeks");
-    const q = query(weeksCol);
-    const snap = await getDocs(q);
-    const loaded = [];
-    snap.forEach(s => loaded.push({ id: s.id, ...s.data() }));
-    weeks = loaded.sort((a,b)=> new Date(a.date) - new Date(b.date));
-    meta = loadMetaLocal();
-    refreshUI();
-    console.log("Loaded user data from Firestore:", weeks.length);
-  } catch (err) {
-    console.error("Error loading Firestore data:", err);
-    meta = loadMetaLocal();
-    weeks = loadWeeksLocal();
-    refreshUI();
-  }
-}
-async function saveMetaCloudOrLocal(v) {
-  if (currentUser && firebaseEnabled) {
-    try { await setDoc(doc(db, "users", currentUser.uid), v, { merge: true }); return true; } catch { return false; }
-  } else return saveMetaLocal(v);
-}
-async function saveWeeksCloudOrLocal(arr) {
-  if (currentUser && firebaseEnabled) {
-    try {
-      for (const w of arr) await setDoc(doc(db, "users", currentUser.uid, "weeks", w.id), w);
-      return true;
-    } catch { return false; }
-  } else return saveWeeksLocal(arr);
-}
-
-/* ========== UI refresh ========== */
-function refreshUI() {
-  elW.value = meta.currentWeight ?? 80;
-  elH.value = meta.height ?? 1.75;
-  elT.value = meta.targetWeight ?? 75;
-
-  elArm.value = meta.arm ?? 30;
-  elChest.value = meta.chest ?? 95;
-  elWaist.value = meta.waist ?? 85;
-  elThigh.value = meta.thigh ?? 55;
-
-  if (avatarCurrent) applyMeasures(avatarCurrent, meta);
-  if (avatarTarget) applyMeasures(avatarTarget, { ...meta, weight: meta.targetWeight });
-
-  weekSel.innerHTML = `<option value="">-- Selecione semana --</option>`;
-  historyDiv.innerHTML = "";
-
-  weeks.forEach(w => {
-    const opt = document.createElement("option");
-    opt.value = w.id;
-    opt.textContent = `${new Date(w.date).toLocaleDateString()} — ${w.weight}kg`;
-    weekSel.appendChild(opt);
-
-    const div = document.createElement("div");
-    div.className = "histItem";
-    div.textContent = `${new Date(w.date).toLocaleString()} — ${w.weight}kg`;
-    historyDiv.appendChild(div);
-  });
-
-  count.textContent = weeks.length;
-
-  const initial = (weeks.length ? weeks[0].weight : Number(elW.value)) || Number(elW.value);
-  const pct = calcPercent(initial, Number(elW.value), Number(elT.value));
-  percentLabel.textContent = pct.toFixed(0) + "%";
-  bar.style.width = pct + "%";
-
-  msg.textContent = pct >= 95 ? "Quase lá!" : pct >= 50 ? "Ótimo progresso!" : pct >= 20 ? "Continue firme!" : "Começando bem!";
-
-  const wk = weeks.find(x => x.id === weekSel.value);
-  if (wk && avatarWeek) applyMeasures(avatarWeek, wk);
-  else if (avatarWeek) applyMeasures(avatarWeek, meta);
-}
-
-/* ========== Event handlers ========== */
-btnSaveWeigh.onclick = async () => {
-  const w = parseFloat(elW.value);
-  if (!w || isNaN(w)) { alert("Peso inválido!"); return; }
-  const entry = {
-    id: "w" + Date.now(),
-    weight: w,
-    height: parseFloat(elH.value) || 1.75,
-    arm: parseFloat(elArm.value) || 30,
-    chest: parseFloat(elChest.value) || 95,
-    waist: parseFloat(elWaist.value) || 85,
-    thigh: parseFloat(elThigh.value) || 55,
-    date: new Date().toISOString()
-  };
-  try {
-    weeks.push(entry);
-    const ok = await saveWeeksCloudOrLocal(weeks);
-    if (!ok) throw new Error("Falha ao salvar weeks");
-    console.log("Pesagem salva:", entry);
-    refreshUI();
-    alert("Pesagem salva com sucesso.");
-  } catch (err) {
-    console.error("Erro ao salvar pesagem:", err);
-    alert("Erro ao salvar pesagem. Veja console.");
-  }
-};
-
-btnSaveMeta.onclick = async () => {
-  const newMeta = {
-    currentWeight: parseFloat(elW.value) || 80,
-    height: parseFloat(elH.value) || 1.75,
-    targetWeight: parseFloat(elT.value) || 75,
-    arm: parseFloat(elArm.value) || 30,
-    chest: parseFloat(elChest.value) || 95,
-    waist: parseFloat(elWaist.value) || 85,
-    thigh: parseFloat(elThigh.value) || 55
-  };
-  try {
-    meta = newMeta;
-    const ok = await saveMetaCloudOrLocal(meta);
-    if (!ok) throw new Error("Falha ao salvar meta");
-    console.log("Meta salva:", meta);
-    refreshUI();
-    alert("Meta salva com sucesso.");
-  } catch (err) {
-    console.error("Erro ao salvar meta:", err);
-    alert("Erro ao salvar meta. Veja console.");
-  }
-};
-
-btnExportCSV.onclick = () => {
-  if (!weeks.length) { alert("Sem dados!"); return; }
-  const rows = ["date,weight,height,arm,chest,waist,thigh"];
-  weeks.forEach(w => rows.push(`${w.date},${w.weight},${w.height},${w.arm},${w.chest},${w.waist},${w.thigh}`));
-  try {
-    const blob = new Blob([rows.join("\n")], { type: "text/csv" });
-    const url = URL.createObjectURL(blob);
-    window.open(url, "_blank");
-    console.log("CSV gerado, linhas:", rows.length);
-  } catch (err) {
-    console.error("Erro ao exportar CSV:", err);
-    alert("Erro ao exportar CSV.");
-  }
-};
-
-weekSel.onchange = refreshUI;
-
-btnDelWeek.onclick = async () => {
-  if (!weekSel.value) { alert("Selecione primeiro."); return; }
-  weeks = weeks.filter(w => w.id !== weekSel.value);
-  const ok = await saveWeeksCloudOrLocal(weeks);
-  if (!ok) { alert("Erro ao excluir. Veja console."); return; }
-  weekSel.value = "";
-  refreshUI();
-  alert("Semana excluída.");
-};
-
-/* ========== Auth handlers (basic) ========== */
-if (typeof initializeApp === "function") {
-  try {
-    onAuthStateChanged(auth, async (user) => {
-      currentUser = user;
-      if (user) {
-        console.log("Usuario logado:", user.uid, user.email);
-        btnLogout.style.display = "inline-block";
-        btnLogin.style.display = "none";
-        btnRegister.style.display = "none";
-        await loadUserDataFromFirestore(user.uid);
-      } else {
-        console.log("Nenhum usuario logado");
-        btnLogout.style.display = "none";
-        btnLogin.style.display = "inline-block";
-        btnRegister.style.display = "inline-block";
-        meta = loadMetaLocal();
-        weeks = loadWeeksLocal();
-        refreshUI();
-      }
-    });
-  } catch (e) { /* ignore if firebase not configured */ }
-}
-
-btnRegister.onclick = async () => {
-  if (!firebaseEnabled) { alert("Firebase não configurado. Use localStorage."); return; }
-  const email = emailInput.value;
-  const pw = passwordInput.value;
-  if (!email || !pw) return alert("Email e senha obrigatórios");
-  try {
-    await createUserWithEmailAndPassword(auth, email, pw);
-    alert("Conta criada e logado.");
-  } catch (err) {
-    console.error(err);
-    alert("Erro ao registrar: " + (err.message || err));
-  }
-};
-
-btnLogin.onclick = async () => {
-  if (!firebaseEnabled) { alert("Firebase não configurado. Use localStorage."); return; }
-  const email = emailInput.value;
-  const pw = passwordInput.value;
-  if (!email || !pw) return alert("Email e senha obrigatórios");
-  try {
-    await signInWithEmailAndPassword(auth, email, pw);
-    alert("Login efetuado.");
-  } catch (err) {
-    console.error(err);
-    alert("Erro no login: " + (err.message || err));
-  }
-};
-
-btnLogout.onclick = async () => {
-  if (!firebaseEnabled) { alert("Firebase não configurado."); return; }
-  try {
-    await signOut(auth);
-    alert("Desconectado.");
-  } catch (err) {
-    console.error(err);
-    alert("Erro ao sair.");
-  }
-};
-
-/* ========== Gender selector ========== */
-selectGender.addEventListener("change", async () => {
-  await createAvatarInstancesForModel(selectGender.value);
-  refreshUI();
-});
-
-/* ========== Initial load: avatars + UI ========== */
-(async () => {
-  await createAvatarInstancesForModel(selectGender.value);
-  refreshUI();
-})();
+setStatus("Pronto — carregue um modelo de teste");
 </script>
-
 </body>
 </html>

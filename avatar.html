@@ -3,8 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Evolução 3D — Avatar</title>
-
+  <title>Evolução 3D — Avatar (GLTF + Auth)</title>
   <style>
     :root{ --bg:#071124; --card:#0b1220; --muted:#9fb0c6; }
     html,body{ height:100%; margin:0; font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial; color:#e6eef8; background:linear-gradient(180deg,#071124,#04101a); }
@@ -14,7 +13,7 @@
     p.muted{ margin:0 0 10px; font-size:13px; color:var(--muted); }
     #viewport{ width:100%; height:560px; border-radius:10px; background:#050b18; overflow:hidden; }
     label{ font-size:13px; color:var(--muted); display:block; margin-bottom:4px; }
-    input{ width:100%; padding:8px; border-radius:8px; background:transparent; border:1px solid rgba(255,255,255,0.08); color:white; margin-bottom:10px; }
+    input, select{ width:100%; padding:8px; border-radius:8px; background:transparent; border:1px solid rgba(255,255,255,0.08); color:white; margin-bottom:10px; }
     .btn{ padding:10px 12px; border-radius:10px; border:none; cursor:pointer; font-weight:600; }
     .btn-primary{ background:linear-gradient(90deg,#06b6d4,#10b981); color:#021015; }
     .btn-ghost{ background:transparent; border:1px solid rgba(255,255,255,0.08); color:var(--muted); }
@@ -23,19 +22,38 @@
     .history{ max-height:260px; overflow-y:auto; display:flex; flex-direction:column; gap:6px; margin-top:10px; }
     .histItem{ padding:8px; background:rgba(255,255,255,0.06); border-radius:8px; font-size:13px; }
     footer{ margin-top:14px; text-align:center; font-size:12px; color:var(--muted); }
+    .authRow{ display:flex; gap:8px; align-items:center; margin-bottom:8px; }
+    .authRow input{ width:auto; min-width:140px; }
     @media(max-width:900px){ .wrap{ grid-template-columns:1fr; } #viewport{ height:420px; } }
   </style>
 </head>
-
 <body>
-
 <div class="wrap">
-
   <div class="card">
     <h1>Avatar 3D — Atual · Semana · Meta</h1>
     <p class="muted">Ajuste as medidas → Salve → Compare com semanas → Veja evolução visual.</p>
 
+    <!-- Canvas -->
     <div id="viewport" aria-hidden="false"></div>
+
+    <!-- Auth UI -->
+    <div style="margin-top:12px" class="card" aria-hidden="true">
+      <div class="authRow">
+        <input id="email" placeholder="email" type="email" />
+        <input id="password" placeholder="senha" type="password" />
+        <button id="btnRegister" class="btn btn-ghost">Registrar</button>
+        <button id="btnLogin" class="btn btn-ghost">Entrar</button>
+        <button id="btnLogout" class="btn btn-ghost" style="display:none">Sair</button>
+      </div>
+      <div style="display:flex;gap:8px;align-items:center">
+        <label style="color:var(--muted);margin-right:8px">Modelo:</label>
+        <select id="selectGender" style="width:auto">
+          <option value="neutral">Neutro (procedural)</option>
+          <option value="male">Masculino (GLB)</option>
+          <option value="female">Feminino (GLB)</option>
+        </select>
+      </div>
+    </div>
 
     <div style="display:flex;gap:10px;margin-top:10px;flex-wrap:wrap">
       <button id="btnSaveWeigh" class="btn btn-primary">Salvar Pesagem</button>
@@ -80,10 +98,9 @@
 
     <footer>Entradas salvas: <span id="count">0</span></footer>
   </div>
-
 </div>
 
-<!-- importmap para resolver 'three' dentro dos módulos examples/jsm -->
+<!-- importmap to resolve 'three' specifier inside examples/jsm -->
 <script type="importmap">
 {
   "imports": {
@@ -98,6 +115,35 @@
    ========================= */
 import * as THREE from "https://cdn.jsdelivr.net/npm/three@0.152.2/build/three.module.js";
 import { OrbitControls } from "https://cdn.jsdelivr.net/npm/three@0.152.2/examples/jsm/controls/OrbitControls.js";
+import { GLTFLoader } from "https://cdn.jsdelivr.net/npm/three@0.152.2/examples/jsm/loaders/GLTFLoader.js";
+
+/* Firebase (modular) - placeholders, replace with your project's config */
+import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-app.js";
+import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-auth.js";
+import { getFirestore, doc, setDoc, collection, getDocs, query } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-firestore.js";
+
+/* =========================
+   FIREBASE CONFIG - SUBSTITUTE THESE VALUES
+   ========================= */
+const firebaseConfig = {
+  apiKey: "YOUR_FIREBASE_API_KEY",
+  authDomain: "YOUR_FIREBASE_AUTH_DOMAIN",
+  projectId: "YOUR_FIREBASE_PROJECT_ID",
+  storageBucket: "YOUR_FIREBASE_STORAGE_BUCKET",
+  messagingSenderId: "YOUR_FIREBASE_MESSAGING_SENDER_ID",
+  appId: "YOUR_FIREBASE_APP_ID"
+};
+
+/* =========================
+   MODEL URL PLACEHOLDERS
+   Replace with actual .glb URLs (hosted with CORS enabled)
+   If left null, the code will use the procedural avatar fallback.
+   ========================= */
+const MODEL_URLS = {
+  neutral: null,
+  male: "URL_DO_MODELO_MASCULINO.glb",
+  female: "URL_DO_MODELO_FEMININO.glb"
+};
 
 /* =========================
    STORAGE HELPERS + KEYS
@@ -105,21 +151,13 @@ import { OrbitControls } from "https://cdn.jsdelivr.net/npm/three@0.152.2/exampl
 const STORAGE_META = "fb_meta_v1";
 const STORAGE_WEEKS = "fb_weeks_v1";
 
-function loadMetaData() {
+function loadMetaLocal() {
   try { return JSON.parse(localStorage.getItem(STORAGE_META) || "{}"); }
   catch (e) { console.warn("meta parse error", e); return {}; }
 }
-function saveMetaData(v) {
-  try { localStorage.setItem(STORAGE_META, JSON.stringify(v)); console.log("Meta salva", v); return true; }
-  catch (e) { console.error("save meta failed", e); return false; }
-}
-function loadWeeks() {
+function loadWeeksLocal() {
   try { return JSON.parse(localStorage.getItem(STORAGE_WEEKS) || "[]"); }
   catch (e) { console.warn("weeks parse error", e); return []; }
-}
-function saveWeeksData(arr) {
-  try { localStorage.setItem(STORAGE_WEEKS, JSON.stringify(arr)); console.log("Weeks salvos", arr.length); return true; }
-  catch (e) { console.error("save weeks failed", e); return false; }
 }
 
 /* =========================
@@ -147,39 +185,39 @@ const btnSaveMeta = document.getElementById("btnSaveMeta");
 const btnExportCSV = document.getElementById("btnExportCSV");
 const btnDelWeek = document.getElementById("delWeek");
 
+const emailInput = document.getElementById("email");
+const passwordInput = document.getElementById("password");
+const btnRegister = document.getElementById("btnRegister");
+const btnLogin = document.getElementById("btnLogin");
+const btnLogout = document.getElementById("btnLogout");
+const selectGender = document.getElementById("selectGender");
+
 /* =========================
-   THREE.JS: CENA, CAMERA, RENDERER
+   THREE.JS: basic scene
    ========================= */
 const container = document.getElementById("viewport");
 const scene = new THREE.Scene();
 scene.background = new THREE.Color(0x050b18);
 
-// câmera inicial; aspect será ajustado no resizeIfNeeded
 const camera = new THREE.PerspectiveCamera(36, 1, 0.1, 100);
 camera.position.set(0, 1.4, 6);
 
-// renderer
 const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: false });
 renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 container.appendChild(renderer.domElement);
 
-// controls
 const controls = new OrbitControls(camera, renderer.domElement);
 controls.enablePan = false;
 controls.maxPolarAngle = Math.PI / 2;
 
-// luzes
 const ambient = new THREE.AmbientLight(0xffffff, 0.7);
 scene.add(ambient);
 const dl = new THREE.DirectionalLight(0xffffff, 0.6);
 dl.position.set(5, 8, 5);
 scene.add(dl);
 
-/* =========================
-   RESIZE + DEBUG (garantia que canvas tem tamanho)
-   ========================= */
+/* resize protection */
 function resizeIfNeeded() {
-  // evita zero/NaN quando o container ainda está invisível
   const w = Math.max(320, container.clientWidth || 320);
   const h = Math.max(240, container.clientHeight || 240);
   renderer.setSize(w, h);
@@ -190,22 +228,20 @@ function resizeIfNeeded() {
 window.addEventListener("resize", resizeIfNeeded);
 resizeIfNeeded();
 
-// debug cube para validar renderer/câmera
+/* debug cube */
 const debugMat = new THREE.MeshStandardMaterial({ color: 0xff0066 });
 const debugCube = new THREE.Mesh(new THREE.BoxGeometry(0.6, 0.6, 0.6), debugMat);
 debugCube.position.set(0, 1.0, 0);
 scene.add(debugCube);
-
-camera.lookAt(0, 1, 0);
-controls.target.set(0, 1, 0);
+camera.lookAt(0,1,0);
+controls.target.set(0,1,0);
 controls.update();
-
 console.log("DEBUG init:", { viewportW: container.clientWidth, viewportH: container.clientHeight, cameraPos: camera.position });
 
 /* =========================
-   AVATAR FACTORY (primitivas)
+   Avatar primitives factory (fallback)
    ========================= */
-function createAvatar(color = 0x77c0e0) {
+function createAvatarPrimitive(color = 0x77c0e0) {
   const g = new THREE.Group();
   const matSkin = new THREE.MeshStandardMaterial({ color: 0xf2c9a6 });
 
@@ -241,62 +277,168 @@ function createAvatar(color = 0x77c0e0) {
   return { group: g, head, eyeL, eyeR, mouth, torso, armL, armR, legL, legR };
 }
 
-/* =========================
-   CRIAR 3 AVATARES E ADICIONAR À CENA
-   ========================= */
-const avatarCurrent = createAvatar(0x3ba3f7);
-const avatarWeek = createAvatar(0x66cc99);
-const avatarTarget = createAvatar(0xffc94d);
+/* avatar instances (may be primitives or GLTF groups) */
+let avatarCurrent = null;
+let avatarWeek = null;
+let avatarTarget = null;
 
-avatarCurrent.group.position.x = -2.2;
-avatarWeek.group.position.x = 0;
-avatarTarget.group.position.x = 2.2;
-
-scene.add(avatarCurrent.group, avatarWeek.group, avatarTarget.group);
+/* GLTF loader */
+const gltfLoader = new GLTFLoader();
 
 /* =========================
-   APLICAR MEDIDAS (mapeamento seguro)
+   Firebase init (try/catch)
    ========================= */
-function applyMeasures(avatar, measures = {}) {
-  const height = Number(measures.height) || 1.75;
-  // mapeamento robusto com clamp (evita NaN/0)
-  const scaleH = Math.max(0.65, Math.min(1.35, ((height - 1.2) / 1.2) || 0.8));
-  avatar.group.scale.set(scaleH, scaleH, scaleH);
-
-  const chest = Number(measures.chest) || 95;
-  const scaleW = Math.max(0.7, Math.min(1.5, ((chest - 70) / 50 + 1) || 1));
-  avatar.torso.scale.x = scaleW;
-  avatar.torso.scale.z = scaleW * 0.8;
-
-  const arm = Number(measures.arm) || 30;
-  const armScale = Math.max(0.6, Math.min(1.6, (arm / 30) || 1));
-  avatar.armL.scale.set(armScale, armScale, armScale);
-  avatar.armR.scale.set(armScale, armScale, armScale);
-
-  const thigh = Number(measures.thigh) || 55;
-  const legScale = Math.max(0.6, Math.min(1.6, (thigh / 50) || 1));
-  avatar.legL.scale.set(legScale, legScale, legScale);
-  avatar.legR.scale.set(legScale, legScale, legScale);
-
-  // DEBUG: log das escalas aplicadas para ajudar investigação
-  console.debug("applyMeasures:", { height, scaleH, chest, scaleW, arm, armScale, thigh, legScale });
+let firebaseEnabled = false;
+let auth = null;
+let db = null;
+try {
+  const app = initializeApp(firebaseConfig);
+  auth = getAuth(app);
+  db = getFirestore(app);
+  firebaseEnabled = true;
+  console.log("Firebase inicializado (modo nuvem ativo)");
+} catch (e) {
+  console.warn("Firebase não inicializado — operando em modo localStorage", e);
 }
 
 /* =========================
-   RENDER LOOP
+   Local state: meta + weeks
+   ========================= */
+let meta = loadMetaLocal();
+let weeks = loadWeeksLocal();
+let currentUser = null;
+
+/* =========================
+   Utility: load GLTF (returns scene or null)
+   ========================= */
+function loadGLTF(url) {
+  return new Promise((resolve) => {
+    if (!url) return resolve(null);
+    gltfLoader.load(url, (gltf) => resolve(gltf.scene), undefined, (err) => {
+      console.error("GLTF load error", err);
+      resolve(null);
+    });
+  });
+}
+
+/* clone helper for gltf */
+function cloneGltf(sceneRoot) {
+  const cloned = sceneRoot.clone(true);
+  cloned.traverse(node => {
+    if (node.isMesh) {
+      if (node.material) node.material = node.material.clone();
+      node.castShadow = true;
+      node.receiveShadow = true;
+    }
+  });
+  return cloned;
+}
+
+/* =========================
+   create avatar instances from either GLTF or primitives
+   ========================= */
+async function createAvatarInstancesForModel(selectedGender) {
+  // remove previous if any
+  [avatarCurrent, avatarWeek, avatarTarget].forEach(av => { if (av && av.group) scene.remove(av.group); });
+
+  const modelUrl = MODEL_URLS[selectedGender] || null;
+  if (!modelUrl) {
+    // fallback to primitives
+    avatarCurrent = createAvatarPrimitive(0x3ba3f7);
+    avatarWeek = createAvatarPrimitive(0x66cc99);
+    avatarTarget = createAvatarPrimitive(0xffc94d);
+    avatarCurrent.group.position.x = -2.2;
+    avatarWeek.group.position.x = 0;
+    avatarTarget.group.position.x = 2.2;
+    scene.add(avatarCurrent.group, avatarWeek.group, avatarTarget.group);
+    console.log("Usando avatar procedural (fallback)");
+    return;
+  }
+
+  // load model
+  const base = await loadGLTF(modelUrl);
+  if (!base) {
+    console.warn("Falha ao carregar GLTF; revertendo ao procedural");
+    avatarCurrent = createAvatarPrimitive(0x3ba3f7);
+    avatarWeek = createAvatarPrimitive(0x66cc99);
+    avatarTarget = createAvatarPrimitive(0xffc94d);
+    avatarCurrent.group.position.x = -2.2;
+    avatarWeek.group.position.x = 0;
+    avatarTarget.group.position.x = 2.2;
+    scene.add(avatarCurrent.group, avatarWeek.group, avatarTarget.group);
+    return;
+  }
+
+  avatarCurrent = { group: cloneGltf(base) };
+  avatarWeek = { group: cloneGltf(base) };
+  avatarTarget = { group: cloneGltf(base) };
+
+  avatarCurrent.group.position.x = -2.2;
+  avatarWeek.group.position.x = 0;
+  avatarTarget.group.position.x = 2.2;
+
+  // small common scale tweak (adjust as needed)
+  const modelScale = 1.0;
+  avatarCurrent.group.scale.set(modelScale, modelScale, modelScale);
+  avatarWeek.group.scale.set(modelScale, modelScale, modelScale);
+  avatarTarget.group.scale.set(modelScale, modelScale, modelScale);
+
+  scene.add(avatarCurrent.group, avatarWeek.group, avatarTarget.group);
+  console.log("GLTF model loaded and instantiated for gender:", selectedGender);
+}
+
+/* =========================
+   Mapping measures -> visual transforms
+   Works for both primitives and GLTF (where we only scale top-level group)
+   ========================= */
+function applyMeasures(avatar, measures = {}) {
+  if (!avatar || !avatar.group) return;
+  const height = Number(measures.height) || 1.75;
+  const scaleH = Math.max(0.65, Math.min(1.35, ((height - 1.2) / 1.2) || 0.8));
+  avatar.group.scale.set(scaleH, scaleH, scaleH);
+
+  // if avatar has torso reference (primitive) apply torso scale; for GLTF we can adjust group scale only
+  if (avatar.torso) {
+    const chest = Number(measures.chest) || 95;
+    const scaleW = Math.max(0.7, Math.min(1.5, ((chest - 70) / 50 + 1) || 1));
+    avatar.torso.scale.x = scaleW;
+    avatar.torso.scale.z = scaleW * 0.8;
+  } else {
+    // for GLTF models you might want to scale a specific mesh/bone — left as TODO per model structure
+  }
+
+  const arm = Number(measures.arm) || 30;
+  const armScale = Math.max(0.6, Math.min(1.6, (arm / 30) || 1));
+  if (avatar.armL && avatar.armR) {
+    avatar.armL.scale.set(armScale, armScale, armScale);
+    avatar.armR.scale.set(armScale, armScale, armScale);
+  }
+
+  const thigh = Number(measures.thigh) || 55;
+  const legScale = Math.max(0.6, Math.min(1.6, (thigh / 50) || 1));
+  if (avatar.legL && avatar.legR) {
+    avatar.legL.scale.set(legScale, legScale, legScale);
+    avatar.legR.scale.set(legScale, legScale, legScale);
+  }
+
+  console.debug("applyMeasures:", { height, scaleH });
+}
+
+/* =========================
+   Render loop
    ========================= */
 function animate() {
   requestAnimationFrame(animate);
   const rot = 0.003;
-  avatarCurrent.group.rotation.y += rot;
-  avatarWeek.group.rotation.y += rot;
-  avatarTarget.group.rotation.y += rot;
+  if (avatarCurrent && avatarCurrent.group) avatarCurrent.group.rotation.y += rot;
+  if (avatarWeek && avatarWeek.group) avatarWeek.group.rotation.y += rot;
+  if (avatarTarget && avatarTarget.group) avatarTarget.group.rotation.y += rot;
   renderer.render(scene, camera);
 }
 animate();
 
 /* =========================
-   PROGRESS CALC
+   Progress calc
    ========================= */
 function calcPercent(initial, current, target) {
   initial = Number(initial);
@@ -317,13 +459,70 @@ function calcPercent(initial, current, target) {
 }
 
 /* =========================
-   LOAD / STATE
+   Persistence: local and cloud-aware save/load
    ========================= */
-let meta = loadMetaData();
-let weeks = loadWeeks();
+async function loadUserDataFromFirestore(uid) {
+  try {
+    // weeks stored at users/{uid}/weeks
+    const weeksCol = collection(db, "users", uid, "weeks");
+    const q = query(weeksCol);
+    const snap = await getDocs(q);
+    const loaded = [];
+    snap.forEach(s => loaded.push({ id: s.id, ...s.data() }));
+    weeks = loaded.sort((a,b)=> new Date(a.date) - new Date(b.date));
+    // meta - load from users/{uid} doc if exists (simple fallback to local if not)
+    // For brevity we reuse local meta as fallback; enhance later to use getDoc for meta.
+    meta = loadMetaLocal();
+    refreshUI();
+    console.log("Dados carregados do Firestore:", weeks.length);
+  } catch (err) {
+    console.error("Erro carregar Firestore:", err);
+    alert("Erro ao carregar dados do servidor — usando localStorage.");
+    meta = loadMetaLocal();
+    weeks = loadWeeksLocal();
+    refreshUI();
+  }
+}
+
+async function saveMeta(v) {
+  try {
+    if (currentUser && firebaseEnabled) {
+      await setDoc(doc(db, "users", currentUser.uid), v, { merge: true });
+      console.log("Meta salva no Firestore", v);
+      return true;
+    } else {
+      localStorage.setItem(STORAGE_META, JSON.stringify(v));
+      console.log("Meta salva localmente", v);
+      return true;
+    }
+  } catch (e) {
+    console.error("saveMeta error:", e);
+    return false;
+  }
+}
+
+async function saveWeeks(vArr) {
+  try {
+    if (currentUser && firebaseEnabled) {
+      // save each as doc users/{uid}/weeks/{id}
+      for (const w of vArr) {
+        await setDoc(doc(db, "users", currentUser.uid, "weeks", w.id), w);
+      }
+      console.log("Weeks salvos no Firestore", vArr.length);
+      return true;
+    } else {
+      localStorage.setItem(STORAGE_WEEKS, JSON.stringify(vArr));
+      console.log("Weeks salvos localmente", vArr.length);
+      return true;
+    }
+  } catch (e) {
+    console.error("saveWeeks error:", e);
+    return false;
+  }
+}
 
 /* =========================
-   UI REFRESH
+   UI refresh
    ========================= */
 function refreshUI() {
   elW.value = meta.currentWeight ?? 80;
@@ -335,19 +534,17 @@ function refreshUI() {
   elWaist.value = meta.waist ?? 85;
   elThigh.value = meta.thigh ?? 55;
 
-  applyMeasures(avatarCurrent, meta);
-  applyMeasures(avatarTarget, { ...meta, weight: meta.targetWeight, chest: meta.chest, thigh: meta.thigh, arm: meta.arm, height: meta.height });
+  if (avatarCurrent) applyMeasures(avatarCurrent, meta);
+  if (avatarTarget) applyMeasures(avatarTarget, { ...meta, weight: meta.targetWeight });
 
   weekSel.innerHTML = `<option value="">-- Selecione semana --</option>`;
   historyDiv.innerHTML = "";
 
-  // preencher histórico (mais antigo primeiro)
   weeks.forEach(w => {
     const opt = document.createElement("option");
     opt.value = w.id;
     opt.textContent = `${new Date(w.date).toLocaleDateString()} — ${w.weight}kg`;
     weekSel.appendChild(opt);
-
     const div = document.createElement("div");
     div.className = "histItem";
     div.textContent = `${new Date(w.date).toLocaleString()} — ${w.weight}kg`;
@@ -364,20 +561,16 @@ function refreshUI() {
   msg.textContent = pct >= 95 ? "Quase lá!" : pct >= 50 ? "Ótimo progresso!" : pct >= 20 ? "Continue firme!" : "Começando bem!";
 
   const wk = weeks.find(x => x.id === weekSel.value);
-  if (wk) applyMeasures(avatarWeek, wk);
-  else applyMeasures(avatarWeek, meta);
+  if (wk && avatarWeek) applyMeasures(avatarWeek, wk);
+  else if (avatarWeek) applyMeasures(avatarWeek, meta);
 }
 
-/* preencher inicialmente */
-refreshUI();
-
 /* =========================
-   EVENT HANDLERS (com logs e validação)
+   Event handlers (async-aware)
    ========================= */
-btnSaveWeigh.onclick = () => {
+btnSaveWeigh.onclick = async () => {
   const w = parseFloat(elW.value);
   if (!w || isNaN(w)) { alert("Peso inválido!"); return; }
-
   const entry = {
     id: "w" + Date.now(),
     weight: w,
@@ -388,21 +581,20 @@ btnSaveWeigh.onclick = () => {
     thigh: parseFloat(elThigh.value) || 55,
     date: new Date().toISOString()
   };
-
   try {
     weeks.push(entry);
-    const ok = saveWeeksData(weeks);
-    if (!ok) throw new Error("Falha ao salvar weeks no localStorage");
+    const ok = await saveWeeks(weeks);
+    if (!ok) throw new Error("Falha ao salvar weeks");
     console.log("Pesagem salva:", entry);
     refreshUI();
     alert("Pesagem salva com sucesso.");
   } catch (err) {
     console.error("Erro ao salvar pesagem:", err);
-    alert("Erro ao salvar pesagem. Veja console para detalhes.");
+    alert("Erro ao salvar pesagem. Veja console.");
   }
 };
 
-btnSaveMeta.onclick = () => {
+btnSaveMeta.onclick = async () => {
   const newMeta = {
     currentWeight: parseFloat(elW.value) || 80,
     height: parseFloat(elH.value) || 1.75,
@@ -414,14 +606,14 @@ btnSaveMeta.onclick = () => {
   };
   try {
     meta = newMeta;
-    const ok = saveMetaData(meta);
-    if (!ok) throw new Error("Falha ao salvar meta no localStorage");
-    console.log("Meta atualizada:", meta);
+    const ok = await saveMeta(meta);
+    if (!ok) throw new Error("Falha ao salvar meta");
+    console.log("Meta salva:", meta);
     refreshUI();
     alert("Meta salva com sucesso.");
   } catch (err) {
     console.error("Erro ao salvar meta:", err);
-    alert("Erro ao salvar meta. Veja console para detalhes.");
+    alert("Erro ao salvar meta. Veja console.");
   }
 };
 
@@ -442,10 +634,10 @@ btnExportCSV.onclick = () => {
 
 weekSel.onchange = refreshUI;
 
-btnDelWeek.onclick = () => {
+btnDelWeek.onclick = async () => {
   if (!weekSel.value) { alert("Selecione primeiro."); return; }
   weeks = weeks.filter(w => w.id !== weekSel.value);
-  const ok = saveWeeksData(weeks);
+  const ok = await saveWeeks(weeks);
   if (!ok) { alert("Erro ao excluir. Veja console."); return; }
   weekSel.value = "";
   refreshUI();
@@ -453,8 +645,83 @@ btnDelWeek.onclick = () => {
 };
 
 /* =========================
-   FIM
+   Auth handlers (register/login/logout)
    ========================= */
+if (firebaseEnabled) {
+  onAuthStateChanged(auth, async (user) => {
+    currentUser = user;
+    if (user) {
+      console.log("Usuário logado:", user.uid, user.email);
+      btnLogout.style.display = "inline-block";
+      btnLogin.style.display = "none";
+      btnRegister.style.display = "none";
+      // load cloud data
+      await loadUserDataFromFirestore(user.uid);
+    } else {
+      console.log("Nenhum usuário logado");
+      btnLogout.style.display = "none";
+      btnLogin.style.display = "inline-block";
+      btnRegister.style.display = "inline-block";
+      meta = loadMetaLocal();
+      weeks = loadWeeksLocal();
+      refreshUI();
+    }
+  });
+}
+
+btnRegister.onclick = async () => {
+  if (!firebaseEnabled) { alert("Firebase não configurado. Use localStorage."); return; }
+  const email = emailInput.value;
+  const pw = passwordInput.value;
+  if (!email || !pw) return alert("Email e senha obrigatórios");
+  try {
+    await createUserWithEmailAndPassword(auth, email, pw);
+    alert("Conta criada e logado.");
+  } catch (err) {
+    console.error(err);
+    alert("Erro ao registrar: " + (err.message || err));
+  }
+};
+
+btnLogin.onclick = async () => {
+  if (!firebaseEnabled) { alert("Firebase não configurado. Use localStorage."); return; }
+  const email = emailInput.value;
+  const pw = passwordInput.value;
+  if (!email || !pw) return alert("Email e senha obrigatórios");
+  try {
+    await signInWithEmailAndPassword(auth, email, pw);
+    alert("Login efetuado.");
+  } catch (err) {
+    console.error(err);
+    alert("Erro no login: " + (err.message || err));
+  }
+};
+
+btnLogout.onclick = async () => {
+  if (!firebaseEnabled) { alert("Firebase não configurado."); return; }
+  try {
+    await signOut(auth);
+    alert("Desconectado.");
+  } catch (err) {
+    console.error(err);
+    alert("Erro ao sair.");
+  }
+};
+
+/* =========================
+   Gender select: load model or fallback
+   ========================= */
+selectGender.addEventListener("change", async () => {
+  await createAvatarInstancesForModel(selectGender.value);
+  refreshUI();
+});
+
+/* initial model load and UI setup */
+(async () => {
+  await createAvatarInstancesForModel(selectGender.value);
+  // if user is not logged in yet, refreshUI will load local data
+  refreshUI();
+})();
 </script>
 
 </body>

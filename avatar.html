@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Evolução 3D — Avatar (GLTF + Auth)</title>
+  <title>Evolução 3D — Avatar Realista</title>
   <style>
     :root{ --bg:#071124; --card:#0b1220; --muted:#9fb0c6; }
     html,body{ height:100%; margin:0; font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial; color:#e6eef8; background:linear-gradient(180deg,#071124,#04101a); }
@@ -30,13 +30,11 @@
 <body>
 <div class="wrap">
   <div class="card">
-    <h1>Avatar 3D — Atual · Semana · Meta</h1>
-    <p class="muted">Ajuste as medidas → Salve → Compare com semanas → Veja evolução visual.</p>
+    <h1>Avatar 3D — Atual · Semana · Meta (Realista)</h1>
+    <p class="muted">Modelos humanos reais. Ajuste medidas, salve e veja a evolução.</p>
 
-    <!-- Canvas -->
     <div id="viewport" aria-hidden="false"></div>
 
-    <!-- Auth UI -->
     <div style="margin-top:12px" class="card" aria-hidden="true">
       <div class="authRow">
         <input id="email" placeholder="email" type="email" />
@@ -49,8 +47,8 @@
         <label style="color:var(--muted);margin-right:8px">Modelo:</label>
         <select id="selectGender" style="width:auto">
           <option value="neutral">Neutro (procedural)</option>
-          <option value="male">Masculino (GLB)</option>
-          <option value="female">Feminino (GLB)</option>
+          <option value="male">Masculino (realista)</option>
+          <option value="female">Feminino (realista)</option>
         </select>
       </div>
     </div>
@@ -100,7 +98,7 @@
   </div>
 </div>
 
-<!-- importmap to resolve 'three' specifier inside examples/jsm -->
+<!-- importmap to resolve 'three' used by examples/jsm -->
 <script type="importmap">
 {
   "imports": {
@@ -117,14 +115,24 @@ import * as THREE from "https://cdn.jsdelivr.net/npm/three@0.152.2/build/three.m
 import { OrbitControls } from "https://cdn.jsdelivr.net/npm/three@0.152.2/examples/jsm/controls/OrbitControls.js";
 import { GLTFLoader } from "https://cdn.jsdelivr.net/npm/three@0.152.2/examples/jsm/loaders/GLTFLoader.js";
 
-/* Firebase (modular) - placeholders, replace with your project's config */
+/* Firebase (modular) - keep placeholders or replace with your config if needed */
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-app.js";
 import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-auth.js";
 import { getFirestore, doc, setDoc, collection, getDocs, query } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-firestore.js";
 
-/* =========================
-   FIREBASE CONFIG - SUBSTITUTE THESE VALUES
-   ========================= */
+/* ========== MODEL URLS (REALISTA) ========== 
+These are the realistic model URLs I promised.
+If you later want to change them, replace the strings below.
+*/
+const MODEL_URLS = {
+  neutral: null,
+  male: "https://models.readyplayer.me/646d1b75be30f89a3d922b35.glb",
+  female: "https://models.readyplayer.me/646d1b9a21db005edec50a18.glb"
+};
+
+/* ========== Firebase config placeholders ==========
+Replace with your project's Firebase config if you want cloud sync.
+*/
 const firebaseConfig = {
   apiKey: "YOUR_FIREBASE_API_KEY",
   authDomain: "YOUR_FIREBASE_AUTH_DOMAIN",
@@ -134,39 +142,14 @@ const firebaseConfig = {
   appId: "YOUR_FIREBASE_APP_ID"
 };
 
-/* =========================
-   MODEL URL PLACEHOLDERS
-   Replace with actual .glb URLs (hosted with CORS enabled)
-   If left null, the code will use the procedural avatar fallback.
-   ========================= */
-const MODEL_URLS = {
-  neutral: null,
-  male: "URL_DO_MODELO_MASCULINO.glb",
-  female: "URL_DO_MODELO_FEMININO.glb"
-};
-
-/* =========================
-   STORAGE HELPERS + KEYS
-   ========================= */
+/* ========== Storage keys ========== */
 const STORAGE_META = "fb_meta_v1";
 const STORAGE_WEEKS = "fb_weeks_v1";
 
-function loadMetaLocal() {
-  try { return JSON.parse(localStorage.getItem(STORAGE_META) || "{}"); }
-  catch (e) { console.warn("meta parse error", e); return {}; }
-}
-function loadWeeksLocal() {
-  try { return JSON.parse(localStorage.getItem(STORAGE_WEEKS) || "[]"); }
-  catch (e) { console.warn("weeks parse error", e); return []; }
-}
-
-/* =========================
-   DOM ELEMENTS
-   ========================= */
+/* ========== DOM ========== */
 const elW = document.getElementById("w");
 const elH = document.getElementById("h");
 const elT = document.getElementById("t");
-
 const elArm = document.getElementById("arm");
 const elChest = document.getElementById("chest");
 const elWaist = document.getElementById("waist");
@@ -192,29 +175,34 @@ const btnLogin = document.getElementById("btnLogin");
 const btnLogout = document.getElementById("btnLogout");
 const selectGender = document.getElementById("selectGender");
 
-/* =========================
-   THREE.JS: basic scene
-   ========================= */
+/* ========== three.js scene setup ========== */
 const container = document.getElementById("viewport");
 const scene = new THREE.Scene();
 scene.background = new THREE.Color(0x050b18);
 
 const camera = new THREE.PerspectiveCamera(36, 1, 0.1, 100);
-camera.position.set(0, 1.4, 6);
+camera.position.set(0, 1.6, 6);
 
-const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: false });
+const renderer = new THREE.WebGLRenderer({ antialias: true });
 renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 container.appendChild(renderer.domElement);
 
 const controls = new OrbitControls(camera, renderer.domElement);
 controls.enablePan = false;
-controls.maxPolarAngle = Math.PI / 2;
+controls.maxPolarAngle = Math.PI / 2.1;
 
-const ambient = new THREE.AmbientLight(0xffffff, 0.7);
-scene.add(ambient);
-const dl = new THREE.DirectionalLight(0xffffff, 0.6);
-dl.position.set(5, 8, 5);
-scene.add(dl);
+// Lights: hemisphere + directional for soft, realistic look
+const hemi = new THREE.HemisphereLight(0xffffff, 0x444444, 0.7);
+scene.add(hemi);
+const dir = new THREE.DirectionalLight(0xffffff, 0.8);
+dir.position.set(5, 10, 7);
+dir.castShadow = false;
+scene.add(dir);
+
+// subtle rim light to highlight silhouettes
+const rim = new THREE.DirectionalLight(0xfff6e0, 0.15);
+rim.position.set(-5, 2, -3);
+scene.add(rim);
 
 /* resize protection */
 function resizeIfNeeded() {
@@ -228,22 +216,25 @@ function resizeIfNeeded() {
 window.addEventListener("resize", resizeIfNeeded);
 resizeIfNeeded();
 
-/* debug cube */
-const debugMat = new THREE.MeshStandardMaterial({ color: 0xff0066 });
-const debugCube = new THREE.Mesh(new THREE.BoxGeometry(0.6, 0.6, 0.6), debugMat);
-debugCube.position.set(0, 1.0, 0);
-scene.add(debugCube);
-camera.lookAt(0,1,0);
-controls.target.set(0,1,0);
-controls.update();
-console.log("DEBUG init:", { viewportW: container.clientWidth, viewportH: container.clientHeight, cameraPos: camera.position });
+/* debug ground (very subtle) */
+const ground = new THREE.Mesh(
+  new THREE.PlaneGeometry(20, 20),
+  new THREE.ShadowMaterial({ opacity: 0.05 })
+);
+ground.rotation.x = -Math.PI / 2;
+ground.position.y = 0;
+ground.receiveShadow = true;
+scene.add(ground);
 
-/* =========================
-   Avatar primitives factory (fallback)
-   ========================= */
+/* debug marker */
+console.log("Scene ready — loading avatars when requested.");
+
+/* ========== avatar handling (GLTF fallback to primitives) ========== */
+const gltfLoader = new GLTFLoader();
+
 function createAvatarPrimitive(color = 0x77c0e0) {
   const g = new THREE.Group();
-  const matSkin = new THREE.MeshStandardMaterial({ color: 0xf2c9a6 });
+  const matSkin = new THREE.MeshStandardMaterial({ color: 0xf2c9a6, roughness: 0.7, metalness: 0.0 });
 
   const head = new THREE.Mesh(new THREE.SphereGeometry(0.28, 28, 28), matSkin);
   head.position.set(0, 1.45, 0);
@@ -277,51 +268,25 @@ function createAvatarPrimitive(color = 0x77c0e0) {
   return { group: g, head, eyeL, eyeR, mouth, torso, armL, armR, legL, legR };
 }
 
-/* avatar instances (may be primitives or GLTF groups) */
+/* avatar instances references */
 let avatarCurrent = null;
 let avatarWeek = null;
 let avatarTarget = null;
 
-/* GLTF loader */
-const gltfLoader = new GLTFLoader();
-
-/* =========================
-   Firebase init (try/catch)
-   ========================= */
-let firebaseEnabled = false;
-let auth = null;
-let db = null;
-try {
-  const app = initializeApp(firebaseConfig);
-  auth = getAuth(app);
-  db = getFirestore(app);
-  firebaseEnabled = true;
-  console.log("Firebase inicializado (modo nuvem ativo)");
-} catch (e) {
-  console.warn("Firebase não inicializado — operando em modo localStorage", e);
-}
-
-/* =========================
-   Local state: meta + weeks
-   ========================= */
-let meta = loadMetaLocal();
-let weeks = loadWeeksLocal();
-let currentUser = null;
-
-/* =========================
-   Utility: load GLTF (returns scene or null)
-   ========================= */
+/* helper to load gltf */
 function loadGLTF(url) {
   return new Promise((resolve) => {
     if (!url) return resolve(null);
-    gltfLoader.load(url, (gltf) => resolve(gltf.scene), undefined, (err) => {
-      console.error("GLTF load error", err);
+    gltfLoader.load(url, (gltf) => {
+      resolve(gltf.scene);
+    }, undefined, (err) => {
+      console.error("GLTF load error:", err);
       resolve(null);
     });
   });
 }
 
-/* clone helper for gltf */
+/* helper clone function for GLTF (clone materials) */
 function cloneGltf(sceneRoot) {
   const cloned = sceneRoot.clone(true);
   cloned.traverse(node => {
@@ -334,16 +299,14 @@ function cloneGltf(sceneRoot) {
   return cloned;
 }
 
-/* =========================
-   create avatar instances from either GLTF or primitives
-   ========================= */
+/* create 3 instances based on selected model */
 async function createAvatarInstancesForModel(selectedGender) {
-  // remove previous if any
+  // remove existing
   [avatarCurrent, avatarWeek, avatarTarget].forEach(av => { if (av && av.group) scene.remove(av.group); });
 
   const modelUrl = MODEL_URLS[selectedGender] || null;
   if (!modelUrl) {
-    // fallback to primitives
+    // fallback primitives
     avatarCurrent = createAvatarPrimitive(0x3ba3f7);
     avatarWeek = createAvatarPrimitive(0x66cc99);
     avatarTarget = createAvatarPrimitive(0xffc94d);
@@ -351,14 +314,14 @@ async function createAvatarInstancesForModel(selectedGender) {
     avatarWeek.group.position.x = 0;
     avatarTarget.group.position.x = 2.2;
     scene.add(avatarCurrent.group, avatarWeek.group, avatarTarget.group);
-    console.log("Usando avatar procedural (fallback)");
+    console.log("Procedural fallback avatars added");
     return;
   }
 
   // load model
   const base = await loadGLTF(modelUrl);
   if (!base) {
-    console.warn("Falha ao carregar GLTF; revertendo ao procedural");
+    console.warn("GLTF failed to load — using fallback primitives");
     avatarCurrent = createAvatarPrimitive(0x3ba3f7);
     avatarWeek = createAvatarPrimitive(0x66cc99);
     avatarTarget = createAvatarPrimitive(0xffc94d);
@@ -373,63 +336,45 @@ async function createAvatarInstancesForModel(selectedGender) {
   avatarWeek = { group: cloneGltf(base) };
   avatarTarget = { group: cloneGltf(base) };
 
+  // position side-by-side
   avatarCurrent.group.position.x = -2.2;
   avatarWeek.group.position.x = 0;
   avatarTarget.group.position.x = 2.2;
 
-  // small common scale tweak (adjust as needed)
-  const modelScale = 1.0;
+  // nice initial scale - may tweak depending on model
+  const modelScale = 0.95;
   avatarCurrent.group.scale.set(modelScale, modelScale, modelScale);
   avatarWeek.group.scale.set(modelScale, modelScale, modelScale);
   avatarTarget.group.scale.set(modelScale, modelScale, modelScale);
 
   scene.add(avatarCurrent.group, avatarWeek.group, avatarTarget.group);
-  console.log("GLTF model loaded and instantiated for gender:", selectedGender);
+  console.log("Realistic GLTF avatars loaded for:", selectedGender);
 }
 
-/* =========================
-   Mapping measures -> visual transforms
-   Works for both primitives and GLTF (where we only scale top-level group)
-   ========================= */
+/* apply simple measures -> group scale/vertical offset */
 function applyMeasures(avatar, measures = {}) {
   if (!avatar || !avatar.group) return;
   const height = Number(measures.height) || 1.75;
-  const scaleH = Math.max(0.65, Math.min(1.35, ((height - 1.2) / 1.2) || 0.8));
+  const scaleH = Math.max(0.7, Math.min(1.3, ((height - 1.2) / 1.2) || 0.85));
   avatar.group.scale.set(scaleH, scaleH, scaleH);
 
-  // if avatar has torso reference (primitive) apply torso scale; for GLTF we can adjust group scale only
+  // vertical offset to keep feet on ground if model pivot is at center
+  // small nudge to align visually
+  avatar.group.position.y = 0; // leave on ground plane
+
+  // If primitive, tweak torso/limbs as before
   if (avatar.torso) {
     const chest = Number(measures.chest) || 95;
-    const scaleW = Math.max(0.7, Math.min(1.5, ((chest - 70) / 50 + 1) || 1));
+    const scaleW = Math.max(0.75, Math.min(1.4, ((chest - 70) / 50 + 1) || 1));
     avatar.torso.scale.x = scaleW;
     avatar.torso.scale.z = scaleW * 0.8;
-  } else {
-    // for GLTF models you might want to scale a specific mesh/bone — left as TODO per model structure
   }
-
-  const arm = Number(measures.arm) || 30;
-  const armScale = Math.max(0.6, Math.min(1.6, (arm / 30) || 1));
-  if (avatar.armL && avatar.armR) {
-    avatar.armL.scale.set(armScale, armScale, armScale);
-    avatar.armR.scale.set(armScale, armScale, armScale);
-  }
-
-  const thigh = Number(measures.thigh) || 55;
-  const legScale = Math.max(0.6, Math.min(1.6, (thigh / 50) || 1));
-  if (avatar.legL && avatar.legR) {
-    avatar.legL.scale.set(legScale, legScale, legScale);
-    avatar.legR.scale.set(legScale, legScale, legScale);
-  }
-
-  console.debug("applyMeasures:", { height, scaleH });
 }
 
-/* =========================
-   Render loop
-   ========================= */
+/* render loop */
 function animate() {
   requestAnimationFrame(animate);
-  const rot = 0.003;
+  const rot = 0.0025;
   if (avatarCurrent && avatarCurrent.group) avatarCurrent.group.rotation.y += rot;
   if (avatarWeek && avatarWeek.group) avatarWeek.group.rotation.y += rot;
   if (avatarTarget && avatarTarget.group) avatarTarget.group.rotation.y += rot;
@@ -437,9 +382,7 @@ function animate() {
 }
 animate();
 
-/* =========================
-   Progress calc
-   ========================= */
+/* ========== Progress calculation & storage (local fallback) ========== */
 function calcPercent(initial, current, target) {
   initial = Number(initial);
   current = Number(current);
@@ -458,72 +401,68 @@ function calcPercent(initial, current, target) {
   }
 }
 
-/* =========================
-   Persistence: local and cloud-aware save/load
-   ========================= */
+function loadMetaLocal() {
+  try { return JSON.parse(localStorage.getItem(STORAGE_META) || "{}"); } catch { return {}; }
+}
+function loadWeeksLocal() {
+  try { return JSON.parse(localStorage.getItem(STORAGE_WEEKS) || "[]"); } catch { return []; }
+}
+function saveMetaLocal(v) { try { localStorage.setItem(STORAGE_META, JSON.stringify(v)); return true; } catch { return false; } }
+function saveWeeksLocal(arr) { try { localStorage.setItem(STORAGE_WEEKS, JSON.stringify(arr)); return true; } catch { return false; } }
+
+/* ========== Firebase init (optional) ========== */
+let firebaseEnabled = false;
+let auth = null;
+let db = null;
+try {
+  const app = initializeApp(firebaseConfig);
+  auth = getAuth(app);
+  db = getFirestore(app);
+  firebaseEnabled = true;
+  console.log("Firebase initialized (cloud mode enabled)");
+} catch (e) {
+  console.warn("Firebase not initialized — using localStorage only", e);
+}
+
+/* ========== Load/save logic that uses cloud if logged in, otherwise local ========== */
+let meta = loadMetaLocal();
+let weeks = loadWeeksLocal();
+let currentUser = null;
+
+/* placeholder firestore helpers (if you enable firebase) */
 async function loadUserDataFromFirestore(uid) {
   try {
-    // weeks stored at users/{uid}/weeks
     const weeksCol = collection(db, "users", uid, "weeks");
     const q = query(weeksCol);
     const snap = await getDocs(q);
     const loaded = [];
     snap.forEach(s => loaded.push({ id: s.id, ...s.data() }));
     weeks = loaded.sort((a,b)=> new Date(a.date) - new Date(b.date));
-    // meta - load from users/{uid} doc if exists (simple fallback to local if not)
-    // For brevity we reuse local meta as fallback; enhance later to use getDoc for meta.
     meta = loadMetaLocal();
     refreshUI();
-    console.log("Dados carregados do Firestore:", weeks.length);
+    console.log("Loaded user data from Firestore:", weeks.length);
   } catch (err) {
-    console.error("Erro carregar Firestore:", err);
-    alert("Erro ao carregar dados do servidor — usando localStorage.");
+    console.error("Error loading Firestore data:", err);
     meta = loadMetaLocal();
     weeks = loadWeeksLocal();
     refreshUI();
   }
 }
-
-async function saveMeta(v) {
-  try {
-    if (currentUser && firebaseEnabled) {
-      await setDoc(doc(db, "users", currentUser.uid), v, { merge: true });
-      console.log("Meta salva no Firestore", v);
+async function saveMetaCloudOrLocal(v) {
+  if (currentUser && firebaseEnabled) {
+    try { await setDoc(doc(db, "users", currentUser.uid), v, { merge: true }); return true; } catch { return false; }
+  } else return saveMetaLocal(v);
+}
+async function saveWeeksCloudOrLocal(arr) {
+  if (currentUser && firebaseEnabled) {
+    try {
+      for (const w of arr) await setDoc(doc(db, "users", currentUser.uid, "weeks", w.id), w);
       return true;
-    } else {
-      localStorage.setItem(STORAGE_META, JSON.stringify(v));
-      console.log("Meta salva localmente", v);
-      return true;
-    }
-  } catch (e) {
-    console.error("saveMeta error:", e);
-    return false;
-  }
+    } catch { return false; }
+  } else return saveWeeksLocal(arr);
 }
 
-async function saveWeeks(vArr) {
-  try {
-    if (currentUser && firebaseEnabled) {
-      // save each as doc users/{uid}/weeks/{id}
-      for (const w of vArr) {
-        await setDoc(doc(db, "users", currentUser.uid, "weeks", w.id), w);
-      }
-      console.log("Weeks salvos no Firestore", vArr.length);
-      return true;
-    } else {
-      localStorage.setItem(STORAGE_WEEKS, JSON.stringify(vArr));
-      console.log("Weeks salvos localmente", vArr.length);
-      return true;
-    }
-  } catch (e) {
-    console.error("saveWeeks error:", e);
-    return false;
-  }
-}
-
-/* =========================
-   UI refresh
-   ========================= */
+/* ========== UI refresh ========== */
 function refreshUI() {
   elW.value = meta.currentWeight ?? 80;
   elH.value = meta.height ?? 1.75;
@@ -545,6 +484,7 @@ function refreshUI() {
     opt.value = w.id;
     opt.textContent = `${new Date(w.date).toLocaleDateString()} — ${w.weight}kg`;
     weekSel.appendChild(opt);
+
     const div = document.createElement("div");
     div.className = "histItem";
     div.textContent = `${new Date(w.date).toLocaleString()} — ${w.weight}kg`;
@@ -565,9 +505,7 @@ function refreshUI() {
   else if (avatarWeek) applyMeasures(avatarWeek, meta);
 }
 
-/* =========================
-   Event handlers (async-aware)
-   ========================= */
+/* ========== Event handlers ========== */
 btnSaveWeigh.onclick = async () => {
   const w = parseFloat(elW.value);
   if (!w || isNaN(w)) { alert("Peso inválido!"); return; }
@@ -583,7 +521,7 @@ btnSaveWeigh.onclick = async () => {
   };
   try {
     weeks.push(entry);
-    const ok = await saveWeeks(weeks);
+    const ok = await saveWeeksCloudOrLocal(weeks);
     if (!ok) throw new Error("Falha ao salvar weeks");
     console.log("Pesagem salva:", entry);
     refreshUI();
@@ -606,7 +544,7 @@ btnSaveMeta.onclick = async () => {
   };
   try {
     meta = newMeta;
-    const ok = await saveMeta(meta);
+    const ok = await saveMetaCloudOrLocal(meta);
     if (!ok) throw new Error("Falha ao salvar meta");
     console.log("Meta salva:", meta);
     refreshUI();
@@ -637,36 +575,35 @@ weekSel.onchange = refreshUI;
 btnDelWeek.onclick = async () => {
   if (!weekSel.value) { alert("Selecione primeiro."); return; }
   weeks = weeks.filter(w => w.id !== weekSel.value);
-  const ok = await saveWeeks(weeks);
+  const ok = await saveWeeksCloudOrLocal(weeks);
   if (!ok) { alert("Erro ao excluir. Veja console."); return; }
   weekSel.value = "";
   refreshUI();
   alert("Semana excluída.");
 };
 
-/* =========================
-   Auth handlers (register/login/logout)
-   ========================= */
-if (firebaseEnabled) {
-  onAuthStateChanged(auth, async (user) => {
-    currentUser = user;
-    if (user) {
-      console.log("Usuário logado:", user.uid, user.email);
-      btnLogout.style.display = "inline-block";
-      btnLogin.style.display = "none";
-      btnRegister.style.display = "none";
-      // load cloud data
-      await loadUserDataFromFirestore(user.uid);
-    } else {
-      console.log("Nenhum usuário logado");
-      btnLogout.style.display = "none";
-      btnLogin.style.display = "inline-block";
-      btnRegister.style.display = "inline-block";
-      meta = loadMetaLocal();
-      weeks = loadWeeksLocal();
-      refreshUI();
-    }
-  });
+/* ========== Auth handlers (basic) ========== */
+if (typeof initializeApp === "function") {
+  try {
+    onAuthStateChanged(auth, async (user) => {
+      currentUser = user;
+      if (user) {
+        console.log("Usuario logado:", user.uid, user.email);
+        btnLogout.style.display = "inline-block";
+        btnLogin.style.display = "none";
+        btnRegister.style.display = "none";
+        await loadUserDataFromFirestore(user.uid);
+      } else {
+        console.log("Nenhum usuario logado");
+        btnLogout.style.display = "none";
+        btnLogin.style.display = "inline-block";
+        btnRegister.style.display = "inline-block";
+        meta = loadMetaLocal();
+        weeks = loadWeeksLocal();
+        refreshUI();
+      }
+    });
+  } catch (e) { /* ignore if firebase not configured */ }
 }
 
 btnRegister.onclick = async () => {
@@ -708,18 +645,15 @@ btnLogout.onclick = async () => {
   }
 };
 
-/* =========================
-   Gender select: load model or fallback
-   ========================= */
+/* ========== Gender selector ========== */
 selectGender.addEventListener("change", async () => {
   await createAvatarInstancesForModel(selectGender.value);
   refreshUI();
 });
 
-/* initial model load and UI setup */
+/* ========== Initial load: avatars + UI ========== */
 (async () => {
   await createAvatarInstancesForModel(selectGender.value);
-  // if user is not logged in yet, refreshUI will load local data
   refreshUI();
 })();
 </script>

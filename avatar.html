@@ -1,117 +1,113 @@
-<!doctype html>
-<html lang="pt-BR">
 <head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>Avatar Animado + Contornos de Evolução</title>
-<style>
-  :root{ --bg:#071124; --card:#0b1220; --muted:#9fb0c6; }
-  html,body{ height:100%; margin:0; font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial; color:#e6eef8; background:linear-gradient(180deg,#071124,#04101a); }
-  .wrap{ max-width:1200px; margin:20px auto; padding:16px; display:grid; grid-template-columns:1fr 360px; gap:16px; }
-  .card{ background:var(--card); padding:14px; border-radius:12px; border:1px solid rgba(255,255,255,0.05); box-shadow:0 8px 28px rgba(0,0,0,0.5); }
-  h1{ margin:0 0 6px; font-size:18px; }
-  p.muted{ margin:0 0 10px; font-size:13px; color:var(--muted); }
-  #viewport{ width:100%; height:620px; border-radius:10px; background:#050b18; overflow:hidden; position:relative; }
-  .status{ position:absolute; left:10px; bottom:10px; background:rgba(0,0,0,0.45); padding:6px 10px; border-radius:6px; font-size:13px; color:#dff; }
-  label{ font-size:13px; color:var(--muted); display:block; margin-bottom:4px; }
-  input, select, button { width:100%; padding:8px; border-radius:8px; background:transparent; border:1px solid rgba(255,255,255,0.08); color:white; margin-bottom:10px; }
-  .small { width:auto; display:inline-block; padding:8px 10px; margin-right:8px; }
-  .btn-primary{ background:linear-gradient(90deg,#06b6d4,#10b981); color:#021015; border:none; }
-  .btn-ghost{ background:transparent; border:1px solid rgba(255,255,255,0.08); color:var(--muted); }
-  .history{ max-height:380px; overflow-y:auto; display:flex; flex-direction:column; gap:6px; margin-top:10px; }
-  .histItem{ padding:8px; background:rgba(255,255,255,0.04); border-radius:8px; font-size:13px; color:var(--muted); }
-  footer{ margin-top:14px; text-align:center; font-size:12px; color:var(--muted); }
-  .controls-row{ display:flex; gap:8px; align-items:center; }
-  @media(max-width:900px){ .wrap{ grid-template-columns:1fr; } #viewport{ height:420px; } }
-</style>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Avatar Evolução — Definitivo (Masculino & Feminino)</title>
+
+  <style>
+    :root{ --bg:#071124; --card:#0b1220; --muted:#9fb0c6; }
+    html,body{ height:100%; margin:0; font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial; color:#e6eef8; background:linear-gradient(180deg,#071124,#04101a); }
+    .wrap{ max-width:1200px; margin:20px auto; padding:16px; display:grid; grid-template-columns:1fr 360px; gap:16px; }
+    .card{ background:var(--card); padding:14px; border-radius:12px; border:1px solid rgba(255,255,255,0.05); box-shadow:0 8px 28px rgba(0,0,0,0.5); }
+    h1{ margin:0 0 6px; font-size:18px; }
+    p.muted{ margin:0 0 10px; font-size:13px; color:var(--muted); }
+    #viewport{ width:100%; height:620px; border-radius:10px; background:#050b18; overflow:hidden; position:relative; }
+    .status{ position:absolute; left:10px; bottom:10px; background:rgba(0,0,0,0.45); padding:6px 10px; border-radius:6px; font-size:13px; color:#dff; }
+    label{ font-size:13px; color:var(--muted); display:block; margin-bottom:4px; }
+    input, select, button { width:100%; padding:8px; border-radius:8px; background:transparent; border:1px solid rgba(255,255,255,0.08); color:white; margin-bottom:10px; }
+    .small { width:auto; display:inline-block; padding:8px 10px; margin-right:8px; }
+    .btn-primary{ background:linear-gradient(90deg,#06b6d4,#10b981); color:#021015; border:none; }
+    .btn-ghost{ background:transparent; border:1px solid rgba(255,255,255,0.08); color:var(--muted); }
+    .history{ max-height:380px; overflow-y:auto; display:flex; flex-direction:column; gap:6px; margin-top:10px; }
+    .histItem{ padding:8px; background:rgba(255,255,255,0.04); border-radius:8px; font-size:13px; color:var(--muted); }
+    footer{ margin-top:14px; text-align:center; font-size:12px; color:var(--muted); }
+    .controls-row{ display:flex; gap:8px; align-items:center; }
+    .preview{ display:flex; gap:8px; align-items:center; }
+    .preview img{ width:100%; max-width:360px; border-radius:8px; border:1px solid rgba(255,255,255,0.03); }
+    @media(max-width:900px){ .wrap{ grid-template-columns:1fr; } #viewport{ height:420px; } }
+  </style>
+
+  <!-- importmap para three.js (resolve 'three' em exemplos/jsm) -->
+  <script type="importmap">
+  {"imports": { "three": "https://cdn.jsdelivr.net/npm/three@0.152.2/build/three.module.js" }}
+  </script>
 </head>
 <body>
+  <div class="wrap">
+    <div class="card">
+      <h1>Avatar Evolução — Visualização Definitiva</h1>
+      <p class="muted">Mesmo avatar em 3 estágios (gordinho → magro → musculoso). Escolha Masculino ou Feminino, ajuste medidas e salve.</p>
 
-<div class="wrap">
-  <!-- coluna principal: viewport 3D -->
-  <div class="card">
-    <h1>Avatar Animado — com contornos de evolução</h1>
-    <p class="muted">Clique em "Carregar modelo animado de teste". Salve pesagens para ver os contornos (wireframes) da evolução.</p>
-
-    <div id="viewport">
-      <div id="status" class="status">Status: pronto</div>
-    </div>
-
-    <div style="display:flex;gap:8px;margin-top:12px">
-      <button id="btnLoadTest" class="small btn-primary">Carregar modelo animado de teste</button>
-      <button id="btnLoadFunny" class="small btn-ghost">Carregar modelo engraçado</button>
-      <input id="customUrl" placeholder="URL direta para .glb (opcional)" style="flex:1" />
-      <button id="btnLoadCustom" class="small btn-ghost">Carregar URL</button>
-    </div>
-
-    <div style="margin-top:12px;display:grid;grid-template-columns:repeat(3,1fr);gap:10px">
-      <div><label>Peso Atual (kg)</label><input id="w" type="number" step="0.1" value="80"></div>
-      <div><label>Altura (m)</label><input id="h" type="number" step="0.01" value="1.75"></div>
-      <div><label>Meta (kg)</label><input id="t" type="number" step="0.1" value="75"></div>
-    </div>
-
-    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:10px">
-      <div><label>Braço</label><input id="arm" type="number" step="0.1" value="30"></div>
-      <div><label>Peito</label><input id="chest" type="number" step="0.1" value="95"></div>
-      <div><label>Barriga</label><input id="waist" type="number" step="0.1" value="85"></div>
-      <div><label>Coxa</label><input id="thigh" type="number" step="0.1" value="55"></div>
-    </div>
-
-    <div style="display:flex;gap:8px;margin-top:10px">
-      <button id="btnSaveWeigh" class="btn-primary" style="flex:1">Salvar Pesagem (adiciona contorno)</button>
-      <button id="btnSaveMeta" class="btn-ghost" style="flex:1">Salvar Meta</button>
-      <button id="btnClearGhosts" class="btn-ghost" style="flex:1">Limpar contornos</button>
-    </div>
-
-    <div style="margin-top:12px">
-      <div style="display:flex;justify-content:space-between">
-        <strong>Progresso</strong><span id="percent" style="color:var(--muted)">0%</span>
+      <div id="viewport">
+        <div id="status" class="status">Status: pronto</div>
       </div>
-      <div style="height:14px;background:rgba(255,255,255,0.06);border-radius:999px;margin-top:6px;overflow:hidden">
-        <div id="bar" style="height:100%;width:0%;background:linear-gradient(90deg,#ffb86b,#ff6b6b);transition:width .6s"></div>
+
+      <div style="display:flex;gap:8px;margin-top:12px">
+        <select id="sexSelect" class="small">
+          <option value="male">Masculino</option>
+          <option value="female">Feminino</option>
+        </select>
+
+        <button id="btnResetPose" class="small btn-ghost">Reset pose</button>
+        <button id="btnRandomize" class="small btn-ghost">Randomizar medidas</button>
+        <button id="btnSave" class="small btn-primary">Salvar pesagem</button>
       </div>
+
+      <div style="margin-top:12px;display:grid;grid-template-columns:repeat(3,1fr);gap:10px">
+        <div><label>Peso Atual (kg)</label><input id="w" type="number" step="0.1" value="95"></div>
+        <div><label>Altura (m)</label><input id="h" type="number" step="0.01" value="1.70"></div>
+        <div><label>Meta (kg)</label><input id="t" type="number" step="0.1" value="75"></div>
+      </div>
+
+      <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:10px">
+        <div><label>Braço</label><input id="arm" type="number" step="0.1" value="35"></div>
+        <div><label>Peito</label><input id="chest" type="number" step="0.1" value="110"></div>
+        <div><label>Barriga</label><input id="waist" type="number" step="0.1" value="105"></div>
+        <div><label>Coxa</label><input id="thigh" type="number" step="0.1" value="60"></div>
+      </div>
+
+      <div style="margin-top:12px">
+        <div style="display:flex;justify-content:space-between">
+          <strong>Progresso</strong><span id="percent" style="color:var(--muted)">0%</span>
+        </div>
+        <div style="height:14px;background:rgba(255,255,255,0.06);border-radius:999px;margin-top:6px;overflow:hidden">
+          <div id="bar" style="height:100%;width:0%;background:linear-gradient(90deg,#ffb86b,#ff6b6b);transition:width .6s"></div>
+        </div>
+      </div>
+
+      <div style="margin-top:12px" class="preview">
+        <!-- preview estática que você aprovou (se você quiser a imagem embutida remova o src para evitar base64 enorme) -->
+        <img src="" alt="Preview do avatar nos 3 estágios" id="approvedPreview">
+        <div style="flex:1">
+          <p class="muted">Preview estático — abaixo está a versão interativa que será usada para deformar o mesmo avatar entre os estágios. Clique em "Salvar pesagem" para ver contornos (ghosts) do estado atual ao lado.</p>
+        </div>
+      </div>
+
     </div>
 
-  </div>
+    <div class="card">
+      <h1>Histórico / Contornos</h1>
+      <p class="muted">Cada pesagem salva cria um contorno do avatar naquele estado. Você pode selecionar e focar no contorno.</p>
 
-  <!-- coluna direita: histórico + ações -->
-  <div class="card">
-    <h1>Histórico & Contornos</h1>
-    <p class="muted">Cada pesagem salva adiciona um contorno (wireframe) para representar como você estava.</p>
+      <div class="controls-row" style="margin-bottom:8px">
+        <button id="btnExportCSV" class="btn-ghost small">Exportar CSV</button>
+        <button id="btnClear" class="btn-ghost small">Limpar contornos</button>
+      </div>
 
-    <div class="controls-row" style="margin-bottom:8px">
-      <button id="btnExportCSV" class="btn-ghost small">Exportar CSV</button>
-      <button id="btnToggleOutlineLabels" class="btn-ghost small">Mostrar rótulos</button>
+      <select id="weekSel" style="width:100%;padding:8px;margin-bottom:8px;border-radius:8px;background:#050b18;color:white;border:1px solid rgba(255,255,255,0.08)">
+        <option value="">-- Selecione semana --</option>
+      </select>
+
+      <div id="history" class="history"></div>
+      <footer>Entradas salvas: <span id="count">0</span></footer>
     </div>
-
-    <select id="weekSel" style="width:100%;padding:8px;margin-bottom:8px;border-radius:8px;background:#050b18;color:white;border:1px solid rgba(255,255,255,0.08)">
-      <option value="">-- Selecione semana --</option>
-    </select>
-    <div id="history" class="history"></div>
-    <footer>Entradas salvas: <span id="count">0</span></footer>
   </div>
-</div>
-
-<!-- importmap para resolver 'three' nos exemplos -->
-<script type="importmap">
-{
-  "imports": {
-    "three": "https://cdn.jsdelivr.net/npm/three@0.152.2/build/three.module.js"
-  }
-}
-</script>
-
+</body>
 <script type="module">
-/* =========================
-   Imports
-   ========================= */
+/* ========= IMPORTS ========= */
 import * as THREE from "https://cdn.jsdelivr.net/npm/three@0.152.2/build/three.module.js";
 import { OrbitControls } from "https://cdn.jsdelivr.net/npm/three@0.152.2/examples/jsm/controls/OrbitControls.js";
-import { GLTFLoader } from "https://cdn.jsdelivr.net/npm/three@0.152.2/examples/jsm/loaders/GLTFLoader.js";
 
-/* =========================
-   Elementos DOM
-   ========================= */
+/* ========= DOM references ========= */
 const statusEl = document.getElementById('status');
 const container = document.getElementById('viewport');
 const bar = document.getElementById('bar');
@@ -125,32 +121,34 @@ const elChest = document.getElementById('chest');
 const elWaist = document.getElementById('waist');
 const elThigh = document.getElementById('thigh');
 
-const btnLoadTest = document.getElementById('btnLoadTest');
-const btnLoadFunny = document.getElementById('btnLoadFunny');
-const btnLoadCustom = document.getElementById('btnLoadCustom');
-const customUrl = document.getElementById('customUrl');
-
-const btnSaveWeigh = document.getElementById('btnSaveWeigh');
-const btnSaveMeta = document.getElementById('btnSaveMeta');
-const btnClearGhosts = document.getElementById('btnClearGhosts');
+const sexSelect = document.getElementById('sexSelect');
+const btnResetPose = document.getElementById('btnResetPose');
+const btnRandomize = document.getElementById('btnRandomize');
+const btnSave = document.getElementById('btnSave');
 
 const historyDiv = document.getElementById('history');
 const weekSel = document.getElementById('weekSel');
 const countEl = document.getElementById('count');
-
 const btnExportCSV = document.getElementById('btnExportCSV');
-const btnToggleOutlineLabels = document.getElementById('btnToggleOutlineLabels');
+const btnClear = document.getElementById('btnClear');
 
-/* =========================
-   Three.js scene init
-   ========================= */
+const approvedPreview = document.getElementById('approvedPreview');
+
+/* ========= set approved preview image (optional) =========
+   If you have the preview PNG encoded as base64, you can paste it here as data URL:
+   approvedPreview.src = 'data:image/png;base64,...'
+   For brevity we leave it empty; you can set it later.
+*/
+approvedPreview.src = ""; // optional: set to the preview image data URL if you want
+
+/* ========= three.js scene ========= */
 const scene = new THREE.Scene();
 scene.background = new THREE.Color(0x071124);
 
-const camera = new THREE.PerspectiveCamera(40, 1, 0.1, 100);
+const camera = new THREE.PerspectiveCamera(38, 1, 0.1, 100);
 camera.position.set(0, 1.6, 6);
 
-const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: false });
+const renderer = new THREE.WebGLRenderer({ antialias: true });
 renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 container.appendChild(renderer.domElement);
 
@@ -158,454 +156,316 @@ const controls = new OrbitControls(camera, renderer.domElement);
 controls.enablePan = false;
 controls.maxPolarAngle = Math.PI / 2.1;
 
-/* iluminação suave e engraçada */
+/* lighting */
 const hemi = new THREE.HemisphereLight(0xffffff, 0x222233, 0.6);
 scene.add(hemi);
-const dir = new THREE.DirectionalLight(0xffffff, 1.0);
-dir.position.set(5, 10, 7);
-scene.add(dir);
-const rim = new THREE.DirectionalLight(0xfff6e0, 0.12);
-rim.position.set(-5, 2, -3);
-scene.add(rim);
+const dir = new THREE.DirectionalLight(0xffffff, 1.0); dir.position.set(5,10,7); scene.add(dir);
+const rim = new THREE.DirectionalLight(0xfff6e0, 0.12); rim.position.set(-5,2,-3); scene.add(rim);
 
-/* ground invisível para manter referência de chão */
-const ground = new THREE.Mesh(new THREE.PlaneGeometry(40, 40), new THREE.MeshStandardMaterial({ color: 0x000000, opacity: 0, transparent: true }));
-ground.rotation.x = -Math.PI / 2;
-ground.receiveShadow = true;
-scene.add(ground);
+/* ground plane (invisible) for reference */
+const ground = new THREE.Mesh(new THREE.PlaneGeometry(40,40), new THREE.MeshStandardMaterial({ color:0x000000, opacity:0, transparent:true }));
+ground.rotation.x = -Math.PI/2; scene.add(ground);
 
 /* resize handling */
-function resize() {
+function resize(){
   const w = Math.max(320, container.clientWidth || 320);
   const h = Math.max(240, container.clientHeight || 240);
-  renderer.setSize(w, h);
-  camera.aspect = w / h;
+  renderer.setSize(w,h);
+  camera.aspect = w/h;
   camera.updateProjectionMatrix();
   controls.update();
 }
 window.addEventListener('resize', resize);
 resize();
 
-/* =========================
-   Loader e animações
-   ========================= */
-const loader = new GLTFLoader();
+/* ========= Procedural stylized avatar =========
+   We use a single procedural avatar (same object across stages) with grouped parts:
+   - torsoGroup: scales for chest/waist (used to simulate belly/muscle)
+   - arm groups, leg groups, head
+   All deformations are local (scale/position) to keep the same model identity.
+*/
 
-// modelo animado de teste (funny/expressivo) — proveniente de exemplos three.js (carrega sem CORS)
-const TEST_MODEL = "https://cdn.jsdelivr.net/gh/mrdoob/three.js@r152/examples/models/gltf/RobotExpressive/RobotExpressive.glb";
-// outro modelo bem conhecido (rosto humano de exemplo) — alternativo
-const LEE_MODEL = "https://threejs.org/examples/models/gltf/LeePerrySmith/LeePerrySmith.glb";
+/* Materials */
+const skinMat = new THREE.MeshStandardMaterial({ color: 0xf2c9a6, roughness:0.7 });
+const clothMat = new THREE.MeshStandardMaterial({ color: 0x2179ff, roughness:0.6 });
+const shoeMat = new THREE.MeshStandardMaterial({ color: 0xd94b4b, roughness:0.5 });
 
-/* referências do modelo carregado + mixer para animação */
-let baseScene = null;         // cena do gltf original
-let mixer = null;            // AnimationMixer para o avatar principal
-let clock = new THREE.Clock();
+/* Helper to create the stylized avatar variant */
+function createStylizedAvatarVariant(sex='male'){
+  const root = new THREE.Group();
+  const sexScale = sex === 'female' ? 0.95 : 1.0;
 
-/* avatar principal (instância clonada do baseScene) */
-let avatarMain = null;
+  // torso group - used for chest/waist deformation
+  const torsoGroup = new THREE.Group();
+  torsoGroup.position.y = 0.8;
+  const torso = new THREE.Mesh(new THREE.CapsuleGeometry(0.45, 0.48, 16, 32), clothMat);
+  torsoGroup.add(torso);
 
-/* lista de contornos/ghosts (cada ghost = { group, labelEl }) */
-const ghosts = [];
+  // head
+  const head = new THREE.Mesh(new THREE.SphereGeometry(0.28,32,32), skinMat);
+  head.position.set(0,1.55,0);
+  root.add(head);
 
-/* flag para mostrar rótulos nos contornos */
-let showLabels = false;
+  // eyes
+  const eyeMat = new THREE.MeshStandardMaterial({ color:0x161616 });
+  const eyeL = new THREE.Mesh(new THREE.SphereGeometry(0.06,12,12), eyeMat); eyeL.position.set(-0.08,1.58,0.24);
+  const eyeR = eyeL.clone(); eyeR.position.x = 0.08;
+  root.add(eyeL); root.add(eyeR);
 
-/* helper: status visível */
-function setStatus(text, isError = false) {
-  statusEl.textContent = "Status: " + text;
-  statusEl.style.background = isError ? "rgba(120,10,10,0.6)" : "rgba(0,80,60,0.6)";
-  console.log("[STATUS]", text);
+  // mouth
+  const mouth = new THREE.Mesh(new THREE.BoxGeometry(0.18,0.03,0.02), new THREE.MeshStandardMaterial({color:0x7b2e2e}));
+  mouth.position.set(0,1.48,0.24);
+  root.add(mouth);
+
+  // arms (groups so we can scale them)
+  const armLGroup = new THREE.Group(); armLGroup.position.set(-0.52,0.95,0);
+  const armRGroup = new THREE.Group(); armRGroup.position.set(0.52,0.95,0);
+  const upperArm = new THREE.Mesh(new THREE.CylinderGeometry(0.11,0.11,0.48,24), skinMat);
+  upperArm.rotation.z = 0.12;
+  armLGroup.add(upperArm);
+  armRGroup.add(upperArm.clone());
+  root.add(armLGroup); root.add(armRGroup);
+
+  // hands
+  const hand = new THREE.Mesh(new THREE.SphereGeometry(0.08,16,16), skinMat);
+  hand.position.set(0,0.22,0);
+  armLGroup.add(hand.clone()); armRGroup.add(hand.clone());
+
+  // legs
+  const legLGroup = new THREE.Group(); legLGroup.position.set(-0.18,0.18,0);
+  const legRGroup = new THREE.Group(); legRGroup.position.set(0.18,0.18,0);
+  const thigh = new THREE.Mesh(new THREE.CylinderGeometry(0.13,0.13,0.62,20), clothMat);
+  legLGroup.add(thigh); legRGroup.add(thigh.clone());
+  root.add(legLGroup); root.add(legRGroup);
+
+  // shoes
+  const shoe = new THREE.Mesh(new THREE.BoxGeometry(0.28,0.12,0.56), shoeMat);
+  shoe.position.set(-0.18,-0.1,0.09); root.add(shoe.clone()); shoe.position.set(0.18,-0.1,0.09); root.add(shoe.clone());
+
+  // attach torsoGroup to root
+  root.add(torsoGroup);
+
+  // store useful references for deformation
+  root.userData = {
+    torsoGroup, torsoMesh: torso,
+    armLGroup, armRGroup,
+    legLGroup, legRGroup,
+    head, mouth, eyeL, eyeR,
+    sex
+  };
+
+  root.scale.set(sexScale, sexScale, sexScale);
+  return root;
 }
 
-/* =========================
-   Carregar modelo GLB e retornar scene (com log)
-   ========================= */
-async function loadGLB(url) {
-  setStatus("Carregando modelo...");
-  try {
-    const gltf = await new Promise((resolve, reject) => {
-      loader.load(url, resolve, undefined, reject);
-    });
-    setStatus("Modelo carregado");
-    return gltf.scene;
-  } catch (err) {
-    console.error("Erro ao carregar GLB:", err);
-    setStatus("Falha ao carregar modelo — veja console (F12).", true);
-    return null;
-  }
-}
+/* instantiate main avatar used for all stages */
+let mainAvatar = createStylizedAvatarVariant('male');
+mainAvatar.position.set(0,0,0);
+scene.add(mainAvatar);
 
-/* =========================
-   Instancia o avatar principal (clona baseScene) e configura animações
-   ========================= */
-function instantiateMainAvatarFromScene(sceneRoot) {
-  // remove anterior se existir
-  if (avatarMain && avatarMain.parent) scene.remove(avatarMain);
+/* container for ghost snapshots (wireframes of the same avatar) */
+const ghostContainer = new THREE.Group();
+scene.add(ghostContainer);
 
-  const inst = sceneRoot.clone(true);
+/* ========= deformation logic ========= */
+/* This function maps the user measurements to local transformations of parts.
+   - chest/waist -> scales torsoGroup
+   - arm -> scales arm groups
+   - thigh -> scales leg groups
+   - height -> overall Y scale
+   - head -> minor scaling to simulate chubby face
+   All interpolations use .lerp to keep transitions smooth.
+*/
+function applyMeasuresToAvatar(avatar, measures){
+  const ud = avatar.userData;
+  if(!ud) return;
+  const { torsoGroup, torsoMesh, armLGroup, armRGroup, legLGroup, legRGroup, head } = ud;
 
-  // clonar materiais para evitar conflito
-  inst.traverse(node => {
-    if (node.isMesh && node.material) node.material = node.material.clone();
-  });
-
-  // centro e ajuste
-  const bbox = new THREE.Box3().setFromObject(inst);
-  const yShift = bbox.min.y;
-  // recentrar modelo na origem e colocar no chão (y=0)
-  const center = bbox.getCenter(new THREE.Vector3());
-  inst.position.x -= center.x;
-  inst.position.z -= center.z;
-  inst.position.y -= yShift;
-
-  // escala inicial confortável
-  inst.scale.set(1.0, 1.0, 1.0);
-
-  // adicionar à cena e guardar referência
-  avatarMain = inst;
-  scene.add(avatarMain);
-
-  // configurar mixer para animações (se o gltf carregado tem animações)
-  mixer = null;
-  // procurar animações na carga original via loader (não recebemos clips aqui),
-  // mas GLTFLoader as retorna junto ao objeto; para simplificar vamos tentar criar um mixer
-  // e tocar todas as animações encontradas no gltf original — se não houver, não faz nada.
-  // OBS: Quando chamamos loadGLB usamos gltf.scene, mas perdemos clips — para simplificar,
-  // vamos recarregar via loader.load com callback que traz gltf.animations.
-}
-
-/* função que carrega com clips e inicializa mixer (usa loader.load direto) */
-function instantiateWithAnimations(url) {
-  // removemos instâncias antigas
-  if (avatarMain && avatarMain.parent) scene.remove(avatarMain);
-  // carregar com callback para ter acesso a animations
-  loader.load(url, (gltf) => {
-    baseScene = gltf.scene;
-    // clonar e adicionar
-    const inst = gltf.scene.clone(true);
-    inst.traverse(node => { if (node.isMesh && node.material) node.material = node.material.clone(); });
-    // centralizar como antes
-    const bbox = new THREE.Box3().setFromObject(inst);
-    const center = bbox.getCenter(new THREE.Vector3());
-    const yShift = bbox.min.y;
-    inst.position.x -= center.x; inst.position.z -= center.z; inst.position.y -= yShift;
-    inst.scale.set(1.0,1.0,1.0);
-    scene.add(inst);
-    avatarMain = inst;
-
-    // mixer e tocar animações (se houver)
-    if (gltf.animations && gltf.animations.length) {
-      mixer = new THREE.AnimationMixer(inst);
-      // vamos tocar a primeira animação principal — loop infinito
-      const action = mixer.clipAction(gltf.animations[0]);
-      action.reset().play();
-      // se houver mais, podemos alternar ou misturar — aqui mantemos simples
-    } else {
-      mixer = null;
-    }
-
-    setStatus("Avatar animado carregado");
-    console.log("Animações disponíveis:", gltf.animations ? gltf.animations.length : 0);
-  }, undefined, (err) => {
-    console.error("Erro load com clips:", err);
-    setStatus("Erro ao carregar animação (veja console)", true);
-  });
-}
-
-/* =========================
-   Criar um contorno (wireframe) baseado nas medidas atuais
-   - clona o baseScene (ou avatarMain se tiver apenas primitives)
-   - aplica material wireframe colorido e posição lateral
-   - adiciona label DOM se showLabels = true
-   ========================= */
-function createGhostFromCurrent(measures, labelText) {
-  // usamos avatarMain se tivermos um gltf; se não, criamos um procedural simples
-  let source = avatarMain;
-  if (!source) {
-    // fallback procedural group (bem simples)
-    const fallback = new THREE.Group();
-    const matSkin = new THREE.MeshStandardMaterial({ color: 0xf2c9a6 });
-    const head = new THREE.Mesh(new THREE.SphereGeometry(0.28, 16, 16), matSkin); head.position.set(0,1.45,0);
-    fallback.add(head);
-    source = fallback;
-  }
-
-  // clona a árvore e substitui materiais por wireframe
-  const ghost = source.clone(true);
-  ghost.traverse(node => {
-    if (node.isMesh) {
-      // material de contorno — wireframe e semi-transparente
-      node.material = new THREE.MeshBasicMaterial({ color: 0x00ffff, wireframe: true, transparent: true, opacity: 0.65 });
-      node.renderOrder = 999; // desenha por cima
-    }
-  });
-
-  // aplicar medidas (simples: escala por altura e largura do peito)
+  // parse numbers (fault-tolerant)
   const height = Number(measures.height) || 1.75;
   const chest = Number(measures.chest) || 95;
-  const scaleH = Math.max(0.7, Math.min(1.3, ((height - 1.2) / 1.2) || 0.85));
-  const scaleW = Math.max(0.75, Math.min(1.4, ((chest - 70) / 50 + 1) || 1));
-  ghost.scale.set(scaleH * scaleW, scaleH * scaleW, scaleH * scaleW);
+  const waist = Number(measures.waist) || 90;
+  const arm = Number(measures.arm) || 30;
+  const thigh = Number(measures.thigh) || 50;
 
-  // posicionar o ghost à direita dos outros, em uma sequência, calcule offset pela contagem atual
-  const offsetIndex = ghosts.length;
-  const baseX = 2.8; // distância do avatar principal
-  const gap = 1.1;   // gap entre ghosts
-  ghost.position.set(baseX + offsetIndex * gap, 0, (offsetIndex % 2 === 0) ? -0.2 : 0.2); // leve zig-zag
+  // height -> vertical scale (subtle)
+  const hScale = Math.max(0.8, Math.min(1.25, (height - 1.2) / 0.9));
+  // apply to avatar's Y scale smoothly
+  avatar.scale.y = hScale;
 
-  // animação simples: começar transparente pequeno -> aparecer e pulsar
-  ghost.scale.multiplyScalar(0.6); // inicia menor, depois animamos para o target
-  ghost.userData.targetScale = new THREE.Vector3(scaleH * scaleW, scaleH * scaleW, scaleH * scaleW);
-  ghost.userData.growing = 0; // dado de animação
+  // chest/waist mapping (tuned for stylized look)
+  const chestScale = Math.max(0.8, Math.min(1.45, (chest - 70) / 50 + 1));
+  const waistScale = Math.max(0.7, Math.min(1.6, (waist - 60) / 60 + 1));
 
-  scene.add(ghost);
+  // target vector for torsoGroup scale: combine chest and waist in a pleasing way
+  const targetTorso = new THREE.Vector3(chestScale * (waistScale*0.9), waistScale, chestScale * (waistScale*0.85));
+  // smooth transition
+  torsoGroup.scale.lerp(targetTorso, 0.2);
 
-  // label opcional (DOM) — posiciona ao lado no painel (histórico) e também pequena etiqueta 2D
-  const id = "g" + Date.now();
-  const div = document.createElement('div');
-  div.className = 'histItem';
-  div.textContent = `${labelText} — ${measures.weight}kg`;
-  div.dataset.ghostId = id;
-  historyDiv.prepend(div); // adicionar no topo
-  weekSel.innerHTML = `<option value="">-- Selecione semana --</option>`; // we'll regenerate list later
+  // arms
+  const armScale = Math.max(0.7, Math.min(1.6, arm / 30));
+  armLGroup.scale.lerp(new THREE.Vector3(armScale, armScale, armScale), 0.2);
+  armRGroup.scale.lerp(new THREE.Vector3(armScale, armScale, armScale), 0.2);
 
-  // armazenar referência para update loop
-  ghosts.push({ id, group: ghost, dom: div });
+  // thighs
+  const thighScale = Math.max(0.7, Math.min(1.6, thigh / 50));
+  legLGroup.scale.lerp(new THREE.Vector3(thighScale, thighScale, thighScale), 0.2);
+  legRGroup.scale.lerp(new THREE.Vector3(thighScale, thighScale, thighScale), 0.2);
 
-  // atualizar contador e select
-  countEl.textContent = ghosts.length;
+  // head roundness (simulate chubby face via scale)
+  const faceChubby = Math.max(0.9, Math.min(1.18, waistScale));
+  head.scale.lerp(new THREE.Vector3(faceChubby, faceChubby, faceChubby), 0.1);
+}
+
+/* ========= Ghost creation (wireframe snapshots) ========= */
+/* Creates a visual wireframe clone of the main avatar and positions it on the timeline */
+function addGhost(measures, label){
+  // clone the main avatar (deep-ish clone)
+  const clone = mainAvatar.clone(true);
+  // replace materials by wireframe basic
+  clone.traverse(node => {
+    if(node.isMesh){
+      node.material = new THREE.MeshBasicMaterial({ color: 0x00ffff, wireframe:true, transparent:true, opacity:0.6 });
+    }
+  });
+  // apply measures to the clone immediately so ghost captures the state
+  applyMeasuresToAvatar(clone, measures);
+
+  // position ghost in timeline to the right, with small zig-zag on z for visibility
+  const idx = ghostContainer.children.length;
+  const baseX = 2.8;
+  const gap = 1.1;
+  clone.position.set(baseX + idx * gap, 0, (idx % 2 === 0) ? -0.2 : 0.2);
+  // scale ghosts down slightly
+  clone.scale.multiplyScalar(0.85);
+  ghostContainer.add(clone);
+
+  // add history entry DOM
+  const div = document.createElement('div'); div.className='histItem';
+  div.textContent = (label || new Date().toLocaleString()) + ' — ' + (measures.weight || '') + 'kg';
+  historyDiv.prepend(div);
+
+  // store metadata in localStorage (simplified)
+  const ghostsData = JSON.parse(localStorage.getItem('avatar_ghosts_v1') || '[]');
+  ghostsData.unshift({ id:'g'+Date.now(), label: div.textContent, weight: measures.weight, date: new Date().toISOString(), measures });
+  localStorage.setItem('avatar_ghosts_v1', JSON.stringify(ghostsData));
   refreshWeekSelect();
-
-  return ghost;
 }
 
-/* remove todos os ghosts da cena e limpa estado */
-function clearGhosts() {
-  ghosts.forEach(g => {
-    if (g.group) scene.remove(g.group);
-  });
-  ghosts.length = 0;
-  historyDiv.innerHTML = "";
-  weekSel.innerHTML = `<option value="">-- Selecione semana --</option>`;
-  countEl.textContent = 0;
-  setStatus("Contornos limpos");
+/* remove all ghosts */
+function clearGhosts(){
+  while(ghostContainer.children.length) ghostContainer.remove(ghostContainer.children[0]);
+  localStorage.removeItem('avatar_ghosts_v1');
+  historyDiv.innerHTML = '';
+  refreshWeekSelect();
+  setStatus('Contornos limpos');
 }
 
-/* =========================
-   Simples persistência local (localStorage)
-   ========================= */
-const STORAGE_GHOSTS = 'evo_ghosts_v1';
-function saveGhostsLocal() {
-  // salvamos apenas dados úteis (peso, height, chest, date, id)
-  const data = ghosts.map(g => {
-    const wg = g.group;
-    return {
-      id: g.id,
-      weight: g.dom ? g.dom.textContent.split(' — ')[1].replace('kg','') : null,
-      date: Date.now()
-    };
-  });
-  try { localStorage.setItem(STORAGE_GHOSTS, JSON.stringify(data)); } catch(e){ console.warn(e); }
-}
-function loadGhostsLocal() {
-  try {
-    const raw = JSON.parse(localStorage.getItem(STORAGE_GHOSTS) || '[]');
-    return raw;
-  } catch { return []; }
+/* ========= Progress calculation (same logic as before) ========= */
+function updateProgress(){
+  const ghostsData = JSON.parse(localStorage.getItem('avatar_ghosts_v1') || '[]');
+  const initial = ghostsData.length ? ghostsData[ghostsData.length-1].weight : Number(elW.value);
+  const current = Number(elW.value);
+  const target = Number(elT.value);
+  if(!initial || !current || !target){ bar.style.width='0%'; percentLabel.textContent='0%'; return; }
+  let pct = 0;
+  if(initial === target) pct = 100;
+  else if(target < initial) pct = Math.min(100, Math.max(0, ((initial - current)/(initial - target))*100));
+  else pct = Math.min(100, Math.max(0, ((current - initial)/(target - initial))*100));
+  bar.style.width = pct + '%';
+  percentLabel.textContent = Math.round(pct) + '%';
 }
 
-/* =========================
-   UI: salvar pesagem -> cria ghost + atualiza progresso
-   ========================= */
-btnSaveWeigh.addEventListener('click', () => {
+/* ========= UI handlers ========= */
+btnRandomize.addEventListener('click', () => {
+  elW.value = (Math.random()*30 + 60).toFixed(1);
+  elH.value = (Math.random()*0.4 + 1.5).toFixed(2);
+  elChest.value = (Math.random()*40 + 80).toFixed(1);
+  elWaist.value = (Math.random()*40 + 70).toFixed(1);
+  elArm.value = (Math.random()*20 + 25).toFixed(1);
+  elThigh.value = (Math.random()*20 + 45).toFixed(1);
+  applyMeasuresToAvatar(mainAvatar, { height:elH.value, chest:elChest.value, waist:elWaist.value, arm:elArm.value, thigh:elThigh.value });
+  updateProgress();
+  setStatus('Medidas randomizadas');
+});
+
+btnResetPose.addEventListener('click', () => {
+  controls.reset();
+  setStatus('Pose resetada');
+});
+
+btnSave.addEventListener('click', () => {
   const measures = {
-    weight: parseFloat(elW.value) || 0,
-    height: parseFloat(elH.value) || 1.75,
-    chest: parseFloat(elChest.value) || 95,
-    arm: parseFloat(elArm.value) || 30,
-    thigh: parseFloat(elThigh.value) || 55
+    weight: Number(elW.value),
+    height: Number(elH.value),
+    chest: Number(elChest.value),
+    waist: Number(elWaist.value),
+    arm: Number(elArm.value),
+    thigh: Number(elThigh.value)
   };
-  const label = new Date().toLocaleString();
-  createGhostFromCurrent(measures, label);
-  saveGhostsLocal();
-  updateProgressBar();
-  setStatus("Pesagem salva — contorno adicionado 🎉");
+  addGhost(measures, new Date().toLocaleString());
+  applyMeasuresToAvatar(mainAvatar, measures); // ensure main reflects new measures
+  updateProgress();
+  setStatus('Pesagem salva e contorno adicionado');
 });
 
-/* salvar meta (atualiza barra) */
-btnSaveMeta.addEventListener('click', () => {
-  updateProgressBar();
-  setStatus("Meta atualizada");
-});
+btnClear.addEventListener('click', () => clearGhosts());
 
-/* limpar ghosts */
-btnClearGhosts.addEventListener('click', () => {
-  clearGhosts();
-});
-
-/* export CSV (histórico simplificado) */
 btnExportCSV.addEventListener('click', () => {
-  if (!ghosts.length) { alert("Sem contornos/dados!"); return; }
-  const rows = ["label,weight"];
-  ghosts.forEach(g => rows.push(`${g.dom.textContent},${g.dom.textContent.split(' — ')[1].replace('kg','')}`));
-  const blob = new Blob([rows.join("\n")], { type: "text/csv" });
-  const url = URL.createObjectURL(blob);
-  window.open(url, "_blank");
+  const ghostsData = JSON.parse(localStorage.getItem('avatar_ghosts_v1') || '[]');
+  if(!ghostsData.length) return alert('Sem dados');
+  const rows = ['id,label,weight,date'];
+  ghostsData.forEach(g => rows.push([g.id, g.label, g.weight, g.date].join(',')));
+  const blob = new Blob([rows.join('\n')], { type:'text/csv' });
+  window.open(URL.createObjectURL(blob), '_blank');
 });
 
-/* Toggle labels */
-btnToggleOutlineLabels.addEventListener('click', () => {
-  showLabels = !showLabels;
-  ghosts.forEach(g => { g.dom.style.display = showLabels ? 'block' : 'none'; });
+/* sex selector re-creates the main avatar (keeps same identity but slightly different proportions) */
+sexSelect.addEventListener('change', () => {
+  const s = sexSelect.value;
+  if(mainAvatar && mainAvatar.parent) scene.remove(mainAvatar);
+  mainAvatar = createStylizedAvatarVariant(s);
+  scene.add(mainAvatar);
+  // apply current measures immediately
+  applyMeasuresToAvatar(mainAvatar, { height:elH.value, chest:elChest.value, waist:elWaist.value, arm:elArm.value, thigh:elThigh.value });
+  setStatus('Avatar trocado para ' + s);
 });
 
-/* semana select handler (focar um ghost quando selecionado) */
+/* select week focus: focuses camera on given ghost entry if exists */
 weekSel.addEventListener('change', () => {
   const id = weekSel.value;
-  if (!id) {
-    if (avatarMain) controls.target.set(0,1,0);
-    return;
-  }
-  const found = ghosts.find(g => g.id === id);
-  if (found) {
-    // move camera to look at ghost
-    const pos = new THREE.Vector3();
-    found.group.getWorldPosition(pos);
-    // animate camera quickly (simple set)
-    camera.position.set(pos.x + 2.4, pos.y + 1.4, pos.z + 1.8);
+  const ghostsData = JSON.parse(localStorage.getItem('avatar_ghosts_v1') || '[]');
+  const idx = ghostsData.findIndex(g => g.id === id);
+  if(idx < 0) return;
+  const ghostObject = ghostContainer.children[idx];
+  if(ghostObject){
+    const pos = new THREE.Vector3(); ghostObject.getWorldPosition(pos);
+    camera.position.set(pos.x + 1.8, pos.y + 1.4, pos.z + 2.2);
     controls.target.copy(pos);
     controls.update();
   }
 });
 
-/* atualizar select com ghosts */
-function refreshWeekSelect() {
-  weekSel.innerHTML = `<option value="">-- Selecione semana --</option>`;
-  ghosts.forEach(g => {
-    const opt = document.createElement('option');
-    opt.value = g.id;
-    opt.textContent = g.dom.textContent;
-    weekSel.appendChild(opt);
-    // show/hide dom label according to toggle
-    g.dom.style.display = showLabels ? 'block' : 'none';
+/* re-populate week select & history from localStorage on load */
+function refreshWeekSelect(){
+  const arr = JSON.parse(localStorage.getItem('avatar_ghosts_v1') || '[]');
+  weekSel.innerHTML = '<option value="">-- Selecione semana --</option>';
+  historyDiv.innerHTML = '';
+  arr.forEach(item => {
+    const opt = document.createElement('option'); opt.value = item.id; opt.textContent = item.label; weekSel.appendChild(opt);
+    const div = document.createElement('div'); div.className='histItem'; div.textContent = item.label + ' — ' + item.weight + 'kg'; historyDiv.appendChild(div);
   });
+  countEl.textContent = arr.length;
 }
 
-/* atualiza barra de progresso com base em peso atual e meta */
-function updateProgressBar() {
-  const initial = ghosts.length ? parseFloat(ghosts[0].dom.textContent.split(' — ')[1].replace('kg','')) : parseFloat(elW.value);
-  const current = parseFloat(elW.value);
-  const target = parseFloat(elT.value);
-  if (!initial || !current || !target) { bar.style.width = '0%'; percentLabel.textContent = '0%'; return; }
-  // mesma lógica do calcPercent anterior
-  let pct = 0;
-  if (initial === target) pct = 100;
-  else if (target < initial) {
-    pct = Math.min(100, Math.max(0, ((initial - current) / (initial - target)) * 100));
-  } else {
-    pct = Math.min(100, Math.max(0, ((current - initial) / (target - initial)) * 100));
-  }
-  bar.style.width = pct + "%";
-  percentLabel.textContent = Math.round(pct) + "%";
-}
-
-/* =========================
-   Animation loop: atualiza mixer e anima ghosts (crescer/pulsar)
-   ========================= */
-function animate() {
-  requestAnimationFrame(animate);
-  const dt = clock.getDelta();
-  if (mixer) mixer.update(dt);
-
-  // animação simples dos ghosts: crescimento até targetScale e leve pulsação
-  ghosts.forEach((g, idx) => {
-    const grp = g.group;
-    if (!grp) return;
-    // animação de "grow" até target
-    if (grp.userData.growing < 1) {
-      grp.userData.growing += dt * 1.2; // velocidade de crescimento
-      const t = Math.min(1, grp.userData.growing);
-      const target = grp.userData.targetScale || new THREE.Vector3(1,1,1);
-      grp.scale.lerpVectors(new THREE.Vector3(0.6,0.6,0.6), target, t);
-      // diminuir opacidade gradualmente (apagar um pouco com o tempo)
-      grp.traverse(node => {
-        if (node.isMesh && node.material && node.material.opacity !== undefined) {
-          node.material.opacity = 0.65 * (0.6 + 0.4 * t); // 0.39..0.65
-        }
-      });
-    } else {
-      // pulsação sutil
-      const pulse = 0.02 * Math.sin(performance.now() / 300 + idx);
-      grp.scale.multiplyScalar(1 + pulse * dt * 6);
-    }
-  });
-
-  renderer.render(scene, camera);
-}
+/* ========= Rendering loop ========= */
+function setStatus(t){ statusEl.textContent = 'Status: ' + t; console.log('[status]', t); }
+function animate(){ requestAnimationFrame(animate); renderer.render(scene, camera); }
 animate();
 
-/* =========================
-   Initial model loads / controls for test
-   ========================= */
-btnLoadTest.addEventListener('click', async () => {
-  setStatus("Carregando modelo animado de teste...");
-  // instanciamos com animação (usa loader.load com clips internamente)
-  instantiateWithAnimations(TEST_MODEL);
-});
-
-btnLoadFunny.addEventListener('click', async () => {
-  setStatus("Carregando modelo engraçado (alternativo)...");
-  instantiateWithAnimations(LEE_MODEL);
-});
-
-btnLoadCustom.addEventListener('click', async () => {
-  const url = customUrl.value.trim();
-  if (!url) { alert("Cole a URL direta para um .glb no campo acima."); return; }
-  setStatus("Carregando URL personalizada...");
-  instantiateWithAnimations(url);
-});
-
-/* =========================
-   Carregar ghosts salvos (se existirem) - simplificado
-   ========================= */
-(function loadSavedGhostsOnStart() {
-  // aqui apenas restauramos a contagem visual; para simplicidade não recriamos os meshes salvo em disco
-  const saved = JSON.parse(localStorage.getItem('evo_ghosts_v1') || '[]');
-  // reconstruímos entradas no painel (sem mesh) — user pode recriar manualmente salvando novamente
-  saved.forEach(s => {
-    const div = document.createElement('div');
-    div.className = 'histItem';
-    div.textContent = s.label + ' — ' + (s.weight || '0') + 'kg';
-    historyDiv.appendChild(div);
-  });
-  countEl.textContent = saved.length;
-})();
-
-/* =========================
-   simplify: instantiateWithAnimations uses loader.load and sets mixer.
-   (function defined earlier)
-   ========================= */
-
-/* tiny helper para centrar a câmera no avatarMain depois de carregar */
-function focusMainAvatar() {
-  if (!avatarMain) return;
-  const pos = new THREE.Vector3();
-  avatarMain.getWorldPosition(pos);
-  controls.target.copy(pos);
-  camera.position.set(pos.x + 0.8, pos.y + 1.4, pos.z + 2.6);
-  controls.update();
-}
-
-/* after model loads, try to focus */
-setInterval(() => { if (avatarMain) focusMainAvatar(); }, 500);
-
-/* =========================
-   Observações finais (simples)
-   - este exemplo usa um modelo animado (RobotExpressive) que já contém animações engraçadas.
-   - quando salvar pesagem, criamos contorno wireframe + label no painel.
-   - para usar seus .glb definitivos, cole a URL no campo e clique "Carregar URL".
-   ========================= */
-
+/* apply initial measures and restore ghosts if any (note: visual ghosts aren't persisted as meshes) */
+applyMeasuresToAvatar(mainAvatar, { height:elH.value, chest:elChest.value, waist:elWaist.value, arm:elArm.value, thigh:elThigh.value });
+refreshWeekSelect();
+updateProgress();
+setStatus('Interativo — use os controles à esquerda.');
 </script>
-</body>
-</html>

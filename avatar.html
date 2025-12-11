@@ -3,14 +3,14 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>Projeto 75kg — Protótipo</title>
+<title>Projeto 75kg — Protótipo Atualizado</title>
 <style>
   body{font-family:Inter,Arial,sans-serif;background:#f5f7fa;margin:0;padding:20px;display:flex;gap:20px;flex-direction:column;align-items:center}
   .wrap{max-width:1100px;width:100%;display:grid;grid-template-columns:360px 1fr;gap:20px}
   .card{background:#fff;padding:16px;border-radius:10px;box-shadow:0 6px 18px rgba(0,0,0,0.06)}
   h2{margin:0 0 12px 0}
   label{display:block;margin-top:8px;font-size:14px}
-  input[type=text], input[type=number], input[type=password]{width:100%;padding:8px;border-radius:6px;border:1px solid #ddd;margin-top:6px}
+  input[type=text], input[type=number], input[type=password], select{width:100%;padding:8px;border-radius:6px;border:1px solid #ddd;margin-top:6px}
   button{margin-top:10px;padding:10px 12px;border-radius:8px;border:0;background:#2563eb;color:#fff;cursor:pointer}
   .avatar-wrap{display:flex;flex-direction:column;align-items:center;gap:12px}
   .avatar-stage{position:relative;width:100%;max-width:480px;height:360px;border-radius:10px;overflow:hidden;background:#eef2ff;display:flex;align-items:center;justify-content:center}
@@ -21,10 +21,11 @@
   .small{font-size:13px;color:#666}
   .history{max-height:180px;overflow:auto;margin-top:8px}
   .row{display:flex;gap:8px}
+  .note{font-size:13px;color:#555;margin-top:6px}
 </style>
 </head>
 <body>
-  <h1>Projeto 75kg — Protótipo interativo</h1>
+  <h1>Projeto 75kg — Protótipo Atualizado</h1>
   <div class="wrap">
     <!-- esquerda: autenticação + formularios -->
     <div>
@@ -64,10 +65,21 @@
         <input type="number" id="cintura" />
         <label>Peito (cm)</label>
         <input type="number" id="peito" />
+        <label>Braço (cm)</label>
+        <input type="number" id="braco" />
+        <label>Perna (cm)</label>
+        <input type="number" id="perna" />
+        <label>Tipo corporal desejado</label>
+        <select id="bodyType">
+          <option value="normal">Normal</option>
+          <option value="seco">Seco (magro)</option>
+          <option value="musculoso">Musculoso</option>
+        </select>
         <div class="row">
           <button id="btnSave">Salvar medida</button>
           <button id="btnUsePhaseImages">Usar imagens padrão</button>
         </div>
+        <p class="note">Observação: para protótipo, os dados ficam no navegador (localStorage). Para multiusuários e segurança, usar Firebase.</p>
         <div class="history card" id="historyBox" style="margin-top:10px"></div>
       </div>
     </div>
@@ -77,7 +89,7 @@
       <div class="card avatar-wrap">
         <h2>Progresso e Avatar</h2>
         <div class="avatar-stage" id="avatarStage">
-          <!-- três imagens que serão crossfade -->
+          <!-- three images crossfade; ensure files phase1.png phase2.png phase3.png exist in same folder -->
           <img id="imgPhase1" src="phase1.png" style="opacity:1"/>
           <img id="imgPhase2" src="phase2.png" style="opacity:0"/>
           <img id="imgPhase3" src="phase3.png" style="opacity:0"/>
@@ -96,7 +108,6 @@
   </div>
 
 <script>
-/* ---------- Mensagens motivacionais ---------- */
 const messages = {
   low: [
     "Bora começar! Um passo de cada vez 💪",
@@ -115,7 +126,6 @@ const messages = {
   ]
 };
 
-/* ---------- Utilidades e storage local ---------- */
 function saveUsers(users){ localStorage.setItem('p75_users', JSON.stringify(users)); }
 function loadUsers(){ return JSON.parse(localStorage.getItem('p75_users')||'{}'); }
 
@@ -128,10 +138,10 @@ function getCurrentUser(){ return localStorage.getItem('p75_current'); }
 function saveUserData(email, data){
   const db = JSON.parse(localStorage.getItem('p75_data')||'{}');
   db[email] = db[email] || {records:[]};
-  // append measure record
   if(data.record) db[email].records.unshift(data.record);
-  if(data.meta) db[email].meta = data.meta;
-  if(data.images) db[email].images = data.images;
+  if(data.meta) db[email].meta = Object.assign(db[email].meta||{}, data.meta);
+  if(data.images) db[email].images = Object.assign(db[email].images||{}, data.images);
+  if(data.bodyType) db[email].bodyType = data.bodyType;
   localStorage.setItem('p75_data', JSON.stringify(db));
 }
 function getUserData(email){
@@ -139,7 +149,7 @@ function getUserData(email){
   return db[email] || {records:[], meta:{}, images:{}};
 }
 
-/* ---------- Auth UI ---------- */
+/* Auth UI */
 const signupForm = document.getElementById('signupForm');
 const loginForm = document.getElementById('loginForm');
 document.getElementById('showLogin').onclick = e=>{ e.preventDefault(); signupForm.style.display='none'; loginForm.style.display='block'; }
@@ -151,11 +161,10 @@ document.getElementById('btnSignup').onclick = ()=>{
   if(!email||!pass){ alert('Preencha email e senha'); return; }
   const users = loadUsers();
   if(users[email]){ alert('Conta já existe, faça login'); return; }
-  users[email] = {password: btoa(pass)}; // simples hash (não seguro para prod)
+  users[email] = {password: btoa(pass)};
   saveUsers(users);
   setCurrentUser(email);
-  // init some default images (user will replace)
-  saveUserData(email, {images:{p1:'phase1.png', p2:'phase2.png', p3:'phase3.png'}});
+  saveUserData(email, {images:{p1:'phase1.png', p2:'phase2.png', p3:'phase3.png'}, bodyType:'normal'});
   alert('Conta criada e logado!');
 }
 
@@ -173,7 +182,7 @@ document.getElementById('btnLogout').onclick = ()=>{
   renderAuthState();
 }
 
-/* ---------- Medidas e UI ---------- */
+/* Measures UI */
 function renderAuthState(){
   const cur = getCurrentUser();
   document.getElementById('authForms').style.display = cur ? 'none':'block';
@@ -190,53 +199,100 @@ document.getElementById('btnSave').onclick = ()=>{
   const meta = parseFloat(document.getElementById('pesoMeta').value);
   const cintura = parseFloat(document.getElementById('cintura').value||0);
   const peito = parseFloat(document.getElementById('peito').value||0);
+  const braco = parseFloat(document.getElementById('braco').value||0);
+  const perna = parseFloat(document.getElementById('perna').value||0);
+  const bodyType = document.getElementById('bodyType').value;
   if(isNaN(peso) || isNaN(meta)){ alert('Informe peso atual e meta'); return; }
-  const record = {date:new Date().toISOString(), peso, cintura, peito};
-  saveUserData(cur, {record, meta:{pesoMeta:meta}});
+  const record = {date:new Date().toISOString(), peso, cintura, peito, braco, perna, bodyType};
+  saveUserData(cur, {record, meta:{pesoMeta:meta}, bodyType});
   renderHistory();
   updateProgressVisual();
   document.getElementById('motivation').textContent = pickMessage(getProgressPercent());
+  alert('Medida salva!');
 }
 
 document.getElementById('btnUsePhaseImages').onclick = ()=>{
-  // default placeholder images already set in account creation
-  alert('Use imagens padrão (phase1.png / phase2.png / phase3.png). Substitua por imagens próprias no repositório se quiser.');
+  alert('Usando imagens padrão (phase1.png / phase2.png / phase3.png). Substitua por imagens próprias no repositório se quiser.');
 }
 
-/* ---------- History ---------- */
+/* History */
 function renderHistory(){
   const cur = getCurrentUser(); if(!cur) return;
   const data = getUserData(cur);
   const box = document.getElementById('historyBox');
   if(!data.records.length){ box.innerHTML = '<p class="small">Sem medições ainda.</p>'; return; }
-  box.innerHTML = data.records.map(r=>`<div style="border-bottom:1px solid #eee;padding:6px 0"><strong>${new Date(r.date).toLocaleDateString()}</strong> — ${r.peso} kg — Cintura: ${r.cintura || '-'} cm</div>`).join('');
+  box.innerHTML = data.records.map(r=>`<div style="border-bottom:1px solid #eee;padding:6px 0"><strong>${new Date(r.date).toLocaleDateString()}</strong> — ${r.peso} kg — Cintura: ${r.cintura || '-'} cm — Braço: ${r.braco || '-'} cm — Perna: ${r.perna || '-'} cm</div>`).join('');
 }
 
-/* ---------- Progress & Avatar logic ---------- */
+/* Progress & Avatar logic */
+/* We'll compute a weighted progress:
+   - weight: 50%
+   - waist: 15%
+   - chest: 10%
+   - arm: 12.5%
+   - leg: 12.5%
+   The formula compares latest measurement to initial (first record) towards goal (for weight goal) or proportional changes for circumferences.
+*/
+function getInitialMeasurements(records){
+  if(!records.length) return null;
+  return records[records.length-1]; // last item = oldest due to unshift
+}
+
 function getProgressPercent(){
   const cur = getCurrentUser(); if(!cur) return 0;
   const data = getUserData(cur);
   if(!data.records.length || !data.meta || !data.meta.pesoMeta) return 0;
-  const actual = data.records[0].peso;
-  const goal = data.meta.pesoMeta;
-  // if goal < actual => losing weight (decrease)
-  let percent;
-  if(actual === goal) percent = 100;
-  else if(actual > goal) {
-    // assume target is lower (emagrecimento)
-    const start = data.records[data.records.length-1] ? data.records[data.records.length-1].peso : actual;
-    // fallback: compute relative to initial first record
-    const initial = data.records[data.records.length-1] ? data.records[data.records.length-1].peso : actual;
-    // simple calc: (start - actual) / (start - goal)
-    percent = ((initial - actual) / (initial - goal)) * 100;
-  } else {
-    // gaining weight case
-    const initial = data.records[data.records.length-1] ? data.records[data.records.length-1].peso : actual;
-    percent = ((actual - initial) / (goal - initial)) * 100;
+  const latest = data.records[0];
+  const initial = getInitialMeasurements(data.records) || latest;
+  const goalWeight = data.meta.pesoMeta;
+
+  // weight progress (50% weight)
+  let weightProgress = 0;
+  if(initial.peso === latest.peso) weightProgress = 0;
+  if(goalWeight < initial.peso){ // losing weight
+    weightProgress = ((initial.peso - latest.peso) / (initial.peso - goalWeight));
+  } else { // gaining weight
+    weightProgress = ((latest.peso - initial.peso) / (goalWeight - initial.peso));
   }
-  percent = Math.max(0, Math.min(100, Math.round(percent)));
+  weightProgress = clamp01(weightProgress);
+
+  // for circumferences (we assume for cintura and peito goal is reduction for "seco" or increase for "musculoso")
+  // if user chose 'seco' we consider goals as reductions proportional to initial -> a target is inferred (simple heuristic):
+  const bt = data.bodyType || latest.bodyType || 'normal';
+  // heuristics: target cintura reduced by 10% for seco, +0% for normal, -5% for musculoso (less reduction)
+  const cinturaTarget = bt === 'seco' ? initial.cintura * 0.9 : (bt === 'musculoso' ? initial.cintura * 0.95 : initial.cintura * 0.95);
+  const peitoTarget = bt === 'musculoso' ? initial.peito * 1.08 : initial.peito * 0.98;
+  const bracoTarget = bt === 'musculoso' ? initial.braco * 1.08 : initial.braco * 0.95;
+  const pernaTarget = bt === 'musculoso' ? initial.perna * 1.06 : initial.perna * 0.97;
+
+  function singleProgress(current, initialVal, target, reduceIfHigher=true){
+    if(!initialVal || !current) return 0;
+    if(reduceIfHigher){
+      // progress toward reducing initial -> target (target < initial)
+      const denom = initialVal - target;
+      if(denom === 0) return 0;
+      return clamp01((initialVal - current) / denom);
+    } else {
+      const denom = target - initialVal;
+      if(denom === 0) return 0;
+      return clamp01((current - initialVal) / denom);
+    }
+  }
+
+  const cinturaProg = singleProgress(latest.cintura, initial.cintura, cinturaTarget, true);
+  const peitoProg = bt === 'musculoso' ? singleProgress(latest.peito, initial.peito, peitoTarget, false) : singleProgress(latest.peito, initial.peito, peitoTarget, true);
+  const bracoProg = bt === 'musculoso' ? singleProgress(latest.braco, initial.braco, bracoTarget, false) : singleProgress(latest.braco, initial.braco, bracoTarget, true);
+  const pernaProg = bt === 'musculoso' ? singleProgress(latest.perna, initial.perna, pernaTarget, false) : singleProgress(latest.perna, initial.perna, pernaTarget, true);
+
+  // weights distribution
+  const wWeight = 0.5, wCint = 0.15, wPeito = 0.10, wBraco = 0.125, wPerna = 0.125;
+
+  const combined = (weightProgress * wWeight) + (cinturaProg * wCint) + (peitoProg * wPeito) + (bracoProg * wBraco) + (pernaProg * wPerna);
+  const percent = Math.round(clamp01(combined) * 100);
   return percent;
 }
+
+function clamp01(v){ return Math.max(0, Math.min(1, isFinite(v)?v:0)); }
 
 function pickMessage(percent){
   if(percent < 35) return messages.low[Math.floor(Math.random()*messages.low.length)];
@@ -248,40 +304,30 @@ function updateProgressVisual(){
   const pct = getProgressPercent();
   document.getElementById('progressFill').style.width = pct + '%';
   document.getElementById('percentText').textContent = pct + '%';
-  // update avatar crossfade:
-  // logic: 0..33 => phase1, 34..66 => phase2, 67..100 => phase3 (smooth crossfade)
   const p1 = document.getElementById('imgPhase1');
   const p2 = document.getElementById('imgPhase2');
   const p3 = document.getElementById('imgPhase3');
 
   if(pct <= 33){
-    p1.style.opacity = 1;
-    p2.style.opacity = 0;
-    p3.style.opacity = 0;
+    p1.style.opacity = 1; p2.style.opacity = 0; p3.style.opacity = 0;
   } else if(pct <= 66){
     const t = (pct - 33)/(33);
-    p1.style.opacity = 1 - t;
-    p2.style.opacity = t;
-    p3.style.opacity = 0;
+    p1.style.opacity = 1 - t; p2.style.opacity = t; p3.style.opacity = 0;
   } else {
     const t = (pct - 66)/(34);
-    p1.style.opacity = 0;
-    p2.style.opacity = 1 - t;
-    p3.style.opacity = t;
+    p1.style.opacity = 0; p2.style.opacity = 1 - t; p3.style.opacity = t;
   }
-
-  document.getElementById('motivation').textContent = pickMessage(pct);
+  const data = getUserData(getCurrentUser()||'');
+  document.getElementById('motivation').textContent = pickMessage(pct) + (data.bodyType ? ' • Tipo: ' + data.bodyType : '');
 }
 
-/* ---------- Preview button ---------- */
+/* Buttons and init */
 document.getElementById('btnPreview').onclick = ()=>{
-  // Simula recalc: pega valor do input atual e meta e escreve um registro temporário
-  const cur = getCurrentUser(); if(!cur){ alert('Faça login'); return; }
+  if(!getCurrentUser()){ alert('Faça login'); return; }
   updateProgressVisual();
   alert('Avatar atualizado conforme suas medidas.');
 }
 
-/* ---------- Inicialização ---------- */
 renderAuthState();
 </script>
 </body>

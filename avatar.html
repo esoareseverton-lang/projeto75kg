@@ -3,297 +3,110 @@
 <head>
 <meta charset="utf-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1"/>
-<title>Projeto 75kg — Avatares M/F</title>
+<title>Avatares PB — Protótipo</title>
 <style>
-  body{font-family:Inter,Arial,sans-serif;background:#f5f7fa;margin:0;padding:20px;display:flex;flex-direction:column;align-items:center}
+  body{font-family:Arial,Helvetica,sans-serif;background:#f5f7fa;margin:0;padding:18px;display:flex;flex-direction:column;align-items:center}
   .wrap{max-width:1100px;width:100%;display:grid;grid-template-columns:360px 1fr;gap:20px}
   .card{background:#fff;padding:16px;border-radius:10px;box-shadow:0 6px 18px rgba(0,0,0,0.06)}
-  h2{margin:0 0 12px 0}
+  h1{margin:0 0 10px 0}
   label{display:block;margin-top:8px;font-size:14px}
   input, select{width:100%;padding:8px;border-radius:6px;border:1px solid #ddd;margin-top:6px}
   button{margin-top:10px;padding:10px 12px;border-radius:8px;border:0;background:#2563eb;color:#fff;cursor:pointer}
-  .avatar-wrap{display:flex;flex-direction:column;align-items:center;gap:12px}
-  .avatar-stage{position:relative;width:100%;max-width:480px;height:420px;border-radius:10px;overflow:hidden;background:#fff;display:flex;align-items:center;justify-content:center;border:1px solid #e6e6e6}
-  .avatar-stage img{position:absolute;width:100%;height:100%;object-fit:contain;transition:opacity .5s ease}
-  .progress-bar{width:100%;height:18px;background:#eee;border-radius:9px;overflow:hidden;margin-top:8px}
-  .progress-bar > div{height:100%;background:linear-gradient(90deg,#000,#555);width:0%;transition:width .6s ease}
-  .msg{font-size:15px;color:#333;margin-top:8px}
-  .small{font-size:13px;color:#666}
-  .history{max-height:180px;overflow:auto;margin-top:8px}
-  .row{display:flex;gap:8px}
-  .sex-toggle{display:flex;gap:8px;margin-top:6px}
-  .note{font-size:13px;color:#555;margin-top:6px}
+  .avatar-stage{position:relative;width:100%;max-width:480px;height:420px;border-radius:6px;overflow:hidden;background:#fff;border:1px solid #e6e6e6;display:flex;align-items:center;justify-content:center}
+  .phase{position:absolute;top:0;left:0;width:100%;height:100%;background-repeat:no-repeat;background-size:300% 100%;transition:opacity .5s ease, transform .5s ease}
+  .phase.p1{background-position:0% 50%;opacity:1}
+  .phase.p2{background-position:50% 50%;opacity:0}
+  .phase.p3{background-position:100% 50%;opacity:0}
+  .female .phase{transform:scaleX(-1)}
+  .progress-bar{width:100%;height:16px;background:#eee;border-radius:9px;overflow:hidden;margin-top:8px}
+  .progress-bar > div{height:100%;background:#111;width:0%;transition:width .6s ease}
+  .row{display:flex;gap:8px;align-items:center}
+  .msg{margin-top:8px;color:#333}
+  .note{font-size:13px;color:#666;margin-top:8px}
 </style>
 </head>
 <body>
-  <h1>Projeto 75kg — Avatares (Masculino / Feminino)</h1>
-  <div class="wrap">
-    <div>
-      <div class="card" id="authCard">
-        <h2>Conta</h2>
-        <div id="authForms">
-          <div id="signupForm">
-            <label>Email</label><input type="text" id="suEmail" placeholder="seu@email.com"/>
-            <label>Senha</label><input type="password" id="suPass" placeholder="senha"/>
-            <button id="btnSignup">Criar conta</button>
-            <p class="small">Ou <a href="#" id="showLogin">Fazer login</a></p>
-          </div>
-          <div id="loginForm" style="display:none">
-            <label>Email</label><input type="text" id="liEmail"/>
-            <label>Senha</label><input type="password" id="liPass"/>
-            <button id="btnLogin">Entrar</button>
-            <p class="small">Ou <a href="#" id="showSignup">Criar conta</a></p>
-          </div>
-        </div>
-        <div id="logged" style="display:none">
-          <p class="small">Logado como <strong id="userEmail"></strong></p>
-          <button id="btnLogout" style="background:#ef4444">Sair</button>
-        </div>
+<h1>Protótipo PB — Avatares</h1>
+<div class="wrap">
+  <div>
+    <div class="card">
+      <h2>Configurações</h2>
+      <label>Sexo</label>
+      <div class="row">
+        <label><input type="radio" name="sex" value="male" checked/> Masculino</label>
+        <label><input type="radio" name="sex" value="female"/> Feminino</label>
       </div>
 
-      <div class="card" id="measuresCard" style="margin-top:14px; display:none">
-        <h2>Medidas & Meta</h2>
+      <label>Peso atual (kg)</label><input id="pesoAtual" type="number" step="0.1"/>
+      <label>Peso meta (kg)</label><input id="pesoMeta" type="number" step="0.1"/>
+      <label>Cintura (cm)</label><input id="cintura" type="number"/>
+      <label>Peito (cm)</label><input id="peito" type="number"/>
+      <label>Braço (cm)</label><input id="braco" type="number"/>
+      <label>Perna (cm)</label><input id="perna" type="number"/>
 
-        <label>Sexo</label>
-        <div class="sex-toggle">
-          <label><input type="radio" name="sex" value="male" checked/> Masculino</label>
-          <label><input type="radio" name="sex" value="female"/> Feminino</label>
-        </div>
-
-        <label>Peso atual (kg)</label><input type="number" id="pesoAtual" step="0.1"/>
-        <label>Peso meta (kg)</label><input type="number" id="pesoMeta" step="0.1"/>
-        <label>Cintura (cm)</label><input type="number" id="cintura"/>
-        <label>Peito (cm)</label><input type="number" id="peito"/>
-        <label>Braço (cm)</label><input type="number" id="braco"/>
-        <label>Perna (cm)</label><input type="number" id="perna"/>
-
-        <label>Tipo corporal desejado</label>
-        <select id="bodyType">
-          <option value="normal">Normal</option>
-          <option value="seco">Seco (magro)</option>
-          <option value="musculoso">Musculoso</option>
-        </select>
-
-        <div class="row">
-          <button id="btnSave">Salvar medida</button>
-          <button id="btnUsePhaseImages">Usar imagens padrão</button>
-        </div>
-        <p class="note">Coloque os arquivos: male_phase1.png / male_phase2.png / male_phase3.png e female_phase1.png / female_phase2.png / female_phase3.png no mesmo diretório que este HTML.</p>
-        <div class="history card" id="historyBox" style="margin-top:10px"></div>
+      <div class="row">
+        <button id="btnPreview">Atualizar Avatar</button>
       </div>
-    </div>
 
-    <div>
-      <div class="card avatar-wrap">
-        <h2>Progresso e Avatar</h2>
-        <div class="avatar-stage" id="avatarStage">
-          <!-- imagens serão definidas dinamicamente -->
-          <img id="p1" src="" style="opacity:1"/>
-          <img id="p2" src="" style="opacity:0"/>
-          <img id="p3" src="" style="opacity:0"/>
-        </div>
-
-        <div style="width:100%;margin-top:8px">
-          <div class="progress-bar"><div id="progressFill"></div></div>
-          <div class="row" style="margin-top:8px;align-items:center">
-            <div style="flex:1"><strong id="percentText">0%</strong></div>
-            <div><button id="btnPreview">Atualizar Avatar</button></div>
-          </div>
-          <div class="msg" id="motivation">Bem-vindo! Insira suas medidas para começar.</div>
-        </div>
-      </div>
+      <p class="note">Coloque no mesmo diretório deste HTML o arquivo: <strong>combined_bw.png</strong> (3 fases lado a lado). Para imagens femininas no mesmo traço eu posso gerar separadamente.</p>
     </div>
   </div>
 
+  <div>
+    <div class="card">
+      <h2>Progresso e Avatar</h2>
+      <div id="avatarStage" class="avatar-stage">
+        <!-- as "fases" usam a mesma imagem, só mudando background-position -->
+        <div id="phase1" class="phase p1" style="background-image:url('combined_bw.png')"></div>
+        <div id="phase2" class="phase p2" style="background-image:url('combined_bw.png')"></div>
+        <div id="phase3" class="phase p3" style="background-image:url('combined_bw.png')"></div>
+      </div>
+
+      <div style="width:100%;margin-top:8px">
+        <div class="progress-bar"><div id="progressFill"></div></div>
+        <div class="row" style="margin-top:8px"><strong id="percentText">0%</strong></div>
+        <div class="msg" id="motivation">Bem-vindo! Insira suas medidas e clique em "Atualizar Avatar".</div>
+      </div>
+    </div>
+  </div>
+</div>
+
 <script>
-/* Mensagens */
-const messages = {
-  low: ["Bora começar! Um passo de cada vez 💪","Primeiro passo dado — continue!","Pequenas vitórias, grande resultado."],
-  mid: ["Tá indo bem — mantenha o ritmo! 🔥","Metade do caminho — não pare!","Siga firme, você chegou até aqui."],
-  high: ["Quase lá! Último esforço 🏁","Foco que a meta vem!","Uau, que evolução — continua!"]
-};
-
-/* Storage simples */
-function saveUsers(users){ localStorage.setItem('p75_users', JSON.stringify(users)); }
-function loadUsers(){ return JSON.parse(localStorage.getItem('p75_users')||'{}'); }
-function setCurrentUser(email){ localStorage.setItem('p75_current', email); renderAuthState(); }
-function getCurrentUser(){ return localStorage.getItem('p75_current'); }
-function saveUserData(email, data){
-  const db = JSON.parse(localStorage.getItem('p75_data')||'{}');
-  db[email] = db[email] || {records:[]};
-  if(data.record) db[email].records.unshift(data.record);
-  if(data.meta) db[email].meta = Object.assign(db[email].meta||{}, data.meta);
-  if(data.images) db[email].images = Object.assign(db[email].images||{}, data.images);
-  if(data.bodyType) db[email].bodyType = data.bodyType;
-  localStorage.setItem('p75_data', JSON.stringify(db));
-}
-function getUserData(email){ const db = JSON.parse(localStorage.getItem('p75_data')||'{}'); return db[email] || {records:[], meta:{}, images:{}}; }
-
-/* Auth UI */
-document.getElementById('showLogin').onclick = e=>{ e.preventDefault(); document.getElementById('signupForm').style.display='none'; document.getElementById('loginForm').style.display='block'; }
-document.getElementById('showSignup').onclick = e=>{ e.preventDefault(); document.getElementById('signupForm').style.display='block'; document.getElementById('loginForm').style.display='none'; }
-
-document.getElementById('btnSignup').onclick = ()=>{
-  const email = document.getElementById('suEmail').value.trim();
-  const pass = document.getElementById('suPass').value;
-  if(!email||!pass){ alert('Preencha email e senha'); return; }
-  const users = loadUsers();
-  if(users[email]){ alert('Conta já existe, faça login'); return; }
-  users[email] = {password: btoa(pass)};
-  saveUsers(users);
-  setCurrentUser(email);
-  saveUserData(email, {images:{}, bodyType:'normal'});
-  alert('Conta criada e logado!');
-}
-
-document.getElementById('btnLogin').onclick = ()=>{
-  const email = document.getElementById('liEmail').value.trim();
-  const pass = document.getElementById('liPass').value;
-  const users = loadUsers();
-  if(!users[email] || users[email].password !== btoa(pass)) { alert('Email ou senha inválidos'); return; }
-  setCurrentUser(email);
-  alert('Logado!');
-}
-
-document.getElementById('btnLogout').onclick = ()=>{ localStorage.removeItem('p75_current'); renderAuthState(); }
-
-/* Form save */
-document.getElementById('btnSave').onclick = ()=>{
-  const cur = getCurrentUser(); if(!cur){ alert('Faça login'); return; }
-  const sex = document.querySelector('input[name="sex"]:checked').value;
-  const peso = parseFloat(document.getElementById('pesoAtual').value);
-  const meta = parseFloat(document.getElementById('pesoMeta').value);
-  const cintura = parseFloat(document.getElementById('cintura').value||0);
-  const peito = parseFloat(document.getElementById('peito').value||0);
-  const braco = parseFloat(document.getElementById('braco').value||0);
-  const perna = parseFloat(document.getElementById('perna').value||0);
-  const bodyType = document.getElementById('bodyType').value;
-  if(isNaN(peso) || isNaN(meta)){ alert('Informe peso atual e meta'); return; }
-  const record = {date:new Date().toISOString(), peso, cintura, peito, braco, perna, bodyType, sex};
-  saveUserData(cur, {record, meta:{pesoMeta:meta}, bodyType});
-  renderHistory();
-  updateProgressVisual();
-  alert('Medida salva!');
-}
-
-/* History */
-function renderHistory(){
-  const cur = getCurrentUser(); if(!cur) return;
-  const data = getUserData(cur);
-  const box = document.getElementById('historyBox');
-  if(!data.records.length){ box.innerHTML = '<p class="small">Sem medições ainda.</p>'; return; }
-  box.innerHTML = data.records.map(r=>`<div style="border-bottom:1px solid #eee;padding:6px 0"><strong>${new Date(r.date).toLocaleDateString()}</strong> — ${r.peso} kg — Cintura: ${r.cintura||'-'} cm — Braço: ${r.braco||'-'} cm</div>`).join('');
-}
-
-/* Progress calculation (ponderada) */
 function clamp01(v){ return Math.max(0, Math.min(1, isFinite(v)?v:0)); }
-function getInitialMeasurements(records){ if(!records.length) return null; return records[records.length-1]; }
-
-function getProgressPercent(){
-  const cur = getCurrentUser(); if(!cur) return 0;
-  const data = getUserData(cur);
-  if(!data.records.length || !data.meta || !data.meta.pesoMeta) return 0;
-  const latest = data.records[0];
-  const initial = getInitialMeasurements(data.records) || latest;
-  const goalWeight = data.meta.pesoMeta;
-
-  // weight
-  let weightProgress = 0;
-  if(goalWeight < initial.peso) weightProgress = ((initial.peso - latest.peso) / (initial.peso - goalWeight));
-  else weightProgress = ((latest.peso - initial.peso) / (goalWeight - initial.peso));
-  weightProgress = clamp01(weightProgress);
-
-  const bt = data.bodyType || latest.bodyType || 'normal';
-  const cinturaTarget = bt === 'seco' ? initial.cintura * 0.9 : (bt === 'musculoso' ? initial.cintura * 0.95 : initial.cintura * 0.95);
-  const peitoTarget = bt === 'musculoso' ? initial.peito * 1.08 : initial.peito * 0.98;
-  const bracoTarget = bt === 'musculoso' ? initial.braco * 1.08 : initial.braco * 0.95;
-  const pernaTarget = bt === 'musculoso' ? initial.perna * 1.06 : initial.perna * 0.97;
-
-  function singleProgress(current, initialVal, target, reduceIfHigher=true){
-    if(!initialVal || !current) return 0;
-    if(reduceIfHigher){
-      const denom = initialVal - target; if(denom===0) return 0;
-      return clamp01((initialVal - current) / denom);
-    } else {
-      const denom = target - initialVal; if(denom===0) return 0;
-      return clamp01((current - initialVal) / denom);
-    }
+function computePercent(){
+  const atual = parseFloat(document.getElementById('pesoAtual').value);
+  const meta = parseFloat(document.getElementById('pesoMeta').value);
+  if(isNaN(atual) || isNaN(meta)) return 0;
+  let initial = Math.max(atual, meta + 10);
+  if(initial === atual) initial = meta + 10;
+  let pct;
+  if(meta < initial){
+    pct = ((initial - atual) / (initial - meta)) * 100;
+  } else {
+    pct = ((atual - initial) / (meta - initial)) * 100;
   }
-
-  const cinturaProg = singleProgress(latest.cintura, initial.cintura, cinturaTarget, true);
-  const peitoProg = bt === 'musculoso' ? singleProgress(latest.peito, initial.peito, peitoTarget, false) : singleProgress(latest.peito, initial.peito, peitoTarget, true);
-  const bracoProg = bt === 'musculoso' ? singleProgress(latest.braco, initial.braco, bracoTarget, false) : singleProgress(latest.braco, initial.braco, bracoTarget, true);
-  const pernaProg = bt === 'musculoso' ? singleProgress(latest.perna, initial.perna, pernaTarget, false) : singleProgress(latest.perna, initial.perna, pernaTarget, true);
-
-  const wWeight=0.5,wCint=0.15,wPeito=0.10,wBraco=0.125,wPerna=0.125;
-  const combined = (weightProgress*wWeight)+(cinturaProg*wCint)+(peitoProg*wPeito)+(bracoProg*wBraco)+(pernaProg*wPerna);
-  return Math.round(clamp01(combined)*100);
+  return Math.round(clamp01(pct/100)*100);
 }
 
-/* Avatar image loader */
-function setAvatarImagesForSex(sex){
-  // filenames we expect
-  const files = {
-    male: ['male_phase1.png','male_phase2.png','male_phase3.png'],
-    female: ['female_phase1.png','female_phase2.png','female_phase3.png']
-  };
-  const selected = files[sex] || files.male;
-
-  // fallback: if female files not found, load male files (we can't check existence cross-origin on GH pages easily,
-  // so we set both and allow browser to fallback to 404 icon if missing)
-  document.getElementById('p1').src = selected[0];
-  document.getElementById('p2').src = selected[1];
-  document.getElementById('p3').src = selected[2];
-}
-
-/* update visuals */
-function pickMessage(percent){
-  if(percent < 35) return messages.low[Math.floor(Math.random()*messages.low.length)];
-  if(percent < 75) return messages.mid[Math.floor(Math.random()*messages.mid.length)];
-  return messages.high[Math.floor(Math.random()*messages.high.length)];
-}
-
-function updateProgressVisual(){
-  const pct = getProgressPercent();
+function updateAvatarAndUI(){
+  const pct = computePercent();
   document.getElementById('progressFill').style.width = pct + '%';
   document.getElementById('percentText').textContent = pct + '%';
-
-  const p1 = document.getElementById('p1');
-  const p2 = document.getElementById('p2');
-  const p3 = document.getElementById('p3');
-
-  if(pct <= 33){ p1.style.opacity=1; p2.style.opacity=0; p3.style.opacity=0; }
+  const p1 = document.getElementById('phase1'), p2 = document.getElementById('phase2'), p3 = document.getElementById('phase3');
+  if(pct <= 33){ p1.style.opacity='1'; p2.style.opacity='0'; p3.style.opacity='0'; }
   else if(pct <= 66){ const t=(pct-33)/33; p1.style.opacity=1-t; p2.style.opacity=t; p3.style.opacity=0; }
   else { const t=(pct-66)/34; p1.style.opacity=0; p2.style.opacity=1-t; p3.style.opacity=t; }
 
-  document.getElementById('motivation').textContent = pickMessage(pct);
+  const sex = document.querySelector('input[name="sex"]:checked').value;
+  const avatarStage = document.getElementById('avatarStage');
+  if(sex === 'female') avatarStage.classList.add('female'); else avatarStage.classList.remove('female');
+
+  const msg = pct < 35 ? 'Bora começar! Um passo de cada vez 💪' : (pct < 75 ? 'Mandando bem — continue!' : 'Quase lá! Último sprint!');
+  document.getElementById('motivation').textContent = msg;
 }
 
-/* UI hooks */
-document.getElementById('btnPreview').onclick = ()=>{
-  if(!getCurrentUser()){ alert('Faça login'); return; }
-  updateProgressVisual();
-  alert('Avatar atualizado.');
-}
-
-document.getElementById('btnUsePhaseImages').onclick = ()=>{
-  alert('Use arquivos padrão male_phase1.png ... female_phase3.png no mesmo diretório.');
-}
-
-/* sex radio change -> reload images */
-document.querySelectorAll('input[name="sex"]').forEach(r=>{
-  r.addEventListener('change', ()=>{
-    setAvatarImagesForSex(document.querySelector('input[name="sex"]:checked').value);
-    updateProgressVisual();
-  });
-});
-
-/* initial */
-setAvatarImagesForSex('male');
-renderAuthState();
-
-/* renderAuthState bridge */
-function renderAuthState(){ const cur=getCurrentUser(); document.getElementById('authForms').style.display = cur ? 'none':'block'; document.getElementById('logged').style.display = cur ? 'block':'none'; document.getElementById('measuresCard').style.display = cur ? 'block':'none'; if(cur) document.getElementById('userEmail').textContent = cur; renderHistory(); updateProgressVisual(); }
+document.getElementById('btnPreview').addEventListener('click', updateAvatarAndUI);
+updateAvatarAndUI();
 </script>
 </body>
 </html>
